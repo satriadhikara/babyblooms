@@ -32,6 +32,45 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Switzer-Black.otf",
+            "./assets/fonts/Switzer-BlackItalic.otf",
+            "./assets/fonts/Switzer-Bold.otf",
+            "./assets/fonts/Switzer-BoldItalic.otf",
+            "./assets/fonts/Switzer-Extrabold.otf",
+            "./assets/fonts/Switzer-ExtraboldItalic.otf",
+            "./assets/fonts/Switzer-Extralight.otf",
+            "./assets/fonts/Switzer-ExtralightItalic.otf",
+            "./assets/fonts/Switzer-Italic.otf",
+            "./assets/fonts/Switzer-Light.otf",
+            "./assets/fonts/Switzer-LightItalic.otf",
+            "./assets/fonts/Switzer-Medium.otf",
+            "./assets/fonts/Switzer-MediumItalic.otf",
+            "./assets/fonts/Switzer-Regular.otf",
+            "./assets/fonts/Switzer-Semibold.otf",
+            "./assets/fonts/Switzer-SemiboldItalic.otf",
+            "./assets/fonts/Switzer-Thin.otf",
+            "./assets/fonts/Switzer-ThinItalic.otf",
+            "node_modules/@expo-google-fonts/plus-jakarta-sans/PlusJakartaSans_200ExtraLight.ttf",
+            "node_modules/@expo-google-fonts/plus-jakarta-sans/PlusJakartaSans_300Light.ttf",
+            "node_modules/@expo-google-fonts/plus-jakarta-sans/PlusJakartaSans_400Regular.ttf",
+            "node_modules/@expo-google-fonts/plus-jakarta-sans/PlusJakartaSans_500Medium.ttf",
+            "node_modules/@expo-google-fonts/plus-jakarta-sans/PlusJakartaSans_600SemiBold.ttf",
+            "node_modules/@expo-google-fonts/plus-jakarta-sans/PlusJakartaSans_700Bold.ttf",
+            "node_modules/@expo-google-fonts/plus-jakarta-sans/PlusJakartaSans_800ExtraBold.ttf",
+            "node_modules/@expo-google-fonts/plus-jakarta-sans/PlusJakartaSans_200ExtraLight_Italic.ttf",
+            "node_modules/@expo-google-fonts/plus-jakarta-sans/PlusJakartaSans_300Light_Italic.ttf",
+            "node_modules/@expo-google-fonts/plus-jakarta-sans/PlusJakartaSans_400Regular_Italic.ttf",
+            "node_modules/@expo-google-fonts/plus-jakarta-sans/PlusJakartaSans_500Medium_Italic.ttf",
+            "node_modules/@expo-google-fonts/plus-jakarta-sans/PlusJakartaSans_600SemiBold_Italic.ttf",
+            "node_modules/@expo-google-fonts/plus-jakarta-sans/PlusJakartaSans_700Bold_Italic.ttf",
+            "node_modules/@expo-google-fonts/plus-jakarta-sans/PlusJakartaSans_800ExtraBold_Italic.ttf"
+          ]
+        }
       ]
     ],
     "experiments": {
