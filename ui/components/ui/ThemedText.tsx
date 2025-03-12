@@ -59,26 +59,17 @@ const styles = StyleSheet.create({
     fontSize: 64,
     lineHeight: 72,
     fontWeight: "600",
-    fontFamily: Platform.select({
-      ios: "PlusJakartaSans-SemiBold",
-      android: "PlusJakartaSans_600SemiBold",
-    }),
+    fontFamily: "PlusJakartaSans_600SemiBold",
   },
   displayMedium: {
     fontSize: 48,
     lineHeight: 56,
     fontWeight: "700",
-    fontFamily: Platform.select({
-      ios: "PlusJakartaSans-Bold",
-      android: "PlusJakartaSans_700Bold",
-    }),
+    fontFamily: "PlusJakartaSans_700Bold",
   },
   displaySmall: {
     fontSize: 40,
     fontWeight: "700",
-    fontFamily: Platform.select({
-      ios: "PlusJakartaSans-Bold",
-      android: "PlusJakartaSans_700Bold",
-    }),
+    fontFamily: "PlusJakartaSans_700Bold",
   },
 });
