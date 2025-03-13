@@ -12,8 +12,10 @@ import {
 import { ThemedText } from "@/components/ui/ThemedText";
 import GoogleIcon from "@/assets/vectors/google";
 import MetaIcon from "@/assets/vectors/meta";
+import {useRouter, Router} from "expo-router";
 
 export default function App() {
+  const Router = useRouter();
   return (
     <View style={{ flex: 1 }}>
       <Image
@@ -61,6 +63,7 @@ export default function App() {
                   fontFamily: "Switzer-Medium",
                   fontWeight: "medium",
                 }}
+                onPress={() => Router.push("/(auth)/(tabs)/jurnal")}
               >
                 Masuk dengan Google
               </Text>
