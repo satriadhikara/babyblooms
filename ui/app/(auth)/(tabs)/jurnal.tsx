@@ -10,6 +10,7 @@ ScrollView
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather, Ionicons } from '@expo/vector-icons';
+import { useRouter, Router } from "expo-router";
 
 const PregnancyTrackerApp = () => {
 const today = 24; 
@@ -24,6 +25,8 @@ const [pregnancyData, setPregnancyData] = useState({
     daysLeft: 246,
     trimester: 1
 });
+
+const Router = useRouter();
 
 // Simulate data update every 24 hours
 useEffect(() => {
@@ -205,6 +208,8 @@ return (
                     alignItems: "center",
                     justifyContent: "center",
                     }}
+
+                    onPress={() => Router.push("/panduan")}
                 >
                     <Feather name="plus" size={20} color="#C85A9D" />
                     <Text style={{ color: "#C85A9D", fontSize: 16, fontWeight: "bold", marginLeft: 8 }}>
