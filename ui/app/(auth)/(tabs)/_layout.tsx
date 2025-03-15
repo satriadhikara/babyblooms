@@ -1,20 +1,14 @@
 import React from "react";
-import {Tabs} from "expo-router";
+import { Stack, Tabs } from "expo-router";
+import { Feather, Ionicons } from "@expo/vector-icons";
+import { View, Text, TouchableOpacity } from "react-native";
 
-const TabsLayout = () => {  
-    return (
-        <Tabs
-        screenOptions={{
-            headerShown: false,
-            tabBarStyle: {
-                display: "none",
-            },
-        }}
-        >
-            <Tabs.Screen name="index" options={{ title: "Home" }} />
-            <Tabs.Screen name="jurnal" options={{ title: "Settings" }} />
-        </Tabs>
-    );
+const TabsLayout = () => {
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      
+    </Stack>
+  );
 };
 
 export default TabsLayout;

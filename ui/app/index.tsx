@@ -55,6 +55,7 @@ export default function App() {
                 justifyContent: "center",
                 gap: 10,
               }}
+              onPress={() => Router.push("/(auth)/(tabs)/jurnal")}
             >
               <GoogleIcon />
               <Text
@@ -63,7 +64,6 @@ export default function App() {
                   fontFamily: "Switzer-Medium",
                   fontWeight: "medium",
                 }}
-                onPress={() => Router.push("/(auth)/(tabs)/jurnal")}
               >
                 Masuk dengan Google
               </Text>
