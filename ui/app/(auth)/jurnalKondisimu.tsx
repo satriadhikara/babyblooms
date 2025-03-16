@@ -25,7 +25,7 @@ const MoodTrackerApp = () => {
     { emoji: '😁', percentage: 20 },
     { emoji: '😊', percentage: 35 },
     { emoji: '😐', percentage: 70 },
-    { emoji: '😞', percentage: 0 },
+    { emoji: '😞', percentage: 10 },
     { emoji: '😡', percentage: 0 },
   ];
   
@@ -101,16 +101,31 @@ const MoodTrackerApp = () => {
           <ThemedText type='titleMedium' style={{fontSize: 18}}>Moodmeter</ThemedText>
           <ThemedText type='bodyLarge' style={{color: '#757575', marginBottom: 16 }}>Minggu ke-{currentWeek}</ThemedText>
           {moodData.map((mood, index) => (
-            <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
-              <Text style={{fontSize: 45}}>{mood.emoji}</Text>
-              <View style={{flex: 1, height: 35, backgroundColor: '#EEEEEE', borderRadius: 17, overflow: 'hidden' }}>
-                <View style={{height: '100%', width: `${mood.percentage}%`, backgroundColor: ['#91845C','#91845C','#91845C','#91845C','#91845C' ][index], borderRadius: 12 }}>
-                  <View style={{ position: 'absolute', right: 5, top: 7 }}>
-                    <ThemedText type='labelMedium' style={{color: 'white' }}>{mood.percentage}%</ThemedText>
+            <View key={index} style={{ alignItems: 'center', marginBottom: 12 }}>
+            {/* Wrapper untuk emoji agar berada di atas progress bar */}
+            <View style={{ position: 'absolute', zIndex: 10, top: -10, left: 0 }}>
+              <Text style={{ fontSize: 45 }}>{mood.emoji}</Text>
+            </View>
+          
+            {/* Progress bar */}
+            <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%', paddingHorizontal: 20 }}>
+              <View style={{ flex: 1, height: 35, backgroundColor: '#EEEEEE', borderRadius: 17, overflow: 'hidden' }}>
+                <View style={{
+                  height: '100%',
+                  width: `${mood.percentage}%`,
+                  backgroundColor: ['#91845C', '#91845C', '#91845C', '#91845C', '#91845C'][index],
+                  borderRadius: 20,
+                }}>
+                  <View style={{ position: 'absolute', right: 7, top: 7 }}>
+                    <ThemedText type='labelMedium' style={{ color: 'white' }}>
+                      {mood.percentage}%
+                    </ThemedText>
                   </View>
-                </View>  
+                </View>
               </View>
             </View>
+          </View>
+          
           ))}
         </View>
 

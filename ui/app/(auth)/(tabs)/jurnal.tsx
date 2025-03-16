@@ -196,7 +196,8 @@ return (
                     alignItems: "center",
                     justifyContent: "center",
                     }}
-                    onPress={() => router.push("/(auth)/jurnalKondisimu")}
+                    // onPress={() => router.push("/(auth)/jurnalKondisimu")}
+                    onPress={() => router.push("/(auth)/listBukuHarian")}
                 >
                     <Feather name="plus" size={20} color="#C85A9D" />
                     <ThemedText type='labelLarge' style={{ color: "#C85A9D", marginLeft: 8 }}>

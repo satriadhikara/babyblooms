@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   StatusBar,
+  Platform,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { ThemedText } from "@/components/ui/ThemedText";
@@ -14,28 +15,30 @@ import { useRouter } from "expo-router";
 const PregnancyWeekInfo = () => {
   const Router = useRouter();
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#faf9f6" }}>
-      <StatusBar barStyle="dark-content" />
-
-      {/* Header */}
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          paddingHorizontal: 16,
-          paddingVertical: 12,
-          backgroundColor: "#fff",
-          borderBottomWidth: 1,
-          borderBottomColor: "#f0f0f0",
-        }}
-      >
-        <TouchableOpacity style={{ padding: 4 }} onPress={() => Router.push("/(auth)/(tabs)/jurnal")}>
-          <Ionicons name="close" size={24} color="black" />
-        </TouchableOpacity>
-        <ThemedText type="titleMedium">Informasi Minggu ke-4</ThemedText>
-        <View style={{ width: 24 }} />
-      </View>
+    <View style={{ flex: 1, backgroundColor: "#faf9f6" }}>
+      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+      <SafeAreaView style={{ backgroundColor: '#fff' }}>
+        {/* Header */}
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            paddingHorizontal: 16,
+            paddingVertical: 12,
+            backgroundColor: "#fff",
+            borderBottomWidth: 1,
+            borderBottomColor: "#f0f0f0",
+            paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 12,
+          }}
+        >
+          <TouchableOpacity style={{ padding: 4 }} onPress={() => Router.push("/(auth)/(tabs)/jurnal")}>
+            <Ionicons name="close" size={24} color="black" />
+          </TouchableOpacity>
+          <ThemedText type="titleMedium">Informasi Minggu ke-4</ThemedText>
+          <View style={{ width: 24 }} />
+        </View>
+      </SafeAreaView>
 
       <ScrollView style={{ flex: 1 }}>
         <View style={{ padding: 16 }}>
@@ -243,7 +246,7 @@ const PregnancyWeekInfo = () => {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
