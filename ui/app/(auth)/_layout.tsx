@@ -1,13 +1,14 @@
-import { Stack } from "expo-router";
+import React from "react";
+import { Stack, Tabs } from "expo-router";
+import { Feather, Ionicons } from "@expo/vector-icons";
+import { View, Text, TouchableOpacity } from "react-native";
 
-const AuthLayout = () => {
+const TabsLayout = () => {
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-      }}
-    />
+    <Stack screenOptions={{ headerShown: false }}>
+      
+    </Stack>
   );
 };
 
-export default AuthLayout;
+export default TabsLayout;

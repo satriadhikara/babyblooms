@@ -196,7 +196,7 @@ return (
                     alignItems: "center",
                     justifyContent: "center",
                     }}
-                    onPress={() => router.push("/(auth)/(tabs)/jurnalKondisimu")}
+                    onPress={() => router.push("/(auth)/jurnalKondisimu")}
                 >
                     <Feather name="plus" size={20} color="#C85A9D" />
                     <ThemedText type='labelLarge' style={{ color: "#C85A9D", marginLeft: 8 }}>
@@ -397,10 +397,10 @@ return (
                     justifyContent: "center",
                     }}
 
-                    onPress={() => router.push('/(auth)/(tabs)/infoMingguan')}
+                    onPress={() => router.push('/(auth)/infoMingguan')}
                 >
                     <Feather name="plus" size={20} color="#FFF" />
-                    <ThemedText type='labelLarge' style={{ color: "#FFF", marginLeft: 8 }}>
+                    <ThemedText type='labelLarge' style={{ color: "#FFF", marginLeft: 8 }} onPress={() => router.push('/(auth)/infoMingguan')}>
                          Catat kondisi hari ini
                     </ThemedText>
                 </TouchableOpacity>

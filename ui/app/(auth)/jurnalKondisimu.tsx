@@ -5,6 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Ionicons } from '@expo/vector-icons';
 import Feather from '@expo/vector-icons/Feather';
 import {useRouter} from 'expo-router';
+import { ThemedText } from '@/components/ui/ThemedText';
 
 const MoodTrackerApp = () => {
   const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
@@ -49,12 +50,12 @@ const MoodTrackerApp = () => {
             <Ionicons name="chevron-back" size={24} color="#000" />
           </TouchableOpacity>
           <View style={{flexDirection: 'column', alignItems: 'center'}}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Jurnal Kondisimu</Text>
-            <Text style={{ fontSize: 12, color: '#757575' }}>{`Minggu ${currentWeek} • ${currentDate.getDate() - 3} ${months[currentDate.getMonth()]} - ${currentDate.getDate() + 3} ${months[currentDate.getMonth()]}`}</Text>
+            <ThemedText type='titleMedium'>Jurnal Kondisimu</ThemedText>
+            <ThemedText type='bodyMedium' style={{ color: '#757575' }}>{`Minggu ${currentWeek} • ${currentDate.getDate() - 3} ${months[currentDate.getMonth()]} - ${currentDate.getDate() + 3} ${months[currentDate.getMonth()]}`}</ThemedText>
           </View>
           <View style={{ flexDirection: 'row'}}>
             <Ionicons name="flame" size={18} color="#FF5722" />
-            <Text style={{ fontSize: 14, fontWeight: 'bold', color: 'black', marginLeft: 4 }}>{streakCount}</Text>
+            <ThemedText style={{ fontSize: 14, fontWeight: 'bold', color: 'black', marginLeft: 4 }}>{streakCount}</ThemedText>
           </View>
         </View>
         
@@ -80,13 +81,9 @@ const MoodTrackerApp = () => {
                   backgroundColor: day.active ? '#C2185B' : '#F5F5F5' 
                 }}
               >
-                <Text style={{ 
-                  fontSize: 14, 
-                  fontWeight: '500', 
-                  color: day.active ? '#fff' : '#757575' 
-                }}>
+                <ThemedText type='titleMedium' style={{color: day.active ? '#fff' : '#757575'}}>
                   {day.dayNumber}
-                </Text>
+                </ThemedText>
               </TouchableOpacity>
             ))}
           </ScrollView>
@@ -96,20 +93,20 @@ const MoodTrackerApp = () => {
           <View style={{ width: 150, height: 170, marginBottom: 16 }}>
             <Text style={{ fontSize: 150 }}>{currentMoodEmoji}</Text>
           </View>
-          <Text style={{ fontSize: 14, color: '#757575', marginBottom: 8 }}>Suasana hatimu minggu ini</Text>
-          <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{currentMood}</Text>
+          <ThemedText type='titleSmall' style={{color: '#757575', marginBottom: 8 }}>Suasana hatimu minggu ini</ThemedText>
+          <ThemedText type='titleLarge'>{currentMood}</ThemedText>
         </View>
         
         <View style={{ padding: 16, marginTop: 16 }}>
-          <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Moodmeter</Text>
-          <Text style={{ fontSize: 12, color: '#757575', marginBottom: 16 }}>Minggu ke-{currentWeek}</Text>
+          <ThemedText type='titleMedium' style={{fontSize: 18}}>Moodmeter</ThemedText>
+          <ThemedText type='bodyLarge' style={{color: '#757575', marginBottom: 16 }}>Minggu ke-{currentWeek}</ThemedText>
           {moodData.map((mood, index) => (
             <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
               <Text style={{fontSize: 45}}>{mood.emoji}</Text>
               <View style={{flex: 1, height: 35, backgroundColor: '#EEEEEE', borderRadius: 17, overflow: 'hidden' }}>
                 <View style={{height: '100%', width: `${mood.percentage}%`, backgroundColor: ['#91845C','#91845C','#91845C','#91845C','#91845C' ][index], borderRadius: 12 }}>
-                  <View style={{ position: 'absolute', right: 5, top: 9 }}>
-                    <Text style={{ fontSize: 12, color: 'white' }}>{mood.percentage}%</Text>
+                  <View style={{ position: 'absolute', right: 5, top: 7 }}>
+                    <ThemedText type='labelMedium' style={{color: 'white' }}>{mood.percentage}%</ThemedText>
                   </View>
                 </View>  
               </View>
@@ -119,7 +116,7 @@ const MoodTrackerApp = () => {
 
         <View style={{ marginTop: 20, flexDirection: 'column' }}>
           <View style={{ flexDirection: 'row', paddingHorizontal: 20 }}>
-              <Text style={{ fontSize: 20, fontWeight: 'bold'}}>Berat Badan</Text>
+              <ThemedText type='titleMedium' style={{ fontSize: 18}}>Berat Badan</ThemedText>
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, marginTop: 10 }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>    
@@ -127,35 +124,35 @@ const MoodTrackerApp = () => {
                       source={require('@/assets/images/BeratBadan.png')}
                       style={{ width: 60, height: 60, resizeMode: 'contain' }}
                   />
-                  <Text style={{fontSize: 20, fontWeight: 'bold'}}>64 Kg</Text>
+                  <ThemedText style={{fontSize: 24,fontWeight: 'medium', fontFamily:'switzer'}}>64 Kg</ThemedText>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
-                  <Feather name="arrow-up-right" size={18} color="black" />
-                  <Text style={{fontSize: 18, fontWeight:'regular'}}>2 Kg</Text>
+                  <Feather name="arrow-up-right" size={20} color="black" />
+                  <ThemedText type='labelLarge' style={{fontSize: 20}}>2 Kg</ThemedText>
               </View>
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, marginTop: 10 }}>
-              <Text style={{fontSize: 14, color:'#8C8C8C', fontStyle:'italic'}}>* Berat badan terakhir menunjukkan bahwa Bunda berada di atas kisaran sehat untuk minggu 4</Text>
+              <ThemedText style={{fontSize: 14, fontFamily:'switzer', color:'#8C8C8C', fontStyle:'italic'}}>* Berat badan terakhir menunjukkan bahwa Bunda berada di atas kisaran sehat untuk minggu 4</ThemedText>
           </View>
         </View>
         <View style={{ marginTop: 40, flexDirection: 'column' }}>
           <View style={{ flexDirection: 'row', paddingHorizontal: 20 }}>
-              <Text style={{ fontSize: 20, fontWeight: 'bold'}}>Gejala</Text>
+              <ThemedText type='titleMedium' style={{ fontSize: 18}}>Gejala</ThemedText>
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, marginTop: 10 }}>
-              <Text style={{fontSize: 16, color:'#626262'}}>Minggu ini bunda mengalami 4 gejala</Text>
+              <ThemedText type='bodyMedium' style={{color:'#626262'}}>Minggu ini bunda mengalami 4 gejala</ThemedText>
           </View>
         </View>
         <View style={{ marginTop: 20, flexDirection: 'column' }}>
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, marginTop: 10 }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>    
                   <View style={{ gap: 5 }}>
-                      <Text style={{fontSize: 20, fontWeight: 'bold', color:'#5D63A6'}}>Suasana Hati</Text>
-                      <Text style={{color: '#7E7E7E'}}>Mual/Muntah</Text>
+                      <ThemedText type='titleMedium' style={{color:'#5D63A6'}}>Gastrointestinal</ThemedText>
+                      <ThemedText type='bodySmall' style={{color: '#7E7E7E'}}>Mual/Muntah</ThemedText>
                   </View>
               </View>
               <View>
-                  <Text style={{fontSize: 16, fontWeight:'bold'}}>1 kali</Text>
+                  <ThemedText type='titleMedium'>1 kali</ThemedText>
               </View>
           </View>
         </View>
@@ -163,12 +160,12 @@ const MoodTrackerApp = () => {
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, marginTop: 10 }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>    
                   <View style={{ gap: 5 }}>
-                      <Text style={{fontSize: 20, fontWeight: 'bold', color:'#5D63A6'}}>Neurologis</Text>
-                      <Text style={{color: '#7E7E7E'}}>Sakit Kepala, Insomnia</Text>
+                      <ThemedText type='titleMedium' style={{color:'#5D63A6'}}>Neurologis</ThemedText>
+                      <ThemedText type='bodySmall' style={{color: '#7E7E7E'}}>Sakit Kepala, Insomnia</ThemedText>
                   </View>
               </View>
               <View>
-                  <Text style={{fontSize: 16, fontWeight:'bold'}}>2 kali</Text>
+                  <ThemedText type='titleMedium'>2 kali</ThemedText>
               </View>
           </View>
         </View>
@@ -176,25 +173,25 @@ const MoodTrackerApp = () => {
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, marginTop: 10 }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>    
                   <View style={{ gap: 5 }}>
-                      <Text style={{fontSize: 20, fontWeight: 'bold', color:'#5D63A6'}}>Hormonal</Text>
-                      <Text style={{color: '#7E7E7E'}}>Perubahan Mood</Text>
+                      <ThemedText type='titleMedium' style={{color:'#5D63A6'}}>Hormonal</ThemedText>
+                      <ThemedText type='bodySmall' style={{color: '#7E7E7E'}}>Perubahan Mood</ThemedText>
                   </View>
               </View>
               <View>
-                  <Text style={{fontSize: 16, fontWeight:'bold'}}>1 kali</Text>
+                  <ThemedText type='titleMedium'>1 kali</ThemedText>
               </View>
           </View>
         </View>
         <View style={{ marginTop: 40, flexDirection: 'column', paddingHorizontal: 20 }}>
-          <Text style={{ fontSize: 20, fontWeight: 'bold'}}>Catatan Tambahan</Text>
+          <ThemedText type='titleMedium' style={{ fontSize: 18}}>Catatan Tambahan</ThemedText>
           <View style={{ marginTop: 10, flexDirection: 'column' }}>
-            <View style={{flexDirection: 'row', alignItems: 'center',gap: 40, paddingHorizontal: 20, marginTop: 10 }}>
-              <Text style={{color: '#7E7E7E'}}>Sen</Text>
-              <Text style={{fontSize: 16, fontWeight:'bold'}}>-</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center',gap: 40, paddingHorizontal:10, marginTop: 10 }}>
+              <ThemedText type='labelMedium' style={{color: '#7E7E7E'}}>Sen</ThemedText>
+              <ThemedText type='labelMedium' style={{fontSize: 16, fontWeight:'bold'}}>-</ThemedText>
             </View>
-            <View style={{flexDirection: 'row', alignItems: 'center',gap: 40, paddingHorizontal: 20, marginTop: 20 }}>
-              <Text style={{color: '#7E7E7E'}}>Sel</Text>
-              <Text style={{fontSize: 16}}>Hari ini mood swing banget dan sedikit ngerasain morning sickness</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center',gap: 40, paddingHorizontal: 10, marginTop: 20 }}>
+              <ThemedText type='labelMedium' style={{color: '#7E7E7E'}}>Sel</ThemedText>
+              <ThemedText type='labelMedium' style={{fontWeight:'regular'}}>Hari ini mood swing banget dan sedikit ngerasain morning sickness</ThemedText>
             </View>
           </View>
         </View>
@@ -213,7 +210,8 @@ const MoodTrackerApp = () => {
           elevation: 4,
           zIndex: 1000
         }}
-        onPress={() => Router.push('/(auth)/(tabs)/jurnalKondisiDetail')}
+        // onPress={() => Router.push('/(auth)/jurnalKondisiDetail')}
+        onPress={() => Router.push('/(auth)/infoPraHamil')}
       >
         <Ionicons name="add" size={24} color="#fff"/>
       </TouchableOpacity>
