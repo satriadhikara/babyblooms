@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { ThemedText } from '@/components/ui/ThemedText';
 
 const InfoPraHamil = () => {
   const [height, setHeight] = useState('');
@@ -30,21 +31,21 @@ const InfoPraHamil = () => {
             style={{ flex: 1 }}
         >
             <View style={{ paddingHorizontal: 16, paddingTop: 16 }}>
-                <TouchableOpacity style={{ padding: 8 }} onPress={() => Router.push('/(auth)/(tabs)/jurnalKondisimu')}>
+                <TouchableOpacity style={{ padding: 8 }} onPress={() => Router.push('/(auth)/jurnalKondisimu')}>
                     <Ionicons name="chevron-back" size={24} color="#000" />
                 </TouchableOpacity>
             </View>
 
             <View style={{ flex: 1, paddingHorizontal: 20, paddingTop: 20 }}>
-                <Text style={{ fontSize: 22, fontWeight: 'bold', marginBottom: 8, textAlign: 'center' }}>
+                <ThemedText type="titleLarge" style={{marginBottom: 8, textAlign: 'center' }}>
                     Informasi Pra Kehamilan
-                </Text>
-                <Text style={{ fontSize: 16, color: '#666', marginBottom: 30, textAlign: 'center', paddingHorizontal: 10, lineHeight: 20 }}>
+                </ThemedText>
+                <ThemedText type='bodyLarge' style={{ color: '#666', marginBottom: 30, textAlign: 'center', paddingHorizontal: 10}}>
                     Catat kondisi tubuh sebelum kehamilan untuk memantau perubahan kondisimu
-                </Text>
+                </ThemedText>
 
                 <View style={{ marginBottom: 20 }}>
-                    <Text style={{ fontSize: 16, fontWeight: '500', marginBottom: 8 }}>Tinggi</Text>
+                    <ThemedText type='labelSmall' style={{ fontSize: 14, marginBottom: 8 }}>Tinggi</ThemedText>
                     <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#FFF', borderRadius: 8, borderWidth: 1, borderColor: '#E0E0E0' }}>
                     <TextInput
                         style={{ flex: 1, height: 50, paddingHorizontal: 16, fontSize: 16 }}
@@ -53,12 +54,12 @@ const InfoPraHamil = () => {
                         onChangeText={setHeight}
                         keyboardType="numeric"
                     />
-                    <Text style={{ paddingRight: 16, fontSize: 16, color: '#666' }}>cm</Text>
+                    <ThemedText type='labelLarge' style={{ paddingRight: 16, color: '#0C0C0C' }}>cm</ThemedText>
                     </View>
                 </View>
 
                 <View style={{ marginBottom: 20 }}>
-                    <Text style={{ fontSize: 16, fontWeight: '500', marginBottom: 8 }}>Berat Badan</Text>
+                    <ThemedText type='labelSmall' style={{ fontSize: 14, marginBottom: 8 }}>Berat Badan</ThemedText>
                     <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#FFF', borderRadius: 8, borderWidth: 1, borderColor: '#E0E0E0' }}>
                     <TextInput
                         style={{ flex: 1, height: 50, paddingHorizontal: 16, fontSize: 16 }}
@@ -67,7 +68,7 @@ const InfoPraHamil = () => {
                         onChangeText={setWeight}
                         keyboardType="numeric"
                     />
-                    <Text style={{ paddingRight: 16, fontSize: 16, color: '#666' }}>kg</Text>
+                    <ThemedText type='labelLarge' style={{ paddingRight: 16, color: '#0C0C0C' }}>kg</ThemedText>
                     </View>
                 </View>
 

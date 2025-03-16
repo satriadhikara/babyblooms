@@ -9,6 +9,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationProp } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
+import { ThemedText } from '@/components/ui/ThemedText';
 
 const StreakCelebration = ({ navigation }: { navigation: NavigationProp<any> }) => {
     const symptoms = [
@@ -25,7 +26,7 @@ const StreakCelebration = ({ navigation }: { navigation: NavigationProp<any> }) 
       <StatusBar barStyle="dark-content" />
       
       {/* Close button */}
-      <TouchableOpacity style={{ position: 'absolute', top: 80, left: 16, padding: 4 }} onPress={() => Router.push('/(auth)/(tabs)/jurnalKondisiDetail')}>
+      <TouchableOpacity style={{ position: 'absolute', top: 80, left: 16, padding: 4 }} onPress={() => Router.push('/(auth)/jurnalKondisiDetail')}>
         <Ionicons name="close" size={24} color="black" />
       </TouchableOpacity>
       
@@ -37,19 +38,20 @@ const StreakCelebration = ({ navigation }: { navigation: NavigationProp<any> }) 
         </View>
         
         {/* Streak text */}
-        <Text style={{ fontSize: 22, fontWeight: 'bold', textAlign: 'center', marginBottom: 16 }}>
+        <ThemedText type='titleLarge' style={{textAlign: 'center', marginBottom: 16 }}>
           23 hari berturut-turut!
-        </Text>
-        <Text style={{
-          fontSize: 16,
-          textAlign: 'center',
-          color: 'black',
-          lineHeight: 20,
-          marginBottom: 24,
-          paddingHorizontal: 20     
-        }}>
+        </ThemedText>
+        <ThemedText 
+          type='bodyLarge'
+          style={{
+            textAlign: 'center',
+            color: 'black',
+            marginBottom: 24,
+            paddingHorizontal: 20     
+          }}
+        >
           Terus lacak kehamilanmu untuk mengetahui perkembangannya dan klik gejala untuk mempelajari lebih lanjut dengan BloomsAI.
-        </Text>
+        </ThemedText>
         
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', marginBottom: 24 }}>
             {symptoms.map((symptom, index) => (
@@ -65,9 +67,9 @@ const StreakCelebration = ({ navigation }: { navigation: NavigationProp<any> }) 
                     backgroundColor: 'white' // Optional: add white background
                 }}
                 >
-                <Text style={{ fontSize: 14, fontWeight: '500', color: symptom.textColor }}>
+                <ThemedText type='labelMedium' style={{color: symptom.textColor }}>
                     {symptom.name}
-                </Text>
+                </ThemedText>
                 </TouchableOpacity>
             ))}
         </View>
@@ -86,9 +88,9 @@ const StreakCelebration = ({ navigation }: { navigation: NavigationProp<any> }) 
           justifyContent: 'center', 
           alignItems: 'center' 
         }} 
-        onPress={() => Router.push('/(auth)/(tabs)/jurnalKondisimu')}
+        onPress={() => Router.push('/(auth)/jurnalKondisimu')}
       >
-        <Text style={{ color: '#FFFFFF', fontSize: 16, fontWeight: '700' }}>Kembali ke Jurnal Kondisimu</Text>
+        <ThemedText type='titleMedium' style={{ color: '#FFFFFF', fontSize: 16, fontWeight: '700' }}>Kembali ke Jurnal Kondisimu</ThemedText>
       </TouchableOpacity>
     </SafeAreaView>
   );

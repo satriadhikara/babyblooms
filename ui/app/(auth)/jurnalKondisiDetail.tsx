@@ -10,17 +10,13 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { ThemedText } from '@/components/ui/ThemedText';
 
 const PregnancySymptomTracker = () => {
   const [mood, setMood] = useState(4);
   const [weight, setWeight] = useState('');
   const [notes, setNotes] = useState('');
-  const [selectedSymptoms, setSelectedSymptoms] = useState({
-    gastrointestinal: ['Nyeri perut', 'Konstipasi'],
-    otot: ['Kram kaki'],
-    neurologi: ['Sakit kepala'],
-    hormonal: ['Perubahan mood'],
-  });
+  const [selectedSymptoms, setSelectedSymptoms] = useState<Partial<Symptoms>>({});
   const Router = useRouter();
 
   interface Symptoms {
@@ -85,14 +81,14 @@ const PregnancySymptomTracker = () => {
           <Ionicons name="close" size={24} color="black" />
         </TouchableOpacity>
         <View style={{ flex: 1, alignItems: 'center', gap: 5}}>
-          <Text style={{ fontSize: 17, fontWeight: '700' }}>Minggu 4, Hari 5</Text>
-          <Text style={{ fontSize: 14, color: '#7E7E7E' }}>Sel, 20 Mar</Text>
+          <ThemedText type='titleMedium'>Minggu 4, Hari 5</ThemedText>
+          <ThemedText type='labelMedium' style={{color: '#7E7E7E' }}>Sel, 20 Mar</ThemedText>
         </View>
         <View style={{ width: 24 }} />
       </View>
 
       <ScrollView contentContainerStyle={{ padding: 16 }}>
-        <Text style={{ fontSize: 16, fontWeight: '700', marginBottom: 10 }}>Bagaimana perasaanmu hari ini?</Text>
+        <ThemedText type='titleMedium' style={{marginBottom: 10 }}>Bagaimana perasaanmu hari ini?</ThemedText>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20 }}>
           {moodEmojis.map((emoji, index) => (
             <TouchableOpacity key={index} onPress={() => setMood(index)}>
@@ -101,16 +97,16 @@ const PregnancySymptomTracker = () => {
           ))}
         </View>
 
-        <Text style={{ fontSize: 16, fontWeight: '700', marginBottom: 10 }}>Berat badan hari ini</Text>
+        <ThemedText  type='titleMedium' style={{ marginBottom: 10 }}>Berat badan hari ini</ThemedText>
         <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#FFF', borderRadius: 8, borderWidth: 1, borderColor: '#E0E0E0', marginBottom: 20 }}>
           <TextInput style={{ flex: 1, height: 50, paddingHorizontal: 16, fontSize: 16 }} value={weight} onChangeText={setWeight} keyboardType="numeric" />
-          <Text style={{ paddingRight: 16, fontSize: 16, color: '#666' }}>kg</Text>
+          <ThemedText type='labelLarge' style={{ paddingRight: 16,color: '#666' }}>kg</ThemedText>
         </View>
 
-        <Text style={{ fontSize: 16, fontWeight: '700', marginBottom: 10 }}>Gejala apa saja yang dirasakan hari ini?</Text>
+        <ThemedText type='titleMedium' style={{ marginBottom: 10 }}>Gejala apa saja yang dirasakan hari ini?</ThemedText>
         {symptomCategories.map(category => (
           <View key={category.id} style={{ marginBottom: 12 }}>
-            <Text style={{ fontSize: 14, fontWeight: '600', marginBottom: 8 }}>{category.title}</Text>
+            <ThemedText type='titleSmall' style={{marginBottom: 8 }}>{category.title}</ThemedText>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
               {category.symptoms.map(symptom => {
                 const isSelected = isSymptomSelected(category.id, symptom);
@@ -129,7 +125,7 @@ const PregnancySymptomTracker = () => {
                     }}
                     onPress={() => toggleSymptom(category.id, symptom)}
                   >
-                    <Text style={{ fontSize: 12, fontWeight: '500', color: isSelected ? '#fff' : 'white' }}>{symptom}</Text>
+                    <ThemedText type='labelMedium' style={{fontWeight: '500', color: isSelected ? '#fff' : 'white' }}>{symptom}</ThemedText>
                   </TouchableOpacity>
                 );
               })}
@@ -137,13 +133,13 @@ const PregnancySymptomTracker = () => {
           </View>
         ))}
 
-        <Text style={{ fontSize: 16, fontWeight: '600', marginBottom: 10 }}>Catatan</Text>
+        <ThemedText type='titleMedium' style={{ marginBottom: 10 }}>Catatan</ThemedText>
         <View style={{ backgroundColor: '#FFF', borderRadius: 8, borderWidth: 1, borderColor: '#E0E0E0', padding: 8, height: 100, marginBottom: 20 }}>
           <TextInput style={{ flex: 1, fontSize: 14, textAlignVertical: 'top' }} multiline placeholder="Tambahkan catatan tambahan tentang gejala atau perasaanmu hari ini" placeholderTextColor="#BBB" value={notes} onChangeText={setNotes} />
         </View>
 
-        <TouchableOpacity style={{ backgroundColor: '#64A8CB', borderRadius: 25, height: 50, justifyContent: 'center', alignItems: 'center', marginVertical: 16 }} onPress={() => Router.push('/(auth)/(tabs)/streak')}>
-          <Text style={{ color: '#FFFFFF', fontSize: 16, fontWeight: '500' }}>Simpan</Text>
+        <TouchableOpacity style={{ backgroundColor: '#64A8CB', borderRadius: 25, height: 50, justifyContent: 'center', alignItems: 'center', marginVertical: 16 }} onPress={() => Router.push('/(auth)/streak')}>
+          <ThemedText type='titleMedium' style={{ color: '#FFFFFF'}}>Simpan</ThemedText>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
