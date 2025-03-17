@@ -24,7 +24,7 @@ export default function TabsLayout() {
         options={{
           title: "Panduan",
           tabBarIcon: ({ focused }) => (
-            <Pressable>
+            <Pressable onPress={() => router.push("/panduan")}>
               <View style={{ paddingTop: 20, width: 100, alignItems: "center", justifyContent: "center" }}>
                 <View
                   style={{
