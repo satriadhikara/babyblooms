@@ -4,6 +4,7 @@
     "": {
       "name": "api",
       "dependencies": {
+        "@better-auth/expo": "^1.2.4",
         "better-auth": "^1.2.3",
         "drizzle-orm": "^0.40.0",
         "hono": "^4.7.4",
@@ -16,6 +17,8 @@
     },
   },
   "packages": {
+    "@better-auth/expo": ["@better-auth/expo@1.2.4", "", { "dependencies": { "better-call": "^1.0.3", "zod": "^3.23.8" }, "peerDependencies": { "better-auth": "1.2.4" } }, "sha512-mPyFeRHsWP0XiZTcUjXn0+5lxta5JlRkLPxYOJGDis2kBtGeJBiA3Mz3b6BNPdSwZurph9jtk1FcmC850WKmYg=="],
+
     "@better-auth/utils": ["@better-auth/utils@0.2.3", "", { "dependencies": { "uncrypto": "^0.1.3" } }, "sha512-Ap1GaSmo6JYhJhxJOpUB0HobkKPTNzfta+bLV89HfpyCAHN7p8ntCrmNFHNAVD0F6v0mywFVEUg1FUhNCc81Rw=="],
 
     "@better-fetch/fetch": ["@better-fetch/fetch@1.1.15", "", {}, "sha512-0Bl8YYj1f8qCTNHeSn5+1DWv2hy7rLBrQ8rS8Y9XYloiwZEfc3k4yspIG0llRxafxqhGCwlGRg+F8q1HZRCMXA=="],
