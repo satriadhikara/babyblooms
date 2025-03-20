@@ -58,17 +58,17 @@ const CommunityScreen = () => {
   const categoryOptions = [
     { 
       name: 'Pregnancy Q&A', 
-      icon: require('@/assets/images/QnA.png'), // Replace with your actual image path
+      icon: require('@/assets/images/QnA.png'), 
       backgroundColor: '#E75480'
     },
     { 
       name: 'Tips & Rekomendasi', 
-      icon: require('@/assets/images/Tips.png'), // Replace with your actual image path
+      icon: require('@/assets/images/Tips.png'), 
       backgroundColor: '#E75480'
     },
     { 
       name: 'Gaya Hidup', 
-      icon: require('@/assets/images/GayaHidup.png'), // Replace with your actual image path
+      icon: require('@/assets/images/GayaHidup.png'), 
       backgroundColor: '#E75480'
     },
   ];
@@ -135,16 +135,18 @@ const CommunityScreen = () => {
           <ThemedText type='headlineSmall'>Komunitas</ThemedText>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Ionicons name="notifications-outline" size={24} color="#000"/>
-            <Image 
-              source={require('@/assets/images/ProfPic.png')} 
-              style={{ 
-                width: 40, 
-                height: 40, 
-                borderRadius: 20, 
-                marginLeft: 15, 
-                backgroundColor: '#e0e0e0' 
-              }} 
-            />
+            <TouchableOpacity onPress={() => router.push('/(auth)/akunSaya')}>
+              <Image 
+                source={require('@/assets/images/ProfPic.png')} 
+                style={{ 
+                  width: 40, 
+                  height: 40, 
+                  borderRadius: 20, 
+                  marginLeft: 15, 
+                  backgroundColor: '#e0e0e0' 
+                }} 
+              />
+            </TouchableOpacity>
           </View>
         </View>
       </SafeAreaView>
@@ -155,8 +157,8 @@ const CommunityScreen = () => {
           const isActive = activeTab === category;
           return (
             <TouchableOpacity key={category} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} onPress={() => setActiveTab(category)}>
-              <ThemedText type='titleSmall' style={{ fontSize: 12, color: isActive ? '#E75480' : '#888' }}>{category}</ThemedText>
-              {isActive && <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 2, backgroundColor: '#E75480' }} />}
+              <ThemedText type='titleSmall' style={{ fontSize: 12, color: isActive ? '#D33995' : '#AFB1B6' }}>{category}</ThemedText>
+              {isActive && <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 2, backgroundColor: '#D33995' }} />}
             </TouchableOpacity>
           );
         })}
@@ -308,7 +310,7 @@ const CommunityScreen = () => {
           width: 56, 
           height: 56, 
           borderRadius: 28, 
-          backgroundColor: '#E75480', 
+          backgroundColor: '#D33995', 
           alignItems: 'center', 
           justifyContent: 'center', 
           elevation: 4, 
