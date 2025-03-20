@@ -38,6 +38,7 @@ app.use("*", async (c, next) => {
 	return next();
 });
 
+app.get("/health", (c) => c.json({ status: "ok" }));
 app.route("/auth", authRoute);
 app.route("/user", userRoute);
 
