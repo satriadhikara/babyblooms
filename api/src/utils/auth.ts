@@ -2,10 +2,12 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "../db";
 import { expo } from "@better-auth/expo";
+import * as schema from "../db/schema";
 
 export const auth = betterAuth({
 	database: drizzleAdapter(db, {
 		provider: "pg",
+		schema,
 	}),
 	socialProviders: {
 		google: {
@@ -19,4 +21,13 @@ export const auth = betterAuth({
 	},
 	plugins: [expo()],
 	trustedOrigins: ["exp://"],
+	user: {
+		additionalFields: {
+			role: {
+				type: "string",
+				required: false,
+				input: false,
+			},
+		},
+	},
 });

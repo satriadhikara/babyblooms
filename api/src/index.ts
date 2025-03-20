@@ -3,6 +3,7 @@ import { authRoute } from "./routes/auth";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { auth } from "./utils/auth";
+import { userRoute } from "./routes/user";
 
 const app = new Hono<{
 	Variables: {
@@ -38,5 +39,6 @@ app.use("*", async (c, next) => {
 });
 
 app.route("/auth", authRoute);
+app.route("/user", userRoute);
 
 export default app;
