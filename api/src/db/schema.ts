@@ -1,10 +1,8 @@
-import {
-	pgTable,
-	text,
-	integer,
-	timestamp,
-	boolean,
-} from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
+
+// =========================================
+// Existing Tables (with an added "role" field)
+// =========================================
 
 export const user = pgTable("user", {
 	id: text("id").primaryKey(),
@@ -14,6 +12,8 @@ export const user = pgTable("user", {
 	image: text("image"),
 	createdAt: timestamp("created_at").notNull(),
 	updatedAt: timestamp("updated_at").notNull(),
+	// New field to store the user's role.
+	role: text("role"),
 });
 
 export const session = pgTable("session", {
@@ -54,4 +54,43 @@ export const verification = pgTable("verification", {
 	expiresAt: timestamp("expires_at").notNull(),
 	createdAt: timestamp("created_at"),
 	updatedAt: timestamp("updated_at"),
+});
+
+// =========================================
+// New Tables for Pregnancy/Mother-Guardian Features
+// =========================================
+
+// Table to store the pregnancy (child) details for mothers.
+export const child = pgTable("child", {
+	id: text("id").primaryKey(),
+	// Link this record to a mother in the "user" table.
+	motherId: text("mother_id")
+		.notNull()
+		.references(() => user.id, { onDelete: "cascade" }),
+	// Child/pregnancy details.
+	name: text("name").notNull(),
+	estimatedDateOfBirth: timestamp("estimated_date_of_birth").notNull(),
+	firstDayOfMenstruation: timestamp("first_day_of_menstruation").notNull(),
+	dateOfConception: timestamp("date_of_conception").notNull(),
+	// Unique connection code which can be shared with a guardian.
+	connectionCode: text("connection_code").notNull().unique(),
+	createdAt: timestamp("created_at").notNull(),
+	updatedAt: timestamp("updated_at").notNull(),
+	// Optionally, if each mother can have only one active child record:
+	// You could enforce uniqueness on "motherId" here.
+});
+
+// Table for mapping guardian users to their connected mother.
+export const guardian = pgTable("guardian", {
+	id: text("id").primaryKey(),
+	// The guardian's user id.
+	guardianUserId: text("guardian_user_id")
+		.notNull()
+		.references(() => user.id, { onDelete: "cascade" }),
+	// The mother's user id to which the guardian is connected.
+	motherId: text("mother_id")
+		.notNull()
+		.references(() => user.id, { onDelete: "cascade" }),
+	// Timestamp when the connection was made.
+	connectedAt: timestamp("connected_at").notNull(),
 });
