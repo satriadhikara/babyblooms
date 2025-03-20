@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,16 +6,77 @@ import {
   Image,
   TouchableOpacity,
   SafeAreaView,
-  Platform,
   Dimensions,
 } from "react-native";
 import { ThemedText } from "@/components/ui/ThemedText";
 import GoogleIcon from "@/assets/vectors/google";
 import MetaIcon from "@/assets/vectors/meta";
-import {useRouter, Router} from "expo-router";
+import { useRouter } from "expo-router";
+import { authClient } from "@/utils/auth-client";
 
 export default function App() {
-  const Router = useRouter();
+  const { data: session, isPending } = authClient.useSession();
+  const router = useRouter();
+  const [isCheckingRole, setIsCheckingRole] = useState(false);
+
+  useEffect(() => {
+    const checkUserRole = async () => {
+      if (!isPending && session) {
+        setIsCheckingRole(true);
+        const cookies = authClient.getCookie();
+        const headers = {
+          Cookie: cookies,
+        };
+        try {
+          const response = await fetch(
+            `${process.env.EXPO_PUBLIC_API_URL}/api/user/role`,
+            {
+              method: "GET",
+              headers: headers,
+            }
+          );
+
+          if (response.status === 200) {
+            // Role is set - redirect to main app
+            const data = await response.json();
+            console.log("User role:", data.role);
+            router.replace("/(auth)/(tabs)/jurnal");
+          } else if (response.status === 422) {
+            // Role not assigned - redirect to role selection
+            console.log("User role not assigned");
+            router.replace("/(onboard)/role");
+          } else {
+            // Handle other errors
+            console.error("Error fetching role:", await response.text());
+            console.log(session);
+            // Stay on landing page
+          }
+        } catch (error) {
+          console.error("Failed to check user role:", error);
+        } finally {
+          setIsCheckingRole(false);
+        }
+      }
+    };
+
+    checkUserRole();
+  }, [session, isPending, router]);
+
+  const signInGoogle = async () => {
+    await authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/",
+    });
+  };
+
+  if (isPending || isCheckingRole) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <Image
@@ -55,7 +116,7 @@ export default function App() {
                 justifyContent: "center",
                 gap: 10,
               }}
-              onPress={() => Router.push("/(auth)/(tabs)/jurnal")}
+              onPress={signInGoogle}
             >
               <GoogleIcon />
               <Text
@@ -77,6 +138,9 @@ export default function App() {
                 flexDirection: "row",
                 justifyContent: "center",
                 gap: 10,
+              }}
+              onPress={() => {
+                router.push("/(auth)/(tabs)/jurnal");
               }}
             >
               <MetaIcon />
