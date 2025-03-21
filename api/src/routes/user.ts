@@ -45,7 +45,7 @@ userRoute.get("/role", async (c) => {
 
 userRoute.post("/momUserData",
 	zValidator(
-    'form',
+    'json',
     z.object({
       babyName: z.string(),
 			hpl: z.date(),
@@ -54,7 +54,7 @@ userRoute.post("/momUserData",
   ), async (c) => {
 	const session = c.get("session");
 	const user = c.get("user");
-	const validated = c.req.valid('form')
+	const validated = c.req.valid('json');
 
 	if (!session || !user) {
 		return c.json({ error: "Unauthorized" }, 401);
