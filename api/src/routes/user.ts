@@ -48,7 +48,8 @@ userRoute.post("/momUserData",
     'json',
     z.object({
       babyName: z.string(),
-			hpl: z.date(),
+			// Accept string and transform it to a Date
+			hpl: z.string().transform(val => new Date(val)), 
 			gender: z.enum(['male', 'female', 'unknown'])
     })
   ), async (c) => {
