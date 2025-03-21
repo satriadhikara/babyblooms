@@ -48,7 +48,8 @@ userRoute.post("/momUserData",
     'form',
     z.object({
       babyName: z.string(),
-			hpl: z.date()
+			hpl: z.date(),
+			gender: z.enum(['male', 'female', 'unknown'])
     })
   ), async (c) => {
 	const session = c.get("session");
@@ -72,6 +73,7 @@ userRoute.post("/momUserData",
 				estimatedDateOfBirth: validated.hpl,
 				motherId: user.id,
 				connectionCode: randomCode,
+				gender: validated.gender
 			})
 			.returning()
 

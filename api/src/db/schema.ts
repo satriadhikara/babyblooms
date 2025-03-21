@@ -1,5 +1,6 @@
-import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, pgEnum } from "drizzle-orm/pg-core";
 
+export const genderEnum = pgEnum('gender', ['male', 'female', 'unknown']);
 // =========================================
 // Existing Tables (with an added "role" field)
 // =========================================
@@ -70,6 +71,7 @@ export const child = pgTable("child", {
 	// Child/pregnancy details.
 	name: text("name").notNull(),
 	estimatedDateOfBirth: timestamp("estimated_date_of_birth").notNull(),
+	gender: genderEnum("gender").notNull(),
 	// firstDayOfMenstruation: timestamp("first_day_of_menstruation"),
 	// dateOfConception: timestamp("date_of_conception"),
 	// Unique connection code which can be shared with a guardian.
