@@ -99,7 +99,7 @@ const PanduanPage = () => {
                             marginRight: 12,
                         }}
 
-                        onPress={() => router.push("/(auth)/food")}
+                        onPress={() => router.push("/(auth)/kamera")}
                     >
                         <Image
                             source={require("../../../assets/images/bg_image_bloomsAI.png")}
@@ -141,6 +141,8 @@ const PanduanPage = () => {
                             elevation: 3,
                             marginRight: 12,
                         }}
+
+                        onPress={() => router.push("/(auth)/makanan")}
                     >
                         <Image
                             source={require("../../../assets/images/BgMakanan.png")}
@@ -172,6 +174,8 @@ const PanduanPage = () => {
                             elevation: 3,
                             marginRight: 12,
                         }}
+
+                        onPress={() => router.push("/(auth)/aktivitas")}
                     >
                         <Image
                             source={require("../../../assets/images/BgAktivitas.png")}
@@ -203,6 +207,8 @@ const PanduanPage = () => {
                             elevation: 3,
                             marginRight: 12,
                         }}
+
+                        onPress={() => router.push("/(auth)/obat")}
                     >
                         <Image
                             source={require("../../../assets/images/BgObat-Obatan.png")}
