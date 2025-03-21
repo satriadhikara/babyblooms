@@ -63,7 +63,7 @@ userRoute.post("/momUserData",
 
 	const id = randomUUIDv7("base64");
 
-	const randomCode = `BB${String(Math.floor(Math.random() * 1000000)).padStart(4, '0')}`;
+	const randomCode = `BB${String(Math.floor(Math.random() * 10000)).padStart(4, '0')}`;
 
 	try {
 		const [childData] = await db
@@ -78,12 +78,20 @@ userRoute.post("/momUserData",
 			})
 			.returning()
 
-		const week = Math.floor(
-			(Math.abs(validated.hpl.getTime() - new Date().getTime()) / (1000 * 3600 * 24)) / 7
-		);
-		const day = Math.floor(
-			(Math.abs(validated.hpl.getTime() - new Date().getTime()) / (1000 * 3600 * 24)) % 7
-		);
+		await db.update(userTable).set({
+			role: "mom",
+		}).where(eq(userTable.id, user.id));
+
+		const hpl = new Date(validated.hpl); // Pastikan HPL dalam format Date
+		const hpht = new Date(hpl.getTime() - 280 * 24 * 60 * 60 * 1000); // Mundur 280 hari dari HPL
+		const today = new Date();
+
+		const diffInDays = Math.floor((today.getTime() - hpht.getTime()) / (1000 * 3600 * 24));
+
+		const week = Math.floor(diffInDays / 7);
+		const day = diffInDays % 7;
+
+		console.log(`Usia kehamilan: ${week} minggu ${day} hari`);
 
 		return c.json({
 			week,
