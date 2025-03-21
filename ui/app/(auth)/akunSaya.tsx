@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { ThemedText } from '@/components/ui/ThemedText';
 import { MessageCircleMore, Heart, X, MessageCircle } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
+import { parseQueryParams } from 'expo-router/build/fork/getStateFromPath-forks';
 
 const MyAccount = () => {
     const [activeTab, setActiveTab] = useState('Semua');
@@ -28,17 +29,20 @@ const MyAccount = () => {
         { 
         name: 'Pregnancy Q&A', 
         icon: require('@/assets/images/QnA.png'), 
-        backgroundColor: '#E75480'
+        backgroundColor: '#E75480',
+        params: 'Pregnancy Q&A'
         },
         { 
         name: 'Tips & Rekomendasi', 
         icon: require('@/assets/images/Tips.png'), 
-        backgroundColor: '#E75480'
+        backgroundColor: '#E75480',
+        params: 'Tips & Rekomendasi'
         },
         { 
         name: 'Gaya Hidup', 
         icon: require('@/assets/images/GayaHidup.png'), 
-        backgroundColor: '#E75480'
+        backgroundColor: '#E75480',
+        params: 'Gaya Hidup'
         },
     ];
 
@@ -79,7 +83,7 @@ const MyAccount = () => {
         avatar: any; 
     }
 
-    // const posts: Post[] = []; // Kosong untuk menguji empty state
+    // const posts: Post[] = []; // untuk uji empty state
 
     const toggleCategoryPicker = () => {
         const toValue = !showCategoryPicker ? 1 : 0;
@@ -214,126 +218,133 @@ const MyAccount = () => {
             </ScrollView>
         </SafeAreaView>
         {showCategoryPicker && (
-                <>
+          <>
+            <Animated.View
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                zIndex: 99,
+                opacity: overlayAnimation,
+              }}
+            >
+              <TouchableOpacity
+                activeOpacity={1}
+                onPress={toggleCategoryPicker}
+                style={{ flex: 1 }}
+              />
+            </Animated.View>
+            
+            <View 
+              style={{ 
+                position: 'absolute', 
+                right: 15, 
+                bottom: 75, 
+                alignItems: 'flex-end',
+                zIndex: 100,
+              }}
+            >
+              {categoryOptions.map((category, index) => {
+                const translateY = animation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [50, 0],
+                });
+                
+                const opacity = animation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0, 1],
+                });
+  
+                const scale = animation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0.3, 1],
+                });
+  
+                return (
                   <Animated.View
+                    key={category.name}
                     style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      backgroundColor: 'rgba(0, 0, 0, 0.4)',
-                      zIndex: 99,
-                      opacity: overlayAnimation,
+                      transform: [{ translateY }, { scale }],
+                      opacity,
+                      marginBottom: 12,
                     }}
                   >
-                    <TouchableOpacity
-                      activeOpacity={1}
-                      onPress={toggleCategoryPicker}
-                      style={{ flex: 1 }}
-                    />
-                  </Animated.View>
-                  
-                  <View 
-                    style={{ 
-                      position: 'absolute', 
-                      right: 15, 
-                      bottom: 75, 
-                      alignItems: 'flex-end',
-                      zIndex: 100,
-                    }}
-                  >
-                    {categoryOptions.map((category, index) => {
-                      const translateY = animation.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [50, 0],
-                      });
-                      
-                      const opacity = animation.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [0, 1],
-                      });
-        
-                      const scale = animation.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [0.3, 1],
-                      });
-        
-                      return (
-                        <Animated.View
-                          key={category.name}
+                    <TouchableOpacity 
+                      onPress={() => index === categoryOptions.length - 1 
+                        ? toggleCategoryPicker() 
+                        : handleCategorySelect(category.name)
+                      }
+                      style={{ 
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <View style={{
+                        marginRight: 8,
+                        opacity: 0.9,
+                      }}>
+                        <ThemedText type='titleMedium' style={{ color: 'white' }}>
+                          {category.name}
+                        </ThemedText>
+                      </View>
+                      <TouchableOpacity 
+                        style={{ 
+                          width: 56, 
+                          height: 56, 
+                          borderRadius: 28, 
+                          backgroundColor: category.backgroundColor,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}
+                        onPress={() => {
+                          router.push({
+                            pathname: '/(auth)/unggahanBaru',
+                            params: { selectedTopic: category.params },
+                          });
+                        }}
+                      >
+                        <Image 
+                          source={category.icon}
                           style={{
-                            transform: [{ translateY }, { scale }],
-                            opacity,
-                            marginBottom: 12,
+                            width: 24,
+                            height: 24,
                           }}
-                        >
-                          <TouchableOpacity 
-                            onPress={() => index === categoryOptions.length - 1 
-                              ? toggleCategoryPicker() 
-                              : handleCategorySelect(category.name)
-                            }
-                            style={{ 
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                            }}
-                          >
-                            <View style={{
-                              marginRight: 8,
-                              opacity: 0.9,
-                            }}>
-                              <ThemedText type='titleMedium' style={{ color: 'white' }}>
-                                {category.name}
-                              </ThemedText>
-                            </View>
-                            <View style={{ 
-                              width: 56, 
-                              height: 56, 
-                              borderRadius: 28, 
-                              backgroundColor: category.backgroundColor,
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                            }}>
-                              <Image 
-                                source={category.icon}
-                                style={{
-                                  width: 24,
-                                  height: 24,
-                                }}
-                              />
-                            </View>
-                          </TouchableOpacity>
-                        </Animated.View>
-                      );
-                    })}
-                  </View>
-                </>
-              )}
+                        />
+                      </TouchableOpacity>
+                    </TouchableOpacity>
+                  </Animated.View>
+                );
+              })}
+            </View>
+          </>
+        )}
         
-              {/* Add Button */}
-              <TouchableOpacity 
-                // onPress={toggleCategoryPicker}
-                onPress={() => router.push('/(auth)/unggahanBaru')}
-                style={{ 
-                  position: 'absolute', 
-                  right: 16, 
-                  bottom: 20, 
-                  width: 56, 
-                  height: 56, 
-                  borderRadius: 28, 
-                  backgroundColor: '#D33995', 
-                  alignItems: 'center', 
-                  justifyContent: 'center', 
-                  elevation: 4, 
-                  shadowColor: '#000', 
-                  shadowOffset: { width: 0, height: 2 }, 
-                  shadowOpacity: 0.25, 
-                  shadowRadius: 3.84,
-                  zIndex: 100,
-                }}
-              >
-                <Ionicons name={showCategoryPicker ? "close" : "add"} size={32} color="#fff" />
-              </TouchableOpacity>
+        {/* Add Button */}
+        <TouchableOpacity 
+          onPress={toggleCategoryPicker}
+          style={{ 
+            position: 'absolute', 
+            right: 16, 
+            bottom: 20, 
+            width: 56, 
+            height: 56, 
+            borderRadius: 28, 
+            backgroundColor: '#D33995', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            elevation: 4, 
+            shadowColor: '#000', 
+            shadowOffset: { width: 0, height: 2 }, 
+            shadowOpacity: 0.25, 
+            shadowRadius: 3.84,
+            zIndex: 100,
+          }}
+        >
+          <Ionicons name={showCategoryPicker ? "close" : "add"} size={32} color="#fff" />
+        </TouchableOpacity>
     </View>
   );
 };

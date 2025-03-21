@@ -59,19 +59,22 @@ const CommunityScreen = () => {
     { 
       name: 'Pregnancy Q&A', 
       icon: require('@/assets/images/QnA.png'), 
-      backgroundColor: '#E75480'
+      backgroundColor: '#E75480',
+      params: 'Pregnancy Q&A'
     },
     { 
       name: 'Tips & Rekomendasi', 
       icon: require('@/assets/images/Tips.png'), 
-      backgroundColor: '#E75480'
+      backgroundColor: '#E75480',
+      params: 'Tips & Rekomendasi'
     },
     { 
       name: 'Gaya Hidup', 
       icon: require('@/assets/images/GayaHidup.png'), 
-      backgroundColor: '#E75480'
+      backgroundColor: '#E75480',
+      params: 'Gaya Hidup'
     },
-  ];
+];
 
   const posts = [
     {
@@ -259,39 +262,47 @@ const CommunityScreen = () => {
                   }}
                 >
                   <TouchableOpacity 
-                    onPress={() => index === categoryOptions.length - 1 
-                      ? toggleCategoryPicker() 
-                      : handleCategorySelect(category.name)
-                    }
-                    style={{ 
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <View style={{
-                      marginRight: 8,
-                      opacity: 0.9,
-                    }}>
-                      <ThemedText type='titleMedium' style={{ color: 'white' }}>
-                        {category.name}
-                      </ThemedText>
-                    </View>
-                    <View style={{ 
-                      width: 56, 
-                      height: 56, 
-                      borderRadius: 28, 
-                      backgroundColor: category.backgroundColor,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                      <Image 
-                        source={category.icon}
-                        style={{
-                          width: 24,
-                          height: 24,
+                      onPress={() => index === categoryOptions.length - 1 
+                        ? toggleCategoryPicker() 
+                        : handleCategorySelect(category.name)
+                      }
+                      style={{ 
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <View style={{
+                        marginRight: 8,
+                        opacity: 0.9,
+                      }}>
+                        <ThemedText type='titleMedium' style={{ color: 'white' }}>
+                          {category.name}
+                        </ThemedText>
+                      </View>
+                      <TouchableOpacity 
+                        style={{ 
+                          width: 56, 
+                          height: 56, 
+                          borderRadius: 28, 
+                          backgroundColor: category.backgroundColor,
+                          justifyContent: 'center',
+                          alignItems: 'center',
                         }}
-                      />
-                    </View>
+                        onPress={() => {
+                          router.push({
+                            pathname: '/(auth)/unggahanBaru',
+                            params: { selectedTopic: category.params },
+                          });
+                        }}
+                      >
+                        <Image 
+                          source={category.icon}
+                          style={{
+                            width: 24,
+                            height: 24,
+                          }}
+                        />
+                    </TouchableOpacity>
                   </TouchableOpacity>
                 </Animated.View>
               );

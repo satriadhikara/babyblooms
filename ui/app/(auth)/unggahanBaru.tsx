@@ -13,14 +13,18 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {X, ChevronDown, ChevronUp} from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { ThemedText } from '@/components/ui/ThemedText';
+import { useLocalSearchParams } from 'expo-router';
 
 const PostForm = () => {
     const [modalVisible, setModalVisible] = useState(false);
-    const [selectedTopic, setSelectedTopic] = useState('Pregnancy Q&A');
+    const { selectedTopic: initialTopic } = useLocalSearchParams();
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [isAnonymous, setIsAnonymous] = useState(false);
     const router = useRouter();
+    const [selectedTopic, setSelectedTopic] = useState(
+      typeof initialTopic === 'string' ? initialTopic : 'Pregnancy Q&A'
+    );
   
     const topics = [
         'Pregnancy Q&A',
