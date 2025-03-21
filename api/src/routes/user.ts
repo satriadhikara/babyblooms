@@ -1,8 +1,11 @@
 import { Hono } from "hono";
 import type { auth } from "../utils/auth";
 import { db } from "../db";
-import { user as userTable } from "../db/schema";
+import { user as userTable, child } from "../db/schema";
 import { eq } from "drizzle-orm";
+import { zValidator } from '@hono/zod-validator'
+import { z } from "zod";
+import { randomUUIDv7 } from "bun";
 
 export const userRoute = new Hono<{
 	Variables: {
@@ -39,3 +42,53 @@ userRoute.get("/role", async (c) => {
 		return c.json({ error: "Failed to fetch user role" }, 500);
 	}
 });
+
+userRoute.post("/momUserData",
+	zValidator(
+    'form',
+    z.object({
+      babyName: z.string(),
+			hpl: z.date()
+    })
+  ), async (c) => {
+	const session = c.get("session");
+	const user = c.get("user");
+	const validated = c.req.valid('form')
+
+	if (!session || !user) {
+		return c.json({ error: "Unauthorized" }, 401);
+	}
+
+	const id = randomUUIDv7("base64");
+
+	const randomCode = `BB${String(Math.floor(Math.random() * 1000000)).padStart(4, '0')}`;
+
+	try {
+		const [childData] = await db
+			.insert(child)
+			.values({
+				id,
+				name: validated.babyName,
+				estimatedDateOfBirth: validated.hpl,
+				motherId: user.id,
+				connectionCode: randomCode,
+			})
+			.returning()
+
+		const week = Math.floor(
+			(Math.abs(validated.hpl.getTime() - new Date().getTime()) / (1000 * 3600 * 24)) / 7
+		);
+		const day = Math.floor(
+			(Math.abs(validated.hpl.getTime() - new Date().getTime()) / (1000 * 3600 * 24)) % 7
+		);
+
+		return c.json({
+			week,
+			day,
+			connectionCode: randomCode,
+		})
+	} catch (error) {
+		console.error("Error inserting child data:", error);
+		return c.json({ error: "Failed to insert child data" }, 500);
+	}	
+})

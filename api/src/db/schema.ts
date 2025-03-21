@@ -70,12 +70,12 @@ export const child = pgTable("child", {
 	// Child/pregnancy details.
 	name: text("name").notNull(),
 	estimatedDateOfBirth: timestamp("estimated_date_of_birth").notNull(),
-	firstDayOfMenstruation: timestamp("first_day_of_menstruation").notNull(),
-	dateOfConception: timestamp("date_of_conception").notNull(),
+	// firstDayOfMenstruation: timestamp("first_day_of_menstruation"),
+	// dateOfConception: timestamp("date_of_conception"),
 	// Unique connection code which can be shared with a guardian.
 	connectionCode: text("connection_code").notNull().unique(),
-	createdAt: timestamp("created_at").notNull(),
-	updatedAt: timestamp("updated_at").notNull(),
+	createdAt: timestamp("created_at").notNull().defaultNow(),
+	updatedAt: timestamp("updated_at").notNull().defaultNow(),
 	// Optionally, if each mother can have only one active child record:
 	// You could enforce uniqueness on "motherId" here.
 });
