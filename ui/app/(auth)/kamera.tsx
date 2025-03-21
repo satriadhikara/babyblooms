@@ -1,24 +1,35 @@
 import {
-  CameraMode,
+  Camera,
   CameraType,
   CameraView,
   useCameraPermissions,
   FlashMode,
 } from "expo-camera";
-import { useRef, useState } from "react";
-import { Button, Pressable, StyleSheet, Text, View } from "react-native";
+import { useRef, useState, useEffect } from "react";
+import { Button, Pressable, StyleSheet, Text, View, ActivityIndicator, ScrollView } from "react-native";
 import { Image } from "expo-image";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { ThemedText } from "@/components/ui/ThemedText";
+import * as FileSystem from 'expo-file-system';
 
-export default function Food() {
+const apiKey = "AIzaSyDYO2kL2ctCIGiw3eRUy70qZ1-uudhE9hw";
+
+export default function Kamera() {
   const [permission, requestPermission] = useCameraPermissions();
   const ref = useRef<CameraView>(null);
   const [uri, setUri] = useState<string | null>(null);
   const [flashMode, setFlashMode] = useState<string | null>(null);
+  const [analysisResult, setAnalysisResult] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (!apiKey) {
+      console.warn("GEMINI_API_KEY is not set.");
+    }
+  }, []);
 
   if (!permission) return null;
   if (!permission.granted) {
@@ -33,15 +44,90 @@ export default function Food() {
   }
 
   const takePicture = async () => {
-    const photo = await ref.current?.takePictureAsync();
-    setUri(photo?.uri ?? null);
+    setIsLoading(true);
+    try {
+      const photo = await ref.current?.takePictureAsync();
+      if (photo?.uri) {
+        setUri(photo.uri);
+        await analyzeImage(photo.uri);
+      }
+    } catch (error) {
+      console.error("Error taking picture:", error);
+      setAnalysisResult("Maaf, terjadi kesalahan saat mengambil gambar.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const analyzeImage = async (imageUri: string) => {
+    setIsLoading(true);
+    setAnalysisResult(null); // Clear previous result
+
+    try {
+      const base64 = await FileSystem.readAsStringAsync(imageUri, { encoding: 'base64' });
+
+      const prompt = `Analisis gambar makanan ini dan beri tahu saya:
+        1. Apa nama makanan ini?
+        2. Apakah aman dikonsumsi oleh wanita hamil? (Ya/Tidak/Mungkin)
+        Berikan jawaban dalam format JSON: {foodName: string, safeForPregnancy: string}
+        nama makanannya tidak perlu menyertakan merk atau brand, hanya nama makanan saja.
+        Jangan gunakan simbol ** untuk membuat teks tebal.
+        batasi gambar hanya makanan, jika gambar bukan makanan, berikan respons "Gambar bukan makanan".`;
+
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            contents: [
+              { parts: [{ text: prompt }, { inline_data: { mime_type: "image/jpeg", data: base64 } }] },
+            ],
+          }),
+        }
+      );
+
+      const data = await response.json();
+      if (data.candidates && data.candidates.length > 0) {
+        let responseText = data.candidates[0].content.parts[0].text;
+        console.log("Gemini API Response:", responseText);
+
+        // Attempt to extract JSON - simple approach, might need refinement
+        const jsonStartIndex = responseText.indexOf('{');
+        const jsonEndIndex = responseText.lastIndexOf('}');
+
+        if (jsonStartIndex !== -1 && jsonEndIndex !== -1 && jsonStartIndex < jsonEndIndex) {
+          responseText = responseText.substring(jsonStartIndex, jsonEndIndex + 1);
+        }
+
+        try {
+          const parsedResult = JSON.parse(responseText);
+          setAnalysisResult(
+            `Food: ${parsedResult.foodName}\nSafe for Pregnancy: ${parsedResult.safeForPregnancy}`
+          );
+        } catch (parseError) {
+          console.error("Error parsing JSON response:", parseError);
+          const errorMessage = (parseError as Error).message;
+          setAnalysisResult(`Maaf, tidak dapat mengurai respons dari AI. Kesalahan: ${errorMessage}`);
+        }
+      } else {
+        setAnalysisResult("Maaf, tidak ada respons yang valid dari AI.");
+      }
+    } catch (error) {
+      console.error("Error analyzing image:", error);
+      setAnalysisResult("Maaf, terjadi kesalahan saat menganalisis gambar.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const renderPicture = () => (
-    <View style={styles.resultContainer}>
+    <ScrollView contentContainerStyle={styles.resultContainer}>
       {/* Header */}
-      <View 
-        style={{ 
+      <View
+        style={{
           height: 72,
           width: "100%",
           flexDirection: "row",
@@ -62,36 +148,39 @@ export default function Food() {
         </Pressable>
       </View>
 
-
       {/* Foto Hasil */}
-      <Image source={{ uri }} style={styles.resultImage} />
+      <Image source={{ uri: uri ?? undefined }} style={styles.resultImage} />
+
+      {isLoading && <ActivityIndicator size="large" color="#007AFF" />}
 
       {/* Informasi Makanan */}
-      <View style={styles.resultInfo}>
-        <Image source={{ uri }} style={styles.resultThumb} />
-        <Text style={styles.resultText}>Bubur Kacang Hijau</Text>
-        <AntDesign name="checkcircle" size={24} color="green" />
-      </View>
+      {analysisResult ? (
+        <View style={styles.resultInfo}>
+          <Text style={styles.resultText}>{analysisResult}</Text>
+        </View>
+      ) : (
+        <Text>Menganalisis gambar...</Text>
+      )}
 
       {/* Opsi Tambahan */}
       <Text style={styles.alternativeText}>Tidak menemukan nama makanan yang sesuai?</Text>
-      <Pressable onPress={() => router.push("/(auth)/bloomsAI")}> 
+      <Pressable onPress={() => router.push("/(auth)/bloomsAI")}>
         <Text style={styles.askAI}>Tanyakan manual ke BloomsAI</Text>
       </Pressable>
-    </View>
+    </ScrollView>
   );
 
   const renderCamera = () => (
     <View style={styles.cameraContainer}>
       <CameraView style={styles.camera} ref={ref} mode={"picture"} facing={"back"}>
-        
+
         {/* Black padding untuk framing foto */}
         <View style={styles.blackTop} />
         <View style={styles.blackBottom} />
 
         {/* Header */}
         <View style={styles.header}>
-          <Pressable 
+          <Pressable
             style={{ backgroundColor: "#E5E5E526", borderRadius: 112, padding: 10 }}
             onPress={() => router.back()}
           >
@@ -113,12 +202,21 @@ export default function Food() {
     </View>
   );
 
-  return <View style={styles.container}>{uri ? renderPicture() : renderCamera()}</View>;
+  return (
+    <View style={styles.container}>
+      {isLoading && (
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" color="#007AFF" />
+        </View>
+      )}
+      {uri ? renderPicture() : renderCamera()}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#000" },
-  
+
   cameraContainer: { flex: 1, position: "relative" },
   camera: { flex: 1 },
 
@@ -176,13 +274,11 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   resultInfo: {
-    flexDirection: "row",
-    alignItems: "center",
+    width: "90%",
     marginTop: 20,
     padding: 12,
     backgroundColor: "#f0f0f0",
     borderRadius: 12,
-    width: "90%",
     elevation: 5,
     marginBottom: 20,
   },
@@ -194,7 +290,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#ccc",
   },
-  resultText: { flex: 1, fontSize: 16, fontWeight: "bold" },
+  resultText: { fontSize: 16 },
 
   button: {
     marginTop: 20,
@@ -211,4 +307,16 @@ const styles = StyleSheet.create({
 
   alternativeText: { marginTop: 15, fontSize: 14, color: "#555" },
   askAI: { color: "#007AFF", fontSize: 16, marginTop: 5, textDecorationLine: "underline" },
+
+  loadingOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
+  },
 });
