@@ -7,21 +7,54 @@ import { useRouter } from 'expo-router';
 const BloomsAI = () => {
     const [messages, setMessages] = useState<{ text: string; sender: string }[]>([
         { text: 'Halo!', sender: 'bot' },
-        { text: 'Tuliskan HPL bayimu untuk mengetahui ramalan bayimu hari ini', sender: 'bot' }
+        { text: 'Tanyakan makanan atau minuman apapun yang ingin dikonsumsi!', sender: 'bot' }
     ]);
     const [inputText, setInputText] = useState('');
+    const [isTyping, setIsTyping] = useState(false); // State untuk indikator pengetikan
     const router = useRouter();
     const handleBack = () => {
         router.back();
     };
 
-    const handleSend = () => {
+    const API_KEY = "AIzaSyDYO2kL2ctCIGiw3eRUy70qZ1-uudhE9hw";
+
+    const handleSend = async () => {
         if (inputText.trim()) {
             setMessages([...messages, { text: inputText, sender: 'user' }]);
+            const userMessage = inputText;
             setInputText('');
-            setTimeout(() => {
-                setMessages(prevMessages => [...prevMessages, { text: 'Pada 1 Oktober, si kecil dalam kandungan sedang aktif! \nMungkin Anda merasakan lebih banyak gerakan atau tendangan kecil. Ini pertanda ia tumbuh sehat dan responsif.\nBeri sentuhan lembut atau ajak bicara agar ia semakin nyaman. ', sender: 'bot' }]);
-            }, 1000);
+
+            setIsTyping(true); // Mulai indikator pengetikan
+
+            try {
+                const prompt = `Anda adalah seorang ahli gizi yang memberikan saran kepada ibu hamil. Jawab pertanyaan berikut dengan gaya bahasa yang ramah dan informatif: ${userMessage}. Berikan jawaban dalam teks biasa, tanpa menggunakan format Markdown atau sintaks lainnya. Jangan gunakan simbol ** untuk membuat teks tebal.`;
+
+                const response = await fetch(
+                    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: prompt }] }],
+                        }),
+                    }
+                );
+
+                const data = await response.json();
+                if (data.candidates && data.candidates.length > 0) {
+                    let responseText = data.candidates[0].content.parts[0].text;
+                    setMessages((prevMessages) => [...prevMessages, { text: responseText, sender: 'bot' }]);
+                } else {
+                    setMessages((prevMessages) => [...prevMessages, { text: 'Maaf, respons tidak valid.', sender: 'bot' }]);
+                }
+            } catch (error) {
+                console.error('Gemini API Error:', error);
+                setMessages((prevMessages) => [...prevMessages, { text: 'Maaf, terjadi kesalahan. Coba lagi nanti.', sender: 'bot' }]);
+            } finally {
+                setIsTyping(false); // Hentikan indikator pengetikan
+            }
         }
     };
 
@@ -33,9 +66,9 @@ const BloomsAI = () => {
                 <View style={styles.messageContent}>
                     {isFirstBotMessage && (
                         <View style={styles.botIconContainer}>
-                            <Image 
+                            <Image
                                 source={require('../../assets/images/CrystalBall.png')}
-                                style={styles.botIcon} 
+                                style={styles.botIcon}
                             />
                         </View>
                     )}
@@ -60,7 +93,7 @@ const BloomsAI = () => {
                 <AntDesign name="menu-fold" size={24} color="black" />
             </View>
             <FlatList
-                data={messages}
+                data={isTyping ? [...messages, { text: '...', sender: 'bot' }] : messages} // Tampilkan indikator pengetikan
                 renderItem={renderItem}
                 keyExtractor={(item, index) => index.toString()}
                 style={styles.chatContainer}
