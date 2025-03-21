@@ -82,6 +82,7 @@ const isPregnant = () => {
               justifyContent: "center",
               borderRadius: 48,
             }}
+            onPress={() => router.push("/(auth)/(tabs)/jurnal")}
           >
             <ThemedText
               type="titleMedium"
