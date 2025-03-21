@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3000
 
 # Command to run the application
-CMD ["bun", "run", "dev"]
+CMD ["bun", "run", "start"]
