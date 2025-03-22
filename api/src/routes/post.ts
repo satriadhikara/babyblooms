@@ -11,7 +11,7 @@ import {
 } from "../db/schema";
 import { randomUUIDv7 } from "bun";
 import { db } from "../db";
-import { count, eq, sql } from "drizzle-orm";
+import { count, eq, sql, desc } from "drizzle-orm";
 
 export const postRoute = new Hono<{
   Variables: {
@@ -72,11 +72,12 @@ postRoute.get(
     const { category } = c.req.valid("query");
 
     try {
-      // First, fetch the posts
+      // First, fetch the posts with order by createdAt DESC to get latest first
       const postsQuery = db
         .select()
         .from(post)
-        .where(category ? eq(post.category, category) : undefined);
+        .where(category ? eq(post.category, category) : undefined)
+        .orderBy(desc(post.createdAt)); // Add this line to sort by creation date, newest first
 
       const posts = await postsQuery;
 
@@ -153,7 +154,11 @@ postRoute.get("/personal", async (c) => {
   }
 
   try {
-    const posts = await db.select().from(post).where(eq(post.userId, user.id));
+    const posts = await db
+      .select()
+      .from(post)
+      .where(eq(post.userId, user.id))
+      .orderBy(desc(post.createdAt));
 
     // For each post, get the like count and comment count
     const postsWithStats = await Promise.all(
