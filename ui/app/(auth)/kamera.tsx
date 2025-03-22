@@ -164,7 +164,7 @@ export default function Kamera() {
 
       {/* Opsi Tambahan */}
       <Text style={styles.alternativeText}>Tidak menemukan nama makanan yang sesuai?</Text>
-      <Pressable onPress={() => router.push("/(auth)/bloomsAI")}>
+      <Pressable onPress={() => router.push("/(auth)/chatMakanan")}>
         <Text style={styles.askAI}>Tanyakan manual ke BloomsAI</Text>
       </Pressable>
     </ScrollView>
