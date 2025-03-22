@@ -29,6 +29,13 @@
       "when": 1742578599728,
       "tag": "0003_awesome_network",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1742669017673,
+      "tag": "0004_nosy_starfox",
+      "breakpoints": true
     }
   ]
 }
