@@ -8,6 +8,7 @@ import * as SecureStore from "expo-secure-store";
 // 	}
 // 	return "http://localhost:3000";
 // };
+
 export const authClient = createAuthClient({
 	baseURL: process.env.EXPO_PUBLIC_API_URL,
 	plugins: [
@@ -18,3 +19,5 @@ export const authClient = createAuthClient({
 		}),
 	],
 });
+
+export type Session = typeof authClient.$Infer.Session;
