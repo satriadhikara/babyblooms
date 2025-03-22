@@ -187,25 +187,29 @@ const CommunityScreen = () => {
         </View>
       </SafeAreaView>
 
-      {/* Tab Bar */}
-      <View
+      <ScrollView 
+        horizontal
+        showsHorizontalScrollIndicator={false}
         style={{
-          flexDirection: "row",
           backgroundColor: "white",
-          height: 48,
           borderBottomWidth: 1,
           borderBottomColor: "#eee",
         }}
+        contentContainerStyle={{
+          height: 48,
+        }}
       >
-        {["Semua", "Pregnancy Q&A", "Tips & Rekomendasi"].map((category) => {
+        {["Semua", "Pregnancy Q&A", "Tips & Rekomendasi", "Gaya Hidup"].map((category) => {
           const isActive = activeTab === category;
           return (
             <TouchableOpacity
               key={category}
               style={{
-                flex: 1,
+                paddingHorizontal: 35,
+                height: '100%',
                 justifyContent: "center",
                 alignItems: "center",
+                position: "relative",
               }}
               onPress={() => setActiveTab(category)}
             >
@@ -218,22 +222,20 @@ const CommunityScreen = () => {
               >
                 {category}
               </ThemedText>
-              {isActive && (
-                <View
-                  style={{
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    height: 2,
-                    backgroundColor: "#D33995",
-                  }}
-                />
-              )}
+              <View
+                style={{
+                  position: "absolute",
+                  bottom: 2,
+                  left: 0,
+                  right: 0,
+                  height: 4,
+                  backgroundColor: isActive ? "#D33995" : "transparent",
+                }}
+              />
             </TouchableOpacity>
           );
         })}
-      </View>
+      </ScrollView>
 
       <ScrollView>
         {posts.map((post) => {
