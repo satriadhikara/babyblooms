@@ -186,11 +186,22 @@ postRoute.get("/personal", async (c) => {
           )
           .then((result) => result.length > 0);
 
+        // Calculate time ago
+        const timeAgo = getTimeAgo(p.createdAt);
+
+        // Map category from database value to display value
+        const categoryDisplay = mapCategoryToDisplay(p.category);
+
+        // Return post with formatted response
         return {
-          ...p,
-          likesCount,
-          commentsCount,
-          userLiked,
+          id: p.id,
+          timeAgo: timeAgo,
+          title: p.title,
+          content: p.content,
+          likes: likesCount,
+          comments: commentsCount,
+          category: categoryDisplay,
+          userLiked: userLiked,
         };
       })
     );
