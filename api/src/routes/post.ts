@@ -20,6 +20,37 @@ export const postRoute = new Hono<{
   };
 }>();
 
+function getTimeAgo(date: Date): string {
+  const now = new Date();
+  const diffInMs = now.getTime() - date.getTime();
+
+  // Convert to minutes, hours, days
+  const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+  const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+  if (diffInMinutes < 60) {
+    return `${diffInMinutes}m lalu`;
+  } else if (diffInHours < 24) {
+    return `${diffInHours}j lalu`;
+  } else {
+    return `${diffInDays}h lalu`;
+  }
+}
+
+function mapCategoryToDisplay(category: string): string {
+  switch (category) {
+    case "pregnancyQNA":
+      return "Pregnancy Q&A";
+    case "tipsAndRecommendations":
+      return "Tips & Rekomendasi";
+    case "lifestyle":
+      return "Gaya Hidup";
+    default:
+      return category;
+  }
+}
+
 postRoute.get(
   "/",
   zValidator(
@@ -83,16 +114,24 @@ postRoute.get(
             .from(userTable)
             .where(eq(userTable.id, p.userId));
 
-          // Return post with stats and owner details
+          // Calculate time ago
+          const timeAgo = getTimeAgo(p.createdAt);
+
+          // Map category from database value to display value
+          const categoryDisplay = mapCategoryToDisplay(p.category);
+
+          // Return post with formatted response
           return {
-            ...p,
-            likesCount,
-            commentsCount,
-            userLiked,
-            owner: {
-              name: postOwner.ownerName,
-              profileImage: postOwner.profileImage,
-            },
+            id: p.id,
+            author: postOwner.ownerName,
+            timeAgo: timeAgo,
+            title: p.title,
+            content: p.content,
+            likes: likesCount,
+            comments: commentsCount,
+            category: categoryDisplay,
+            avatar: postOwner.profileImage,
+            userLiked: userLiked,
           };
         })
       );
