@@ -2,7 +2,13 @@ import { Hono } from "hono";
 import type { auth } from "../utils/auth";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
-import { post, comment, postLike, commentLike } from "../db/schema";
+import {
+  post,
+  comment,
+  postLike,
+  commentLike,
+  user as userTable,
+} from "../db/schema";
 import { randomUUIDv7 } from "bun";
 import { db } from "../db";
 import { count, eq, sql } from "drizzle-orm";
@@ -43,7 +49,7 @@ postRoute.get(
 
       const posts = await postsQuery;
 
-      // For each post, get the like count and comment count
+      // For each post, get the like count, comment count, and user details
       const postsWithStats = await Promise.all(
         posts.map(async (p) => {
           // Get likes count
@@ -69,12 +75,24 @@ postRoute.get(
             )
             .then((result) => result.length > 0);
 
-          // Return post with stats
+          const [postOwner] = await db
+            .select({
+              ownerName: userTable.name,
+              profileImage: userTable.image,
+            })
+            .from(userTable)
+            .where(eq(userTable.id, p.userId));
+
+          // Return post with stats and owner details
           return {
             ...p,
             likesCount,
             commentsCount,
             userLiked,
+            owner: {
+              name: postOwner.ownerName,
+              profileImage: postOwner.profileImage,
+            },
           };
         })
       );
@@ -124,7 +142,6 @@ postRoute.get("/personal", async (c) => {
           )
           .then((result) => result.length > 0);
 
-        // Return post with stats
         return {
           ...p,
           likesCount,
