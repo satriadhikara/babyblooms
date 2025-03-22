@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-import { Ionicons } from '@expo/vector-icons';
-import Feather from '@expo/vector-icons/Feather';
+import { ArrowLeft, Flame, Plus, ArrowUpRight } from 'lucide-react-native';
 import {useRouter} from 'expo-router';
 import { ThemedText } from '@/components/ui/ThemedText';
 
@@ -47,14 +46,14 @@ const MoodTrackerApp = () => {
             style={{ padding: 8 }}
             onPress={() => Router.push('/(auth)/(tabs)/jurnal')}
           >
-            <Ionicons name="chevron-back" size={24} color="#000" />
+            <ArrowLeft size={24} color="black" />
           </TouchableOpacity>
           <View style={{flexDirection: 'column', alignItems: 'center'}}>
             <ThemedText type='titleMedium'>Jurnal Kondisimu</ThemedText>
             <ThemedText type='bodyMedium' style={{ color: '#757575' }}>{`Minggu ${currentWeek} • ${currentDate.getDate() - 3} ${months[currentDate.getMonth()]} - ${currentDate.getDate() + 3} ${months[currentDate.getMonth()]}`}</ThemedText>
           </View>
           <View style={{ flexDirection: 'row'}}>
-            <Ionicons name="flame" size={18} color="#FF5722" />
+            <Flame size={24} color="#FF481F" fill="#FFC633" />
             <ThemedText style={{ fontSize: 14, fontWeight: 'bold', color: 'black', marginLeft: 4 }}>{streakCount}</ThemedText>
           </View>
         </View>
@@ -142,7 +141,7 @@ const MoodTrackerApp = () => {
                   <ThemedText style={{fontSize: 24,fontWeight: 'medium', fontFamily:'switzer'}}>64 Kg</ThemedText>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
-                  <Feather name="arrow-up-right" size={20} color="black" />
+                  <ArrowUpRight size={20} color="black" />
                   <ThemedText type='labelLarge' style={{fontSize: 20}}>2 Kg</ThemedText>
               </View>
           </View>
@@ -225,10 +224,10 @@ const MoodTrackerApp = () => {
           elevation: 4,
           zIndex: 1000
         }}
-        // onPress={() => Router.push('/(auth)/jurnalKondisiDetail')}
-        onPress={() => Router.push('/(auth)/infoPraHamil')}
+        onPress={() => Router.push('/(auth)/jurnalKondisiDetail')}
+        // onPress={() => Router.push('/(auth)/infoPraHamil')}
       >
-        <Ionicons name="add" size={24} color="#fff"/>
+        <Plus size={24} color="#fff" />
       </TouchableOpacity>
     </SafeAreaView>
   );

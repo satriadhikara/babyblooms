@@ -17,7 +17,7 @@
   "dependencies": {
     "@better-auth/expo": "^1.1.21",
     "@expo-google-fonts/plus-jakarta-sans": "^0.2.3",
-    "@expo/vector-icons": "^14.0.2",
+    "@expo/vector-icons": "^14.0.4",
     "@google/generative-ai": "^0.24.0",
     "@gorhom/bottom-sheet": "^5.1.2",
     "@react-native-community/datetimepicker": "8.2.0",

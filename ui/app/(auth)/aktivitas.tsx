@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { Feather, AntDesign } from '@expo/vector-icons';
 import { useRouter } from "expo-router";
-import { CircleAlert } from "lucide-react-native";
+import { CircleAlert, HelpCircle, ArrowLeft } from "lucide-react-native";
 
 const Aktivitas = () => {
     const [entryText, setEntryText] = useState('');
@@ -47,12 +47,12 @@ const Aktivitas = () => {
                         backgroundColor: "#F8F7F4",
                     }}
                 >
-                    <Pressable onPress={handleBack}>
-                        <AntDesign name="arrowleft" size={24} color="black" />
+                    <Pressable onPress={() => handleBack()}>
+                        <ArrowLeft size={24} color="black" />
                     </Pressable>
                     <ThemedText type='titleMedium'>Aktivitas</ThemedText>
                     <Pressable>
-                        <Feather name="help-circle" size={24} color="black" />
+                        <HelpCircle size={24} color="black" />
                     </Pressable>
                 </View>
                 <TextInput

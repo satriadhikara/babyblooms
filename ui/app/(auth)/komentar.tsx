@@ -1,9 +1,8 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity,ScrollView, TextInput, SafeAreaView, StatusBar, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { ThemedText } from '@/components/ui/ThemedText';
-import { MessageCircleMore, Heart, Image as LucideImage, Send } from 'lucide-react-native';
+import { MessageCircleMore, Heart, Image as LucideImage, Send, ArrowLeft, Ellipsis } from 'lucide-react-native';
 
 const ReplyScreen = () => {
     const router = useRouter();
@@ -68,11 +67,10 @@ const ReplyScreen = () => {
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={{ flex: 1, backgroundColor: '#F8F7F4' }}>
-                <StatusBar backgroundColor="#F8F7F4" barStyle="dark-content" />
-                <SafeAreaView style={{ 
+            <SafeAreaView style={{ flex: 1, backgroundColor: '#F8F7F4' }}>
+                <StatusBar backgroundColor="white" barStyle="dark-content" />
+                <View style={{ 
                     backgroundColor: 'white',
-                    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 
                 }}>
                     <View style={{ 
                         flexDirection: 'row', 
@@ -85,24 +83,24 @@ const ReplyScreen = () => {
                         borderBottomColor: '#f0f0f0',
                     }}>
                     <TouchableOpacity onPress={() => router.push('/(auth)/(tabs)/komunitas')}>
-                        <Ionicons name="chevron-back" size={24} color="#000" />
+                        <ArrowLeft size={24} color="#000" />
                     </TouchableOpacity>
                     <Text style={{ fontSize: 16, fontWeight: '600' }}>Unggahan</Text>
                     <View style={{ width: 32 }} />
                     </View>
-                </SafeAreaView>
+                </View>
                 
                 {posts.map((post) => (
                     <View key={post.id} style={{ marginBottom: 8, padding: 16,  borderBottomWidth: 1, borderBottomColor: '#f0f0f0' }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Image source={post.avatar} style={{ width: 40, height: 40, borderRadius: 20, marginRight: 12, backgroundColor: '#e0e0e0' }} />
-                        <View>
-                            <ThemedText type='titleSmall' style={{ color: '#3B3B3B' }}>{post.author}</ThemedText>
-                            <ThemedText type='labelSmall' style={{ color: '#888' }}>{post.timeAgo}</ThemedText>
+                            <Image source={post.avatar} style={{ width: 40, height: 40, borderRadius: 20, marginRight: 12, backgroundColor: '#e0e0e0' }} />
+                            <View>
+                                <ThemedText type='titleSmall' style={{ color: '#3B3B3B' }}>{post.author}</ThemedText>
+                                <ThemedText type='labelSmall' style={{ color: '#888' }}>{post.timeAgo}</ThemedText>
+                            </View>
                         </View>
-                        </View>
-                        <Ionicons name="ellipsis-horizontal" size={24} color="#888" />
+                        <Ellipsis size={24} color="#888" />
                     </View>
                     <View>
                         <ThemedText type='labelLarge' style={{ marginBottom: 4, color: '#00030F' }}>{post.title}</ThemedText>
@@ -131,13 +129,13 @@ const ReplyScreen = () => {
                         <View key={reply.id} style={{ marginBottom: 8, padding: 16 }}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Image source={reply.avatar} style={{ width: 40, height: 40, borderRadius: 20, marginRight: 12, backgroundColor: '#e0e0e0' }} />
-                            <View>
-                                <ThemedText type='titleSmall' style={{ color: '#3B3B3B' }}>{reply.author}</ThemedText>
-                                <ThemedText type='labelSmall' style={{ color: '#888' }}>{reply.timeAgo}</ThemedText>
+                                <Image source={reply.avatar} style={{ width: 40, height: 40, borderRadius: 20, marginRight: 12, backgroundColor: '#e0e0e0' }} />
+                                <View>
+                                    <ThemedText type='titleSmall' style={{ color: '#3B3B3B' }}>{reply.author}</ThemedText>
+                                    <ThemedText type='labelSmall' style={{ color: '#888' }}>{reply.timeAgo}</ThemedText>
+                                </View>
                             </View>
-                            </View>
-                            <Ionicons name="ellipsis-horizontal" size={24} color="#888" />
+                            <Ellipsis size={24} color="#888" />
                         </View>
                         <View>
                             <ThemedText type='bodyLarge' style={{ color: '#00030F' }}>{reply.content}</ThemedText>
@@ -220,7 +218,7 @@ const ReplyScreen = () => {
                         </TouchableOpacity>
                     </View>
                 </KeyboardAvoidingView>
-            </View>
+            </SafeAreaView>
         </TouchableWithoutFeedback>
     );
 };

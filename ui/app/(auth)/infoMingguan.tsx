@@ -8,7 +8,7 @@ import {
   StatusBar,
   Platform,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import {X} from 'lucide-react-native';
 import { ThemedText } from "@/components/ui/ThemedText";
 import { useRouter } from "expo-router";
 
@@ -32,8 +32,9 @@ const PregnancyWeekInfo = () => {
             paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 12,
           }}
         >
-          <TouchableOpacity style={{ padding: 4 }} onPress={() => Router.push("/(auth)/(tabs)/jurnal")}>
-            <Ionicons name="close" size={24} color="black" />
+          <TouchableOpacity style={{ padding: 4 }} onPress={() => Router.back()}>
+            {/* Back button */}
+            <X size={24} color="black" />
           </TouchableOpacity>
           <ThemedText type="titleMedium">Informasi Minggu ke-4</ThemedText>
           <View style={{ width: 24 }} />

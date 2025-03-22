@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image, SafeAreaView, StatusBar, Platform, Animated } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { ThemedText } from '@/components/ui/ThemedText';
-import { MessageCircleMore, Heart, X, MessageCircle } from 'lucide-react-native';
+import { MessageCircleMore, Heart,Bell,Ellipsis, Beaker  } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 
 const CommunityScreen = () => {
@@ -125,7 +125,6 @@ const CommunityScreen = () => {
       <StatusBar backgroundColor="white" barStyle="dark-content" />
       <SafeAreaView style={{ 
         backgroundColor: 'white',
-        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 
       }}>
         <View style={{ 
           flexDirection: 'row', 
@@ -137,7 +136,7 @@ const CommunityScreen = () => {
         }}>
           <ThemedText type='headlineSmall'>Komunitas</ThemedText>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Ionicons name="notifications-outline" size={24} color="#000"/>
+            <Bell size={24} color="#000"/>
             <TouchableOpacity onPress={() => router.push('/(auth)/akunSaya')}>
               <Image 
                 source={require('@/assets/images/ProfPic.png')} 
@@ -180,10 +179,10 @@ const CommunityScreen = () => {
                     <ThemedText type='labelSmall' style={{ color: '#888' }}>{post.timeAgo}</ThemedText>
                   </View>
                 </View>
-                <Ionicons name="ellipsis-horizontal" size={24} color="#888" />
+                <Ellipsis size={24} color="#888" />
               </View>
               <View>
-                <ThemedText type='labelLarge' style={{ marginBottom: 4, color: '#00030F' }}>{post.title}</ThemedText>
+                <ThemedText type='labelLarge' style={{ marginBottom: 4, color: 'black' }}>{post.title}</ThemedText>
                 <ThemedText type='bodyLarge' style={{ color: '#00030F' }}>{post.content}</ThemedText>
               </View>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 }}>

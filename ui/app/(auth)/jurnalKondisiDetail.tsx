@@ -8,7 +8,7 @@ import {
   SafeAreaView,
   StatusBar,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import {X} from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import { ThemedText } from '@/components/ui/ThemedText';
 
@@ -75,10 +75,9 @@ const PregnancySymptomTracker = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#f8f8f8' }}>
       <StatusBar barStyle="dark-content" />
-
-      <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#f0f0f0' }}>
-        <TouchableOpacity style={{ padding: 4 }}>
-          <Ionicons name="close" size={24} color="black" />
+      <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingTop: 60,paddingBottom: 20, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#f0f0f0' }}>
+        <TouchableOpacity style={{ padding: 4 }} onPress={() => Router.back()}>
+          <X size={30} color="black" />
         </TouchableOpacity>
         <View style={{ flex: 1, alignItems: 'center', gap: 5}}>
           <ThemedText type='titleMedium'>Minggu 4, Hari 5</ThemedText>

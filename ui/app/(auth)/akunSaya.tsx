@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image, SafeAreaView, StatusBar, Platform, Animated} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { ThemedText } from '@/components/ui/ThemedText';
-import { MessageCircleMore, Heart, X, MessageCircle } from 'lucide-react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { MessageCircleMore, Heart, ArrowLeft, Ellipsis} from 'lucide-react-native';
 import { useRouter } from 'expo-router';
-import { parseQueryParams } from 'expo-router/build/fork/getStateFromPath-forks';
 
 const MyAccount = () => {
     const [activeTab, setActiveTab] = useState('Semua');
@@ -117,7 +116,6 @@ const MyAccount = () => {
       <StatusBar backgroundColor="#F8F7F4" barStyle="dark-content" />
         <SafeAreaView style={{ 
             backgroundColor: '#F8F7F4',
-            paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 
         }}>
             <View style={{borderBottomWidth: 1, borderBottomColor: '#E0E0E0'}}>
                 <View style={{ 
@@ -125,11 +123,11 @@ const MyAccount = () => {
                     alignItems: 'center', 
                     justifyContent: 'space-between', 
                     paddingHorizontal: 16,
-                    paddingVertical: 30,
+                    paddingVertical: 20,
                     marginLeft: 10,
                 }}>
                     <TouchableOpacity onPress={() => router.push('/(auth)/(tabs)/komunitas')}>
-                        <Ionicons name="chevron-back" size={24} color="#000" />
+                        <ArrowLeft size={24} color="black" />
                     </TouchableOpacity>
                     <ThemedText type='titleMedium' style={{ fontSize: 16, fontWeight: '600' }}>Akun Saya</ThemedText>
                     <View style={{ width: 32 }} />
@@ -190,7 +188,7 @@ const MyAccount = () => {
                                         <ThemedText type='labelSmall' style={{ color: '#888' }}>{post.timeAgo}</ThemedText>
                                     </View>
                                 </View>
-                                    <Ionicons name="ellipsis-horizontal" size={24} color="#888" />
+                                <Ellipsis size={24} color="#888" /> 
                             </View>
                             <View>
                                 <ThemedText type='labelLarge' style={{ marginBottom: 4, color: '#00030F' }}>{post.title}</ThemedText>
