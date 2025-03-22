@@ -124,6 +124,24 @@ const Makanan = () => {
                     </TouchableOpacity>
                 </View>
             </ScrollView>
+
+            <TouchableOpacity 
+                style={{
+                    position: 'absolute',
+                    bottom: 40,
+                    left: 30,
+                    right: 30,
+                    backgroundColor: '#D33995',
+                    borderRadius: 48,
+                    paddingVertical: 15,
+                    alignItems: 'center',
+                }}
+                onPress={() => router.push("/(auth)/kamera")}
+            >
+                <ThemedText type='titleMedium' style={{ color: "#FFFFFF" }}>
+                    Ambil foto makanan
+                </ThemedText>
+            </TouchableOpacity>
         </View>
     );
 }

@@ -56,18 +56,23 @@ const BloomsAI = () => {
             </ThemedText>
 
             <View style={{ flexDirection: 'row', marginTop: 30, marginLeft: 20, marginRight: 20, marginBottom: 20, flexWrap: 'wrap', justifyContent: "space-between", gap: 16,}} >
-                <TouchableOpacity style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#B8D1624D', padding: 10, width: 177, height: 206, gap: 10, borderRadius: 12 }}>
-                <Image style={{ width: 74, height: 74, borderRadius: 100, backgroundColor: "#B8D162" }} />
-                    <ThemedText type='titleMedium' style={{ marginLeft: 5 }}>BloomCare</ThemedText>
+                <TouchableOpacity style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#B8D1624D', padding: 10, width: 177, height: 206, gap: 10, borderRadius: 12 }} onPress={() => router.push("/(auth)/bloomCare")}>
+                    <View style={{ width: 74, height: 74, borderRadius: 100, backgroundColor: "#B8D162", justifyContent: 'center', alignItems: 'center' }}>
+                        <Image source={require("../../assets/images/dokterAI.png")} style={{ width: 60, height: 60 }} />
+                    </View><ThemedText type='titleMedium' style={{ marginLeft: 5 }}>BloomCare</ThemedText>
                     <ThemedText style={{ marginLeft: 5, fontSize: 14, fontFamily: 'Switzer', fontWeight: 400, textAlign: 'center' }}>Konsultasikan kondisimu dengan AI</ThemedText>
                 </TouchableOpacity>
-                <TouchableOpacity style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#81B8D533', padding: 10, width: 177, height: 206, gap: 10, borderRadius: 12 }}>
-                    <Image style={{ width: 74, height: 74, borderRadius: 100, backgroundColor: "#81B8D5" }} />
+                <TouchableOpacity style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#81B8D533', padding: 10, width: 177, height: 206, gap: 10, borderRadius: 12 }} onPress={() => router.push("/(auth)/nameNest")}>
+                    <View style={{ width: 74, height: 74, borderRadius: 100, backgroundColor: "#81B8D5", justifyContent: 'center', alignItems: 'center' }}>
+                        <Image source={require("../../assets/images/bayiAI.png")} style={{ width: 41, height: 41 }} />
+                    </View>
                     <ThemedText type='titleMedium' style={{ marginLeft: 5 }}>NameNest</ThemedText>
                     <ThemedText style={{ marginLeft: 5, fontSize: 14, fontFamily: 'Switzer', fontWeight: 400, textAlign: 'center' }}>Tentukan nama bayimu sekarang</ThemedText>
                 </TouchableOpacity>
-                <TouchableOpacity style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#5D63A64D', padding: 10, width: 177, height: 206, gap: 10, borderRadius: 12 }}>
-                    <Image style={{ width: 74, height: 74, borderRadius: 100, backgroundColor: "#5D63A6" }} />
+                <TouchableOpacity style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#5D63A64D', padding: 10, width: 177, height: 206, gap: 10, borderRadius: 12 }} onPress={() => router.push("/(auth)/littleZodiac")}>
+                <   View style={{ width: 74, height: 74, borderRadius: 100, backgroundColor: "#5D63A6", justifyContent: 'center', alignItems: 'center' }}>
+                        <Image source={require("../../assets/images/CrystalBall.png")} style={{ width: 40, height: 40 }} />
+                    </View>
                     <ThemedText type='titleMedium' style={{ marginLeft: 5 }}>LittleZodiac</ThemedText>
                     <ThemedText style={{ marginLeft: 5, fontSize: 14, fontFamily: 'Switzer', fontWeight: 400, textAlign: 'center' }}>Cari tahu ramalan horoskop bayimu!</ThemedText>
                 </TouchableOpacity>
