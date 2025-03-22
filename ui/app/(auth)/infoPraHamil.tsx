@@ -10,8 +10,8 @@ import {
   Platform,
   ScrollView
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import { ArrowLeft} from 'lucide-react-native';
+import { router, useRouter } from 'expo-router';
 import { ThemedText } from '@/components/ui/ThemedText';
 
 const InfoPraHamil = () => {
@@ -30,9 +30,9 @@ const InfoPraHamil = () => {
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={{ flex: 1 }}
         >
-            <View style={{ paddingHorizontal: 16, paddingTop: 16 }}>
-                <TouchableOpacity style={{ padding: 8 }} onPress={() => Router.push('/(auth)/jurnalKondisimu')}>
-                    <Ionicons name="chevron-back" size={24} color="#000" />
+            <View style={{ paddingHorizontal: 16, paddingTop: 50 }}>
+                <TouchableOpacity style={{ padding: 8 }} onPress={() => Router.back()}>
+                    <ArrowLeft size={24} color="black" />
                 </TouchableOpacity>
             </View>
 
@@ -74,7 +74,7 @@ const InfoPraHamil = () => {
 
                 <View style={{ 
                     position: 'absolute', 
-                    bottom: 100, 
+                    bottom: 60, 
                     left: 0,
                     right: 0,
                     paddingHorizontal: 20, 
@@ -90,7 +90,8 @@ const InfoPraHamil = () => {
                             alignItems: 'center',
                             opacity: height && weight ? 1 : 0.8
                         }} 
-                        onPress={handleSave}
+                        // onPress={handleSave}
+                        onPress={() => router.push('/(auth)/jurnalKondisiDetail')}
                         disabled={!height || !weight}
                     >
                         <Text style={{ color: '#FFFFFF', fontSize: 16, fontWeight: '500' }}>Simpan</Text>

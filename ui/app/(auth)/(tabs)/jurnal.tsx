@@ -9,9 +9,8 @@ import {
     ScrollView
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Feather, Ionicons } from '@expo/vector-icons';
 import { useRouter } from "expo-router";
-import { Sparkle,ArrowUpRight } from 'lucide-react-native';
+import { Sparkle,ArrowUpRight, Flame, Bell, Volume2, Plus } from 'lucide-react-native';
 
 const PregnancyTrackerApp = () => {
 const router = useRouter();
@@ -55,11 +54,11 @@ return (
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 35 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 20 }}>
-                        <Ionicons name="flame" size={16} color="#FF5722" />
+                        <Flame size={16} color="#FF481F" fill="#FFC633" />
                         <ThemedText type='titleMedium' style={{ marginLeft: 4}}>23</ThemedText>
                     </View>
                     <TouchableOpacity>
-                        <Ionicons name="notifications-outline" size={24} color="#333" />
+                        <Bell size={24} color="#333" />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -101,7 +100,7 @@ return (
                         width: 54, height: 54, borderRadius: 27, alignItems: 'center', justifyContent: 'center',
                         shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4, elevation: 2
                     }}>
-                    <Feather name="volume-2" size={20} color="#8C8C8C" />
+                    <Volume2 size={20} color="#8C8C8C" />
                 </TouchableOpacity>
             </View>
 
@@ -196,11 +195,10 @@ return (
                     alignItems: "center",
                     justifyContent: "center",
                     }}
-                    // onPress={() => router.push("/(auth)/jurnalKondisimu")}
-                    onPress={() => router.push("/(auth)/listBukuHarian")}
+                    onPress={() => router.push('/(auth)/contractionCounter')}
                 >
-                    <Feather name="plus" size={20} color="#C85A9D" />
-                    <ThemedText type='labelLarge' style={{ color: "#C85A9D", marginLeft: 8 }}>
+                    <Plus size={20} color="#C85A9D" />
+                    <ThemedText type='labelLarge' style={{ color: "#C85A9D", marginLeft: 8 }} > 
                         Lacak kontraksimu!
                     </ThemedText>
                 </TouchableOpacity>
@@ -221,85 +219,43 @@ return (
                 }}
             >
                 {/* Size Comparison Card */}
-                <View
-                    style={{
-                    width: 165,
-                    backgroundColor: "#FFF",
-                    borderRadius: 12,
-                    padding: 16,
-                    alignItems: "flex-start",
-                    shadowColor: "#000",
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowOpacity: 0.1,
-                    shadowRadius: 4,
-                    elevation: 3,
-                    marginRight: 10,
-                    }}
-                >
-                    <ThemedText type='bodyLarge' style={{ color: "#000000", marginBottom: 8 }}>
-                        Bayimu seukuran
-                    </ThemedText>
-                    <ThemedText type='bodyLarge' style={{color: "#000000", fontWeight:"semibold"}}>
-                        Buah Manggis
-                    </ThemedText>
-                    <View style={{ width:135, marginTop: 10, alignItems: "center" }}>
-                        <Image
-                            source={require('@/assets/images/manggis.png')}
-                            style={{ width: 80, height: 80, marginTop: 10 }}
-                            resizeMode="contain"
-                        />
+                <TouchableOpacity onPress={() => router.push('/(auth)/infoMingguan')}>
+                    <View
+                        style={{
+                        width: 165,
+                        height: 204,
+                        backgroundColor: "#FFF",
+                        borderRadius: 12,
+                        padding: 16,
+                        alignItems: "flex-start",
+                        shadowColor: "#000",
+                        shadowOffset: { width: 0, height: 2 },
+                        shadowOpacity: 0.1,
+                        shadowRadius: 4,
+                        elevation: 3,
+                        marginRight: 10,
+                        }}
+                    >
+                        <ThemedText type='bodyLarge' style={{ color: "#000000", marginBottom: 8 }}>
+                            Bayimu seukuran
+                        </ThemedText>
+                        <ThemedText type='bodyLarge' style={{color: "#000000", fontWeight:"semibold"}}>
+                            Buah Manggis
+                        </ThemedText>
+                        <View style={{ width:135, marginTop: 10, alignItems: "center" }}>
+                            <Image
+                                source={require('@/assets/images/manggis.png')}
+                                style={{ width: 80, height: 80, marginTop: 10 }}
+                                resizeMode="contain"
+                            />
+                        </View>
                     </View>
-                </View>
+                </TouchableOpacity>
 
                 {/* Baby Development Card */}
-                <View
-                    style={{
-                    width: 342,
-                    backgroundColor: "#FFF",
-                    borderRadius: 12,
-                    padding: 16,
-                    shadowColor: "#000",
-                    shadowOffset: { width: 0, height: 2 },
-                    shadowOpacity: 0.1,
-                    shadowRadius: 4,
-                    elevation: 3,
-                    marginRight: 10,
-                    }}
-                >
-                    <ThemedText type='titleMedium' style={{ color: "#D43066"}}>
-                        Si kecil pada minggu ke-10
-                    </ThemedText>
+                <TouchableOpacity onPress={() => router.push('/(auth)/infoMingguan')}>
                     <View
                         style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            marginVertical: 8,
-                        }}
-                    >
-                        <ThemedText type='labelSmall' style={{ color: "#7E7E7E" }}>Tinggi</ThemedText>
-                        <ThemedText type='labelSmall' style={{ color: "#7E7E7E" }}>Berat</ThemedText>
-                    </View>
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                        }}
-                    >
-                        <ThemedText type='bodyLarge' style={{ color: "#000" }}>3.1 cm</ThemedText>
-                        <ThemedText type='bodyLarge' style={{ color: "#000" }}>4.0 g</ThemedText>
-                    </View>
-                    <ThemedText
-                        style={{ color: "#000000",fontWeight: 400,fontFamily:'switzer',fontSize:14 ,lineHeight:20, marginTop: 10}}
-                    >
-                        Aku bukan embrio lagi. Sekarang aku sudah menjadi janin! Jari-jariku
-                        sempurna, dan sikuku bisa menekuk. Aku juga mulai menelan dan
-                        menendang kecil.
-                    </ThemedText>
-                </View>
-
-                {/* Tips Card */}
-                <View
-                    style={{
                         width: 342,
                         backgroundColor: "#FFF",
                         borderRadius: 12,
@@ -309,38 +265,89 @@ return (
                         shadowOpacity: 0.1,
                         shadowRadius: 4,
                         elevation: 3,
-                        marginRight: 40,
-                    }}
-                >
-                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                            <Sparkle size={24} color="#4697C1" />
-                            <ThemedText
-                                type='titleMedium'
-                                style={{
-                                    color: "#4697C1",
-                                    marginLeft: 6,
-                                }}
-                            >
-                                Tips untuk Minggu ke-10
-                            </ThemedText>
-                        </View>
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                            <ArrowUpRight size={24} color="#4697C1" style={{ marginLeft: 6 }} />    
-                        </View>
-                    </View>
-                    <ThemedText
-                        style={{ color: "#000000",fontWeight: 400,fontFamily:'switzer',fontSize:14 ,lineHeight:20, marginTop: 10}}
+                        marginRight: 10,
+                        }}
                     >
-                        Pada minggu ke-10 kehamilan, tubuh terus beradaptasi dengan berbagai perubahan hormon yang dapat menyebabkan kelelahan, mual, dan sensitivitas terhadap makanan atau bau tertentu. Meskipun ini bisa menjadi masa yang menantang, ada banyak cara untuk tetap merasa sehat dan nyaman. Dengan pola makan...
-                    </ThemedText>
-                </View>
+                        <ThemedText type='titleMedium' style={{ color: "#D43066"}}>
+                            Si kecil pada minggu ke-10
+                        </ThemedText>
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                marginVertical: 8,
+                            }}
+                        >
+                            <ThemedText type='labelSmall' style={{ color: "#7E7E7E" }}>Tinggi</ThemedText>
+                            <ThemedText type='labelSmall' style={{ color: "#7E7E7E" }}>Berat</ThemedText>
+                        </View>
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                            }}
+                        >
+                            <ThemedText type='bodyLarge' style={{ color: "#000" }}>3.1 cm</ThemedText>
+                            <ThemedText type='bodyLarge' style={{ color: "#000" }}>4.0 g</ThemedText>
+                        </View>
+                        <ThemedText
+                            style={{ color: "#000000",fontWeight: 400,fontFamily:'switzer',fontSize:14 ,lineHeight:20, marginTop: 10}}
+                        >
+                            Aku bukan embrio lagi. Sekarang aku sudah menjadi janin! Jari-jariku
+                            sempurna, dan sikuku bisa menekuk. Aku juga mulai menelan dan
+                            menendang kecil.
+                        </ThemedText>
+                    </View>
+                </TouchableOpacity>
+
+                {/* Tips Card */}
+                <TouchableOpacity onPress={() => router.push('/(auth)/infoMingguan')}>
+                    <View
+                        style={{
+                            width: 342,
+                            backgroundColor: "#FFF",
+                            borderRadius: 12,
+                            padding: 16,
+                            shadowColor: "#000",
+                            shadowOffset: { width: 0, height: 2 },
+                            shadowOpacity: 0.1,
+                            shadowRadius: 4,
+                            elevation: 3,
+                            marginRight: 40,
+                        }}
+                    >
+                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                            <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                <Sparkle size={24} color="#4697C1" />
+                                <ThemedText
+                                    type='titleMedium'
+                                    style={{
+                                        color: "#4697C1",
+                                        marginLeft: 6,
+                                    }}
+                                >
+                                    Tips untuk Minggu ke-10
+                                </ThemedText>
+                            </View>
+                            <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                <ArrowUpRight size={24} color="#4697C1" style={{ marginLeft: 6 }} />    
+                            </View>
+                        </View>
+                        <ThemedText
+                            style={{ color: "#000000",fontWeight: 400,fontFamily:'switzer',fontSize:14 ,lineHeight:20, marginTop: 10}}
+                        >
+                            Pada minggu ke-10 kehamilan, tubuh terus beradaptasi dengan berbagai perubahan hormon yang dapat menyebabkan kelelahan, mual, dan sensitivitas terhadap makanan atau bau tertentu. Meskipun ini bisa menjadi masa yang menantang, ada banyak cara untuk tetap merasa sehat dan nyaman. Dengan pola makan...
+                        </ThemedText>
+                    </View>
+                </TouchableOpacity>
             </ScrollView>
 
             <View style={{ marginTop: 20, flexDirection: 'column' }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent: 'space-between', marginTop: 30, paddingHorizontal: 20 }}>
                     <ThemedText type='titleMedium' style={{ fontSize: 20}}>Jurnal Kondisimu</ThemedText>
-                    <ThemedText type='labelMedium' style={{fontWeight:500, color:"#4697C1"}}>Lihat Detail</ThemedText>
+                    <TouchableOpacity onPress={() => router.push('/(auth)/jurnalKondisimu')}>
+                        <ThemedText type='labelMedium' style={{fontWeight:500, color:"#4697C1"}}>Lihat Detail</ThemedText>
+                    </TouchableOpacity>
                 </View>
                 <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, marginTop: 10 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>    
@@ -398,10 +405,11 @@ return (
                     justifyContent: "center",
                     }}
 
-                    onPress={() => router.push('/(auth)/infoMingguan')}
+                    // onPress={() => router.push('/(auth)/infoMingguan')}
+                    onPress={() => router.push('/(auth)/jurnalKondisimu')}
                 >
-                    <Feather name="plus" size={20} color="#FFF" />
-                    <ThemedText type='labelLarge' style={{ color: "#FFF", marginLeft: 8 }} onPress={() => router.push('/(auth)/infoMingguan')}>
+                    <Plus size={20} color="#FFF"/>
+                    <ThemedText type='labelLarge' style={{ color: "#FFF", marginLeft: 8 }} onPress={() => router.push('/(auth)/infoPraHamil')}>
                          Catat kondisi hari ini
                     </ThemedText>
                 </TouchableOpacity>
@@ -410,12 +418,14 @@ return (
             <View style={{ marginTop: 20, flexDirection: 'column' }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent: 'space-between', marginTop: 30, paddingHorizontal: 20 }}>
                     <ThemedText type='titleMedium' style={{ fontSize: 20}}>Buku Harian</ThemedText>
-                    <ThemedText type='labelMedium' style={{fontWeight:500, color:"#4697C1"}}>Lihat Detail</ThemedText>
+                    <TouchableOpacity onPress={() => router.push('/(auth)/listBukuHarian')}>
+                        <ThemedText type='labelMedium' style={{fontWeight:500, color:"#4697C1"}}>Lihat Detail</ThemedText>
+                    </TouchableOpacity>
                 </View>
                 <View style={{flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, marginTop: 10 }}>
                     <View
                         style={{
-                            width: 370,
+                            width: '100%',
                             gap: 10,
                             marginTop: 14,
                             backgroundColor: "#FFF",

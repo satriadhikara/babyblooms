@@ -6,7 +6,7 @@ import {
   SafeAreaView,
   StatusBar,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import {Flame, X} from 'lucide-react-native';
 import { NavigationProp } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import { ThemedText } from '@/components/ui/ThemedText';
@@ -27,14 +27,14 @@ const StreakCelebration = ({ navigation }: { navigation: NavigationProp<any> }) 
       
       {/* Close button */}
       <TouchableOpacity style={{ position: 'absolute', top: 80, left: 16, padding: 4 }} onPress={() => Router.push('/(auth)/jurnalKondisiDetail')}>
-        <Ionicons name="close" size={24} color="black" />
+        <X size={24} color="black" />
       </TouchableOpacity>
       
       {/* Main content */}
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingBottom: 100 }}>
         {/* Fire icon */}
         <View style={{ marginBottom: 24 }}>
-          <Ionicons name="flame" size={150} color="#FF5722" />
+          <Flame size={150} color="#FF481F" fill="#FFC633" style={{ transform: [{ rotate: '0deg' }] }} />
         </View>
         
         {/* Streak text */}

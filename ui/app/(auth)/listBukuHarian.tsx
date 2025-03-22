@@ -16,12 +16,12 @@ export default function JournalScreen() {
     text: string;
   }
 
-  const [entries, setEntries] = useState<Entry[]>([]);
+  // const [entries, setEntries] = useState<Entry[]>([]);
   // If you want to test with data:
-//   const [entries, setEntries] = useState([
-//     { id: '1', name: 'Fiona Siregar', time: 'Kemarin', text: 'Halo' },
-//     { id: '2', name: 'Fiona Siregar', time: '5m lalu', text: 'Tiba tiba ngidam mangga muda nih.. hehehe' },
-//   ]);
+  const [entries, setEntries] = useState([
+    { id: '1', name: 'Fiona Siregar', time: 'Kemarin', text: 'Halo' },
+    { id: '2', name: 'Fiona Siregar', time: '5m lalu', text: 'Tiba tiba ngidam mangga muda nih.. hehehe' },
+  ]);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [entryText, setEntryText] = useState('');
@@ -92,17 +92,16 @@ export default function JournalScreen() {
   );
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#faf9f6'}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#faf9f6'}}>
     <StatusBar barStyle="dark-content" backgroundColor="#fff" />
       {/* Header */}
-      <SafeAreaView style={{ backgroundColor: '#fff' }}>
+      <View style={{ backgroundColor: '#fff' }}>
         <View style={{ 
           flexDirection: 'row', 
           justifyContent: 'space-between', 
           alignItems: 'center', 
-          height: 50,
+          height: 56,
           paddingHorizontal: 16,
-          paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight  : 13,
           backgroundColor: '#fff',
         }}>
           <TouchableOpacity 
@@ -116,7 +115,7 @@ export default function JournalScreen() {
           </View>
           <View style={{ width: 40 }} /> 
         </View>
-      </SafeAreaView>
+      </View>
   
       {entries.length > 0 ? (
         <FlatList
@@ -260,6 +259,6 @@ export default function JournalScreen() {
           </TouchableOpacity>
         </KeyboardAvoidingView>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 }

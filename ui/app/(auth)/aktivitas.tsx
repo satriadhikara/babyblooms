@@ -8,10 +8,8 @@ import {
     TouchableOpacity,
     Image
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Feather, AntDesign } from '@expo/vector-icons';
 import { useRouter } from "expo-router";
-import { CircleAlert } from "lucide-react-native";
+import { CircleAlert, HelpCircle, ArrowLeft } from "lucide-react-native";
 
 const Aktivitas = () => {
 
@@ -54,13 +52,13 @@ const Aktivitas = () => {
                     }}
                 >
                     <Pressable onPress={() => handleBack()}>
-                        <AntDesign name="arrowleft" size={24} color="black" />
+                        <ArrowLeft size={24} color="black" />
                     </Pressable>
                     <ThemedText type='titleMedium'>
                         Aktivitas
                     </ThemedText>
                     <Pressable>
-                        <Feather name="help-circle" size={24} color="black" />
+                        <HelpCircle size={24} color="black" />
                     </Pressable>
                 </View>
                 <TextInput
