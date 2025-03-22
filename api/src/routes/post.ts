@@ -234,7 +234,7 @@ postRoute.post(
     }
 
     try {
-      const postId = randomUUIDv7("base64");
+      const postId = randomUUIDv7("base64url");
 
       await db.insert(post).values({
         id: postId,
@@ -267,7 +267,7 @@ postRoute.post(
     }
 
     try {
-      const likeId = randomUUIDv7("base64");
+      const likeId = randomUUIDv7("base64url");
 
       await db.insert(postLike).values({
         userId: user.id,
