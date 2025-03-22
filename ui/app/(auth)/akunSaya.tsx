@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   Platform,
   Animated,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { ThemedText } from "@/components/ui/ThemedText";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -21,25 +22,156 @@ import {
 } from "lucide-react-native";
 import { useRouter } from "expo-router";
 import { useAuth } from "./_layout";
+import { authClient } from "@/utils/auth-client";
 
 const MyAccount = () => {
   const { session, isPending } = useAuth();
-  const [activeTab, setActiveTab] = useState("Semua");
+  const [activeTab, setActiveTab] = useState("Unggahan");
   const [likedPosts, setLikedPosts] = useState<LikedPosts>({});
   const [showCategoryPicker, setShowCategoryPicker] = useState(false);
   const [animation] = useState(new Animated.Value(0));
   const [overlayAnimation] = useState(new Animated.Value(0));
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  interface LikedPosts {
-    [key: number]: boolean;
+  interface Post {
+    id: string;
+    timeAgo: string;
+    title: string;
+    content: string;
+    likes: number;
+    comments: number;
+    category: string;
+    userLiked?: boolean;
   }
 
-  const toggleLike = (postId: number) => {
+  interface LikedPosts {
+    [key: string]: boolean;
+  }
+
+  useEffect(() => {
+    if (!session) return;
+
+    if (activeTab === "Unggahan") {
+      fetchPersonalPosts();
+    } else {
+      fetchLikedPosts();
+    }
+  }, [activeTab, session]);
+
+  // Initialize liked posts from server data
+  useEffect(() => {
+    const initialLikes: LikedPosts = {};
+    posts.forEach((post) => {
+      if (post.userLiked) {
+        initialLikes[post.id] = true;
+      }
+    });
+    setLikedPosts(initialLikes);
+  }, [posts]);
+
+  const fetchPersonalPosts = async () => {
+    setLoading(true);
+    try {
+      const cookies = authClient.getCookie();
+      const headers = {
+        Cookie: cookies,
+      };
+      const response = await fetch(
+        `${process.env.EXPO_PUBLIC_API_URL}/api/post/personal`,
+        {
+          headers,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch personal posts");
+      }
+
+      const data = await response.json();
+      setPosts(data);
+    } catch (error) {
+      console.error("Error fetching personal posts:", error);
+      Alert.alert("Error", "Failed to load your posts");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchLikedPosts = async () => {
+    setLoading(true);
+    try {
+      // This would ideally be a separate endpoint for liked posts
+      // For now, we'll fetch all posts and filter the ones liked by the user
+      const cookies = authClient.getCookie();
+      const headers = {
+        Cookie: cookies,
+      };
+      const response = await fetch(
+        `${process.env.EXPO_PUBLIC_API_URL}/api/post`,
+        {
+          headers,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch posts");
+      }
+
+      const data = await response.json();
+      // Filter only the posts that the user has liked
+      const likedPosts = data.filter((post: Post) => post.userLiked);
+      setPosts(likedPosts);
+    } catch (error) {
+      console.error("Error fetching liked posts:", error);
+      Alert.alert("Error", "Failed to load liked posts");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const toggleLike = async (postId: string) => {
+    // Optimistically update UI
     setLikedPosts((prev: LikedPosts) => ({
       ...prev,
-      [postId]: !prev[postId], // Toggle like status
+      [postId]: !prev[postId],
     }));
+
+    try {
+      const cookies = authClient.getCookie();
+      const headers = {
+        Cookie: cookies,
+      };
+      const response = await fetch(
+        `${process.env.EXPO_PUBLIC_API_URL}/api/post/${postId}/like`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...headers,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        // Revert optimistic update if request fails
+        setLikedPosts((prev: LikedPosts) => ({
+          ...prev,
+          [postId]: !prev[postId],
+        }));
+        throw new Error("Failed to like post");
+      }
+
+      // Refresh posts after successful like/unlike
+      if (activeTab === "Unggahan") {
+        fetchPersonalPosts();
+      } else {
+        fetchLikedPosts();
+      }
+    } catch (error) {
+      console.error("Error liking post:", error);
+    }
   };
 
   const categoryOptions = [
@@ -63,47 +195,6 @@ const MyAccount = () => {
     },
   ];
 
-  const posts = [
-    {
-      id: 1,
-      author: "Fiona Siregar",
-      timeAgo: "3j lalu",
-      title: "Yoga hamil",
-      content:
-        "baru aja coba yoga hamil, ternyata bikin lebih enak! Rekomendasi kelas online atau offline?",
-      likes: 0,
-      comments: 0,
-      category: "Pregnancy Q&A",
-      avatar: require("@/assets/images/ProfPic.png"),
-    },
-    {
-      id: 2,
-      author: "Fiona Siregar",
-      timeAgo: "3j lalu",
-      title: "Baru ngerasain baby kick pertama! 😭",
-      content:
-        "bayangin, kayak ada ikan terbang yang loncat-loncat di perut. Kalian udah pernah? Minggu keberapa kalian merasain yang kayak gini?",
-      likes: 0,
-      comments: 0,
-      category: "Pregnancy Q&A",
-      avatar: require("@/assets/images/ProfPic.png"),
-    },
-  ];
-
-  interface Post {
-    id: number;
-    author: string;
-    timeAgo: string;
-    title: string;
-    content: string;
-    likes: number;
-    comments: number;
-    category: string;
-    avatar: any;
-  }
-
-  // const posts: Post[] = []; // untuk uji empty state
-
   const toggleCategoryPicker = () => {
     const toValue = !showCategoryPicker ? 1 : 0;
 
@@ -122,16 +213,14 @@ const MyAccount = () => {
 
     setShowCategoryPicker(!showCategoryPicker);
   };
-  const handleCategorySelect = (category: string) => {
-    // Here you would handle the creation of a new post with the selected category
-    console.log(`Selected category: ${category}`);
-    setShowCategoryPicker(false);
-    // You could navigate to a create post screen with the selected category pre-selected
-    // router.push({ pathname: '/(auth)/create-post', params: { category } });
-  };
 
   if (isPending) {
-    return <ActivityIndicator />;
+    return (
+      <ActivityIndicator
+        size="large"
+        style={{ flex: 1, justifyContent: "center" }}
+      />
+    );
   }
 
   return (
@@ -235,7 +324,9 @@ const MyAccount = () => {
         </View>
 
         <ScrollView>
-          {posts.length === 0 ? (
+          {loading ? (
+            <ActivityIndicator style={{ marginTop: 20 }} />
+          ) : posts.length === 0 ? (
             <View
               style={{
                 alignItems: "center",
@@ -272,8 +363,8 @@ const MyAccount = () => {
               </ThemedText>
             </View>
           ) : (
-            posts.map((post: Post) => {
-              const isLiked: boolean = likedPosts[post.id] || false;
+            posts.map((post) => {
+              const isLiked = likedPosts[post.id] || false;
               return (
                 <View key={post.id} style={{ marginBottom: 8, padding: 24 }}>
                   <View
@@ -352,12 +443,17 @@ const MyAccount = () => {
                           type="labelMedium"
                           style={{ marginLeft: 4, color: "#888" }}
                         >
-                          {post.likes + (isLiked ? 1 : 0)}
+                          {post.likes}
                         </ThemedText>
                       </TouchableOpacity>
                       <TouchableOpacity
                         style={{ flexDirection: "row", alignItems: "center" }}
-                        onPress={() => router.push("/(auth)/komentar")}
+                        onPress={() =>
+                          router.push({
+                            pathname: "/(auth)/komentar",
+                            params: { postId: post.id },
+                          })
+                        }
                       >
                         <MessageCircleMore size={20} color="#888" />
                         <ThemedText
@@ -446,11 +542,13 @@ const MyAccount = () => {
                   }}
                 >
                   <TouchableOpacity
-                    onPress={() =>
-                      index === categoryOptions.length - 1
-                        ? toggleCategoryPicker()
-                        : handleCategorySelect(category.name)
-                    }
+                    onPress={() => {
+                      toggleCategoryPicker();
+                      router.push({
+                        pathname: "/(auth)/unggahanBaru",
+                        params: { selectedTopic: category.params },
+                      });
+                    }}
                     style={{
                       flexDirection: "row",
                       alignItems: "center",
