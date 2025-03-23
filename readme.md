@@ -1,4 +1,4 @@
-# 🌸 BabyBlooms
+# 🌸 BabyBlooms - A Safe Space for Moms-to-Be!
 
 **BabyBlooms** adalah aplikasi digital yang membantu meningkatkan kesehatan ibu hamil dengan pemantauan kehamilan, komunitas, dan edukasi berbasis digital. Dikembangkan untuk mengatasi tingginya angka kematian ibu hamil di Indonesia, aplikasi ini menyediakan akses informasi terpercaya dan mendorong keterlibatan pasangan/pendamping dalam proses kehamilan.
 
