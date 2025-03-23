@@ -24,6 +24,7 @@ import {
 import { useRouter } from "expo-router";
 import { useAuth } from "../_layout";
 import { authClient } from "@/utils/auth-client";
+import LoadingComponent from "@/components/ui/Loading";
 
 const CommunityScreen = () => {
   const { session, isPending } = useAuth();
@@ -309,7 +310,11 @@ const CommunityScreen = () => {
 
       <ScrollView style={{ height: "100%" }}>
         {loading ? (
-          <ActivityIndicator style={{ marginTop: 20 }} />
+          <LoadingComponent
+            style={{
+              marginTop: 250,
+            }}
+          />
         ) : posts.length === 0 ? (
           <View
             style={{

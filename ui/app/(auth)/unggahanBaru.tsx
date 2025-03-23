@@ -125,7 +125,7 @@ const PostForm = () => {
         >
           <TouchableOpacity
             onPress={() => {
-              router.push("/(auth)/akunSaya");
+              router.back();
             }}
           >
             <X size={24} color="black" />

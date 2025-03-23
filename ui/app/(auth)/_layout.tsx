@@ -1,7 +1,7 @@
 import React, { createContext, useContext } from "react";
 import { Stack } from "expo-router";
-import { View, ActivityIndicator } from "react-native";
 import { authClient, Session } from "@/utils/auth-client";
+import LoadingComponent from "@/components/ui/Loading";
 
 // Define the type for our context
 export type AuthContextType = {
@@ -26,11 +26,7 @@ const AuthLayout = () => {
 
   // Show loading indicator while session is being fetched
   if (isPending) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="#CA5598" />
-      </View>
-    );
+    return <LoadingComponent />;
   }
 
   return (

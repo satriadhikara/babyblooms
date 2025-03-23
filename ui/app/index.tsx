@@ -13,11 +13,22 @@ import GoogleIcon from "@/assets/vectors/google";
 import MetaIcon from "@/assets/vectors/meta";
 import { useRouter } from "expo-router";
 import { authClient } from "@/utils/auth-client";
+import LoadingComponent from "@/components/ui/Loading";
 
 export default function App() {
   const { data: session, isPending } = authClient.useSession();
   const router = useRouter();
   const [isCheckingRole, setIsCheckingRole] = useState(false);
+  const [isArtificialLoading, setIsArtificialLoading] = useState(true);
+
+  // Demo purpose
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsArtificialLoading(false);
+    }, 2000); // Seconds
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const checkUserRole = async () => {
@@ -69,12 +80,12 @@ export default function App() {
     });
   };
 
+  // if (isPending || isCheckingRole || isArtificialLoading) {
+  //   return <LoadingComponent />;
+  // }
+
   if (isPending || isCheckingRole) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>Loading...</Text>
-      </View>
-    );
+    return <LoadingComponent />;
   }
 
   return (

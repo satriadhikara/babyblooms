@@ -9,7 +9,6 @@ import {
   StatusBar,
   Platform,
   Animated,
-  ActivityIndicator,
   Alert,
 } from "react-native";
 import { ThemedText } from "@/components/ui/ThemedText";
@@ -23,6 +22,7 @@ import {
 import { useRouter } from "expo-router";
 import { useAuth } from "./_layout";
 import { authClient } from "@/utils/auth-client";
+import LoadingComponent from "@/components/ui/Loading";
 
 const MyAccount = () => {
   const { session, isPending } = useAuth();
@@ -215,12 +215,7 @@ const MyAccount = () => {
   };
 
   if (isPending) {
-    return (
-      <ActivityIndicator
-        size="large"
-        style={{ flex: 1, justifyContent: "center" }}
-      />
-    );
+    return <LoadingComponent />;
   }
 
   return (
@@ -242,9 +237,7 @@ const MyAccount = () => {
               marginLeft: 10,
             }}
           >
-            <TouchableOpacity
-              onPress={() => router.push("/(auth)/(tabs)/komunitas")}
-            >
+            <TouchableOpacity onPress={() => router.back()}>
               <ArrowLeft size={24} color="black" />
             </TouchableOpacity>
             <ThemedText
@@ -325,7 +318,12 @@ const MyAccount = () => {
 
         <ScrollView>
           {loading ? (
-            <ActivityIndicator style={{ marginTop: 20 }} />
+            <LoadingComponent
+              style={{
+                marginTop: 100,
+                marginBottom: 100,
+              }}
+            />
           ) : posts.length === 0 ? (
             <View
               style={{
