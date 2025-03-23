@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image } 
 import { AntDesign } from '@expo/vector-icons';
 import { ThemedText } from '@/components/ui/ThemedText';
 import { useRouter } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ChatMakanan = () => {
     const [messages, setMessages] = useState<{ text: string; sender: string }[]>([
@@ -16,7 +17,7 @@ const ChatMakanan = () => {
         router.back();
     };
 
-    const API_KEY = "AIzaSyDYO2kL2ctCIGiw3eRUy70qZ1-uudhE9hw";
+    const API_KEY = process.env.EXPO_PUBLIC_API_KEY;
 
     const handleSend = async () => {
         if (inputText.trim()) {
@@ -86,7 +87,7 @@ const ChatMakanan = () => {
     };
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <View style={styles.header}>
                 <AntDesign name="arrowleft" size={24} color="black" onPress={handleBack} />
                 <ThemedText type='titleMedium'>BloomsAI</ThemedText>
@@ -110,7 +111,7 @@ const ChatMakanan = () => {
                     <AntDesign name="arrowright" size={24} color="#007BFF" />
                 </TouchableOpacity>
             </View>
-        </View>
+        </SafeAreaView>
     );
 };
 

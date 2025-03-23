@@ -11,6 +11,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather, AntDesign } from '@expo/vector-icons';
 import { useRouter } from "expo-router";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const BloomsAI = () => {
 
@@ -23,7 +24,7 @@ const BloomsAI = () => {
     }
 
     return (
-        <View 
+        <SafeAreaView 
             style={{ 
                 flex: 1, 
                 backgroundColor: "#F8F7F4", 
@@ -51,7 +52,7 @@ const BloomsAI = () => {
                 <View style={{ width: 24 }} />
             </View>
 
-            <ThemedText type='bodyMedium' style={{ marginTop: 20, marginLeft: 20, marginRight: 20, color: "#A1A1A1", textAlign: "justify", }}>
+            <ThemedText type='bodyMedium' style={{ marginTop: 0, marginLeft: 20, marginRight: 20, color: "#A1A1A1", textAlign: "justify", }}>
                 BloomsAI merupakan asisten cerdas yang siap membantumu memahami setiap tahap perkembangan bayi, memberikan rekomendasi kesehatan, serta menjawab pertanyaan seputar kehamilan kapan saja.    
             </ThemedText>
 
@@ -77,7 +78,7 @@ const BloomsAI = () => {
                     <ThemedText style={{ marginLeft: 5, fontSize: 14, fontFamily: 'Switzer', fontWeight: 400, textAlign: 'center' }}>Cari tahu ramalan horoskop bayimu!</ThemedText>
                 </TouchableOpacity>
             </View>
-        </View>
+        </SafeAreaView>
     );
 }
 

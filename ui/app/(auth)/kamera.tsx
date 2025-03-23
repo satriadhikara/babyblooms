@@ -13,8 +13,6 @@ import { useRouter } from "expo-router";
 import { ThemedText } from "@/components/ui/ThemedText";
 import * as FileSystem from 'expo-file-system';
 
-const apiKey = "AIzaSyDYO2kL2ctCIGiw3eRUy70qZ1-uudhE9hw";
-
 export default function Kamera() {
   const [permission, requestPermission] = useCameraPermissions();
   const ref = useRef<CameraView>(null);
@@ -24,6 +22,8 @@ export default function Kamera() {
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
+
+  const apiKey = process.env.EXPO_PUBLIC_API_KEY;
 
   useEffect(() => {
     if (!apiKey) {

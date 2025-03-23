@@ -12,6 +12,7 @@ import {
 import { Feather, AntDesign } from '@expo/vector-icons';
 import { useRouter } from "expo-router";
 import { CircleAlert, HelpCircle, ArrowLeft } from "lucide-react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Aktivitas = () => {
     const [entryText, setEntryText] = useState('');
@@ -27,7 +28,7 @@ const Aktivitas = () => {
     });
 
     return (
-        <View style={{ flex: 1, backgroundColor: "#F8F7F4", paddingHorizontal: 10, position: 'fixed'}}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#F8F7F4", paddingHorizontal: 10, position: 'fixed'}}>
             <Animated.View
                 style={{
                     height: headerHeight,
@@ -133,7 +134,7 @@ const Aktivitas = () => {
                     </View>
                 ))}
             </Animated.ScrollView>
-        </View>
+        </SafeAreaView>
     );
 }
 

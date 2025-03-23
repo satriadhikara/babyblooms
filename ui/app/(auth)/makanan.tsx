@@ -12,6 +12,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather, AntDesign } from '@expo/vector-icons';
 import { useRouter } from "expo-router";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Makanan = () => {
 
@@ -24,7 +25,7 @@ const Makanan = () => {
     }
 
     return (
-        <View 
+        <SafeAreaView 
             style={{ 
                 flex: 1, 
                 backgroundColor: "#F8F7F4", 
@@ -142,7 +143,7 @@ const Makanan = () => {
                     Ambil foto makanan
                 </ThemedText>
             </TouchableOpacity>
-        </View>
+        </SafeAreaView>
     );
 }
 
