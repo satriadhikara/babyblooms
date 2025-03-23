@@ -165,13 +165,27 @@ const CommunityScreen = () => {
           ...prev,
           [postId]: !prev[postId],
         }));
-        throw new Error("Failed to like post");
+        throw new Error("Failed to toggle post like");
       }
 
-      // Refresh posts after successful like/unlike
-      fetchPosts();
+      // Get response data to know if the post was liked or unliked
+      const data = await response.json();
+
+      // Update the posts array with the updated like status and count
+      setPosts((prevPosts) =>
+        prevPosts.map((post) => {
+          if (post.id === postId) {
+            return {
+              ...post,
+              likes: data.liked ? post.likes + 1 : post.likes - 1,
+              userLiked: data.liked,
+            };
+          }
+          return post;
+        })
+      );
     } catch (error) {
-      console.error("Error liking post:", error);
+      console.error("Error toggling post like:", error);
     }
   };
 
@@ -248,6 +262,7 @@ const CommunityScreen = () => {
           backgroundColor: "white",
           borderBottomWidth: 1,
           borderBottomColor: "#eee",
+          paddingBottom: 4,
         }}
         contentContainerStyle={{
           height: 48,
@@ -264,7 +279,6 @@ const CommunityScreen = () => {
                   height: "100%",
                   justifyContent: "center",
                   alignItems: "center",
-                  position: "relative",
                 }}
                 onPress={() => setActiveTab(category)}
               >
@@ -293,12 +307,51 @@ const CommunityScreen = () => {
         )}
       </ScrollView>
 
-      <ScrollView>
+      <ScrollView style={{ height: "100%" }}>
         {loading ? (
           <ActivityIndicator style={{ marginTop: 20 }} />
         ) : posts.length === 0 ? (
-          <View style={{ padding: 24, alignItems: "center", marginTop: 20 }}>
-            <ThemedText type="titleMedium">Belum ada post</ThemedText>
+          <View
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: 100,
+              paddingHorizontal: 12,
+              width: "100%",
+              height: "100%",
+            }}
+          >
+            <Image
+              source={require("@/assets/images/emptyState.png")}
+              style={{ width: 210, height: 180, marginBottom: 20 }}
+            />
+            <ThemedText
+              type="titleMedium"
+              style={{
+                fontSize: 16,
+                color: "#777777",
+                fontWeight: "600",
+                textAlign: "center",
+              }}
+            >
+              {activeTab === "Semua"
+                ? "Belum ada unggahan di komunitas"
+                : `Belum ada unggahan di kategori ${activeTab}`}
+            </ThemedText>
+            <ThemedText
+              type="bodyMedium"
+              style={{
+                fontSize: 14,
+                color: "#888",
+                textAlign: "center",
+                marginTop: 8,
+                paddingHorizontal: 40,
+              }}
+            >
+              {activeTab === "Semua"
+                ? "Jadilah yang pertama berbagi cerita, pertanyaan, atau tips seputar kehamilan!"
+                : "Belum ada yang memposting di kategori ini. Jadilah yang pertama berbagi!"}
+            </ThemedText>
           </View>
         ) : (
           posts.map((post) => {

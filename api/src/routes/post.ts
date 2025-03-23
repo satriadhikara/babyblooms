@@ -234,7 +234,7 @@ postRoute.post(
     }
 
     try {
-      const postId = randomUUIDv7("base64");
+      const postId = randomUUIDv7("base64url");
 
       await db.insert(post).values({
         id: postId,
@@ -267,18 +267,40 @@ postRoute.post(
     }
 
     try {
-      const likeId = randomUUIDv7("base64");
+      // Check if the user already liked this post
+      const existingLike = await db
+        .select()
+        .from(postLike)
+        .where(
+          sql`${postLike.userId} = ${user.id} AND ${postLike.postId} = ${postId}`
+        )
+        .then((result) => result[0] || null);
 
-      await db.insert(postLike).values({
-        userId: user.id,
-        postId,
-        createdAt: new Date(),
-      });
+      if (existingLike) {
+        // User already liked the post, so unlike it
+        await db
+          .delete(postLike)
+          .where(
+            sql`${postLike.userId} = ${user.id} AND ${postLike.postId} = ${postId}`
+          );
 
-      return c.json({ message: "Post liked successfully", likeId }, 201);
+        return c.json(
+          { message: "Post unliked successfully", liked: false },
+          200
+        );
+      } else {
+        // User hasn't liked the post, so like it
+        await db.insert(postLike).values({
+          userId: user.id,
+          postId,
+          createdAt: new Date(),
+        });
+
+        return c.json({ message: "Post liked successfully", liked: true }, 201);
+      }
     } catch (error) {
-      console.error("Error liking post:", error);
-      return c.json({ error: "Failed to like post" }, 500);
+      console.error("Error toggling post like:", error);
+      return c.json({ error: "Failed to toggle post like" }, 500);
     }
   }
 );
