@@ -18,9 +18,12 @@ Berikut adalah beberapa fitur yang telah terimplementasi pada produk MVP kami.
 | Satriadhikara Panji Yudhistira |
 | Mohammad Andhika Fadillah |
 | Farrel Natha Saskoro |
- 
+
 ## 📱 Install Aplikasi
 [Coba BabyBlooms sekarang!](https://s.hmif.dev/BabyBloomsMVP)
 
 ## 🔗 Akses Video Demo
 [Tonton video demo Babyblooms disini.](https://s.hmif.dev/VideoDemoMVPBabyblooms)
+
+## 🔗 Akses _Prototype_
+[Cobain Prototyoe BabyBlooms disini.](https://s.hmif.dev/PrototypeBabyBlooms)
