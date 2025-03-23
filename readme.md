@@ -1,7 +1,7 @@
 # BabyBlooms
 
 ### Tim FiveMonkeys
-| Nama Anggota |
+| **Nama Anggota** |
 |-----------   |
 | Yusril Fazri Mahendra |
 | Gracya Tio Damena Sidabutar |
