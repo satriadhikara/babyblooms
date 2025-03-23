@@ -101,8 +101,6 @@ userRoute.post(
       const week = Math.floor(diffInDays / 7);
       const day = diffInDays % 7;
 
-      console.log(`Usia kehamilan: ${week} minggu ${day} hari`);
-
       return c.json({
         week,
         day,
@@ -114,3 +112,60 @@ userRoute.post(
     }
   }
 );
+
+userRoute.get("/pregnantInfo", async (c) => {
+  const session = c.get("session");
+  const user = c.get("user");
+
+  if (!session || !user) {
+    return c.json({ error: "Unauthorized" }, 401);
+  }
+
+  // Check if the user is a mom
+  const [userData] = await db
+    .select()
+    .from(userTable)
+    .where(eq(userTable.id, user.id));
+  if (!userData || userData.role !== "mom") {
+    return c.json({ error: "User is not a mom" }, 403);
+  }
+
+  try {
+    const [childData] = await db
+      .select()
+      .from(child)
+      .where(eq(child.motherId, user.id));
+
+    if (!childData) {
+      return c.json({ error: "Child not found" }, 404);
+    }
+
+    const hpl = new Date(childData.estimatedDateOfBirth);
+    const hpht = new Date(hpl.getTime() - 280 * 24 * 60 * 60 * 1000);
+    const today = new Date();
+
+    const diffInDays = Math.floor(
+      (today.getTime() - hpht.getTime()) / (1000 * 3600 * 24)
+    );
+
+    const week = Math.floor(diffInDays / 7);
+    const day = diffInDays % 7;
+    const totalDay = Math.floor(
+      (hpl.getTime() - hpht.getTime()) / (1000 * 3600 * 24)
+    );
+
+    return c.json(
+      {
+        hpl: childData.estimatedDateOfBirth,
+        hpht,
+        week,
+        day,
+        totalDay,
+      },
+      200
+    );
+  } catch (error) {
+    console.error("Error fetching child data:", error);
+    return c.json({ error: "Failed to fetch child data" }, 500);
+  }
+});
