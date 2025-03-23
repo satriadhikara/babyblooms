@@ -193,29 +193,21 @@ export default function Menu() {
           }}
         >
           {[
-            { icon: "Box", label: "Visualisasi   3D", bgColor: "#DA5AA7" },
-            { icon: "Notebook", label: "Jurnal Kondisimu", bgColor: "#DA5AA7" },
-            { icon: "Info", label: "Informasi Mingguan", bgColor: "#DA5AA7" },
-            { icon: "Book", label: "Buku Harian", bgColor: "#DA5AA7" },
-            { icon: "SquareCheckBig", label: "Checklist", bgColor: "#AAC843" },
-            { icon: "Calendar", label: "Jadwal Pertemuan", bgColor: "#AAC843" },
-            {
-              icon: "ListTodo",
-              label: "Catatan Pemeriksaan",
-              bgColor: "#AAC843",
-            },
-            {
-              icon: "Hospital",
-              label: "RS/Klinik Terdekat",
-              bgColor: "#AAC843",
-            },
+            { icon: "Box", label: "Visualisasi   3D", bgColor: "#DA5AA7", route: "/jurnal" },
+            { icon: "Notebook", label: "Jurnal Kondisimu", bgColor: "#DA5AA7", route: "/(auth)/jurnalKondisimu" },
+            { icon: "Info", label: "Informasi Mingguan", bgColor: "#DA5AA7", route: "/(auth)/infoMingguan" },
+            { icon: "Book", label: "Buku Harian", bgColor: "#DA5AA7", route: "/(auth)/listBukuHarian" },
+            { icon: "SquareCheckBig", label: "Checklist", bgColor: "#AAC843", route: "/(auth)/checkList" },
+            { icon: "Calendar", label: "Jadwal Pertemuan", bgColor: "#AAC843", route: "/(auth)/jadwalPertemuan" },
+            { icon: "ListTodo", label: "Catatan Pemeriksaan", bgColor: "#AAC843", route: "/(auth)/catatanPemeriksaan" },
+            { icon: "Hospital", label: "RS/Klinik Terdekat", bgColor: "#AAC843", route: "/(auth)/RSComingSoon" },
             { icon: "Timer", label: "Contraction Counter", bgColor: "#AAC843", route: "/(auth)/contractionCounter" },
-            { icon: "Apple", label: "Makanan/Minuman", bgColor: "#4697C1" },
-            { icon: "Pill", label: "Obat-     obatan", bgColor: "#4697C1" },
-            { icon: "Activity", label: "Aktivitas", bgColor: "#4697C1" },
-            { icon: "HeartPulse", label: "BloomCare", bgColor: "#5D63A6" },
-            { icon: "Baby", label: "NameNest", bgColor: "#5D63A6" },
-            { icon: "Sparkles", label: "LittleZodiac", bgColor: "#5D63A6" },
+            { icon: "Apple", label: "Makanan/Minuman", bgColor: "#4697C1", route: "/(auth)/makanan" },
+            { icon: "Pill", label: "Obat-     obatan", bgColor: "#4697C1", route: "/(auth)/obat" },
+            { icon: "Activity", label: "Aktivitas", bgColor: "#4697C1", route: "/(auth)/aktivitas" },
+            { icon: "HeartPulse", label: "BloomCare", bgColor: "#5D63A6", route: "/(auth)/bloomCare" },
+            { icon: "Baby", label: "NameNest", bgColor: "#5D63A6", route: "/(auth)/nameNest" },
+            { icon: "Sparkles", label: "LittleZodiac", bgColor: "#5D63A6", route: "/(auth)/littleZodiac" },
           ].map((item) => {
             const IconComponent = require("lucide-react-native")[item.icon];
             return (

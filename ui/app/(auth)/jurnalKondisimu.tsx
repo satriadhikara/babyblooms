@@ -44,7 +44,7 @@ const MoodTrackerApp = () => {
         <View style={{ width:'100%' ,flexDirection: 'row', justifyContent: 'space-between', alignItems:'center', padding: 16, backgroundColor: '#fff' }}>
           <TouchableOpacity 
             style={{ padding: 8 }}
-            onPress={() => Router.push('/(auth)/(tabs)/jurnal')}
+            onPress={() => Router.back()}
           >
             <ArrowLeft size={24} color="black" />
           </TouchableOpacity>

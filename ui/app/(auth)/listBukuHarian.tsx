@@ -106,7 +106,7 @@ export default function JournalScreen() {
         }}>
           <TouchableOpacity 
             style={{ padding: 8 }}
-            onPress={() => router.push('/(auth)/(tabs)/jurnal')}
+            onPress={() => router.back()}
           >
             <Ionicons name="chevron-back" size={24} color="#000" />
           </TouchableOpacity>
