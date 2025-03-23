@@ -209,7 +209,7 @@ export default function Menu() {
               label: "RS/Klinik Terdekat",
               bgColor: "#AAC843",
             },
-            { icon: "Timer", label: "Contraction Counter", bgColor: "#AAC843" },
+            { icon: "Timer", label: "Contraction Counter", bgColor: "#AAC843", route: "/(auth)/contractionCounter" },
             { icon: "Apple", label: "Makanan/Minuman", bgColor: "#4697C1" },
             { icon: "Pill", label: "Obat-     obatan", bgColor: "#4697C1" },
             { icon: "Activity", label: "Aktivitas", bgColor: "#4697C1" },
@@ -221,6 +221,7 @@ export default function Menu() {
             return (
               <TouchableOpacity
                 key={item.label}
+                onPress={() => item.route && router.push(item.route as any)}
                 style={{
                   padding: 10,
                   width: 114,

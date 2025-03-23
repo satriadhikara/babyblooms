@@ -169,18 +169,21 @@ const AlertModal = ({ visible, onClose }: { visible: boolean; onClose: () => voi
           <ThemedText type='titleMedium' style={{
             fontSize: 20,
             marginVertical: 15,
-            textAlign: 'center',
             color: '#000000',
           }}>
             Saatnya ke rumah sakit
           </ThemedText>
+          <ThemedText type='bodyLarge' style={{ color: '#AFB1B6'}}>
+             Kontraksi sudah menunjukkan fase persalinan aktif. Segera pergi ke fasilitas medis dan hubungi dokter. Kami akan memberi tahu pendampingmu sekarang. Tetap tenang, si kecil akan segera lahir!
+            </ThemedText>
           <TouchableOpacity 
             style={{
               backgroundColor: '#D33995',
               borderRadius: 50,
               paddingVertical: 12,
-              paddingHorizontal: 30,
-              marginTop: 10,
+              width: '100%',
+              alignItems: 'center',
+              marginTop: 20,
             }}
             onPress={onClose}
           >
