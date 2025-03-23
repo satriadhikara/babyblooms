@@ -457,10 +457,11 @@ const MyAccount = () => {
                       <TouchableOpacity
                         style={{ flexDirection: "row", alignItems: "center" }}
                         onPress={() =>
-                          router.push({
-                            pathname: "/(auth)/komentar",
-                            params: { postId: post.id },
-                          })
+                          // router.push({
+                          //   pathname: "/(auth)/komentar",
+                          //   params: { postId: post.id },
+                          // })
+                          Alert.alert("Coming soon!")
                         }
                       >
                         <MessageCircleMore size={20} color="#888" />
