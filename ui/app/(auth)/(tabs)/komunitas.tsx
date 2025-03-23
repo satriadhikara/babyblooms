@@ -165,13 +165,27 @@ const CommunityScreen = () => {
           ...prev,
           [postId]: !prev[postId],
         }));
-        throw new Error("Failed to like post");
+        throw new Error("Failed to toggle post like");
       }
 
-      // Refresh posts after successful like/unlike
-      fetchPosts();
+      // Get response data to know if the post was liked or unliked
+      const data = await response.json();
+
+      // Update the posts array with the updated like status and count
+      setPosts((prevPosts) =>
+        prevPosts.map((post) => {
+          if (post.id === postId) {
+            return {
+              ...post,
+              likes: data.liked ? post.likes + 1 : post.likes - 1,
+              userLiked: data.liked,
+            };
+          }
+          return post;
+        })
+      );
     } catch (error) {
-      console.error("Error liking post:", error);
+      console.error("Error toggling post like:", error);
     }
   };
 
