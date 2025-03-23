@@ -11,6 +11,7 @@ import {
   Animated,
   ActivityIndicator,
   Alert,
+  RefreshControl, // Add this import
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { ThemedText } from "@/components/ui/ThemedText";
@@ -35,6 +36,7 @@ const CommunityScreen = () => {
   const [overlayAnimation] = useState(new Animated.Value(0));
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false); // Add this state
   const router = useRouter();
 
   interface Post {
@@ -102,8 +104,15 @@ const CommunityScreen = () => {
       Alert.alert("Error", "Failed to load posts");
     } finally {
       setLoading(false);
+      setRefreshing(false); // Add this line to stop refreshing
     }
   };
+
+  // Add this function for pull-to-refresh
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    fetchPosts();
+  }, [activeTab]);
 
   const mapDisplayToCategory = (display: string) => {
     switch (display) {
@@ -308,7 +317,17 @@ const CommunityScreen = () => {
         )}
       </ScrollView>
 
-      <ScrollView style={{ height: "100%" }}>
+      <ScrollView
+        style={{ height: "100%" }}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={["#D33995"]} // Customize the refresh indicator color
+            tintColor="#D33995" // iOS
+          />
+        }
+      >
         {loading ? (
           <LoadingComponent
             style={{

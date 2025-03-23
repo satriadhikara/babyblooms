@@ -37,12 +37,14 @@ const MyAccount = () => {
 
   interface Post {
     id: string;
+    author: string;
     timeAgo: string;
     title: string;
     content: string;
     likes: number;
     comments: number;
     category: string;
+    avatar: any;
     userLiked?: boolean;
   }
 
@@ -378,7 +380,9 @@ const MyAccount = () => {
                     >
                       <Image
                         source={
-                          session?.user.image
+                          activeTab === "Menyukai"
+                            ? { uri: post.avatar }
+                            : session?.user.image
                             ? { uri: session.user.image }
                             : require("@/assets/images/ProfPic.png")
                         }
@@ -395,7 +399,9 @@ const MyAccount = () => {
                           type="titleSmall"
                           style={{ color: "#3B3B3B" }}
                         >
-                          {session?.user.name}
+                          {activeTab === "Menyukai"
+                            ? post.author
+                            : session?.user.name}
                         </ThemedText>
                         <ThemedText type="labelSmall" style={{ color: "#888" }}>
                           {post.timeAgo}

@@ -31,11 +31,11 @@ function getTimeAgo(date: Date): string {
 
   if (diffInMinutes < 60) {
     return `${diffInMinutes}m lalu`;
-  } else if (diffInHours < 24) {
-    return `${diffInHours}j lalu`;
-  } else {
-    return `${diffInDays}h lalu`;
   }
+  if (diffInHours < 24) {
+    return `${diffInHours}j lalu`;
+  }
+  return `${diffInDays}h lalu`;
 }
 
 function mapCategoryToDisplay(category: string): string {
@@ -288,16 +288,15 @@ postRoute.post(
           { message: "Post unliked successfully", liked: false },
           200
         );
-      } else {
-        // User hasn't liked the post, so like it
-        await db.insert(postLike).values({
-          userId: user.id,
-          postId,
-          createdAt: new Date(),
-        });
-
-        return c.json({ message: "Post liked successfully", liked: true }, 201);
       }
+      // User hasn't liked the post, so like it
+      await db.insert(postLike).values({
+        userId: user.id,
+        postId,
+        createdAt: new Date(),
+      });
+
+      return c.json({ message: "Post liked successfully", liked: true }, 201);
     } catch (error) {
       console.error("Error toggling post like:", error);
       return c.json({ error: "Failed to toggle post like" }, 500);
