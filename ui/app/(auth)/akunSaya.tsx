@@ -413,7 +413,11 @@ const MyAccount = () => {
                   <View>
                     <ThemedText
                       type="labelLarge"
-                      style={{ marginBottom: 4, color: "#00030F" }}
+                      style={{
+                        marginBottom: 4,
+                        color: "#00030F",
+                        fontFamily: "Switzer-Semibold",
+                      }}
                     >
                       {post.title}
                     </ThemedText>

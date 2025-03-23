@@ -422,7 +422,11 @@ const CommunityScreen = () => {
                 <View>
                   <ThemedText
                     type="labelLarge"
-                    style={{ marginBottom: 4, color: "black" }}
+                    style={{
+                      marginBottom: 4,
+                      color: "black",
+                      fontFamily: "Switzer-Semibold",
+                    }}
                   >
                     {post.title}
                   </ThemedText>
