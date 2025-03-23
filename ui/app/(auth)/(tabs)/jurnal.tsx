@@ -28,27 +28,49 @@ const PregnancyTrackerApp = () => {
   const { session, isPending } = useAuth();
   const router = useRouter();
   const today = new Date().getDate();
-  const daysOfWeek = ["M", "S", "S", "R", "K", "J", "S"];
+  const daysOfWeek = ["M", "S", "S", "R", "K", "J", "S"]; // Standard day abbreviations
 
-  // Generate dates for the current week
-  const generateDatesForCurrentWeek = () => {
-    const currentDate = new Date();
-    const dayOfWeek = currentDate.getDay(); // 0 is Sunday, 1 is Monday, etc.
-    const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // Calculate offset to Monday
-
-    const monday = new Date(currentDate);
-    monday.setDate(currentDate.getDate() + mondayOffset);
-
-    const dates = [];
-    for (let i = 0; i < 7; i++) {
-      const date = new Date(monday);
-      date.setDate(monday.getDate() + i);
-      dates.push(date.getDate());
-    }
-    return dates;
+  // Get current time-based greeting
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour >= 5 && hour < 12) return "Selamat pagi";
+    if (hour >= 12 && hour < 15) return "Selamat siang";
+    if (hour >= 15 && hour < 19) return "Selamat sore";
+    return "Selamat malam";
   };
 
-  const dates = generateDatesForCurrentWeek();
+  const [greeting, setGreeting] = useState(getGreeting());
+
+  // Update greeting every minute
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setGreeting(getGreeting());
+    }, 60000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  // Generate dates for the current week starting from Sunday
+  const generateCurrentWeekDates = () => {
+    const currentDate = new Date();
+    const currentDay = currentDate.getDay(); // 0 is Sunday
+    const result = [];
+
+    // Go back to the start of the week (Sunday)
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(currentDate);
+      date.setDate(currentDate.getDate() - currentDay + i);
+      result.push({
+        date: date.getDate(),
+        month: date.getMonth(),
+        year: date.getFullYear(),
+        isToday: date.toDateString() === currentDate.toDateString(),
+      });
+    }
+    return result;
+  };
+
+  const currentWeekDates = generateCurrentWeekDates();
 
   // Add pregnancy data state
   const [pregnancyData, setPregnancyData] = useState({
@@ -211,7 +233,7 @@ const PregnancyTrackerApp = () => {
               type="titleMedium"
               style={{ fontSize: 14, color: "#0C0C0C" }}
             >
-              Selamat pagi,
+              {greeting},
             </ThemedText>
             <ThemedText
               type="headlineSmall"
@@ -269,7 +291,7 @@ const PregnancyTrackerApp = () => {
               marginTop: 6,
             }}
           >
-            {dates.map((date, index) => (
+            {currentWeekDates.map((dateObj, index) => (
               <View
                 key={`date-${index}`}
                 style={{
@@ -278,14 +300,14 @@ const PregnancyTrackerApp = () => {
                   borderRadius: 20,
                   alignItems: "center",
                   justifyContent: "center",
-                  backgroundColor: date === today ? "#FFF" : "transparent",
+                  backgroundColor: dateObj.isToday ? "#FFF" : "transparent",
                 }}
               >
                 <ThemedText
                   type="titleMedium"
-                  style={{ color: date === today ? "#E91E63" : "#000" }}
+                  style={{ color: dateObj.isToday ? "#E91E63" : "#000" }}
                 >
-                  {date}
+                  {dateObj.date}
                 </ThemedText>
               </View>
             ))}
