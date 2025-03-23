@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Dimensions,
+  Alert,
 } from "react-native";
 import { ThemedText } from "@/components/ui/ThemedText";
 import GoogleIcon from "@/assets/vectors/google";
@@ -151,7 +152,7 @@ export default function App() {
                 gap: 10,
               }}
               onPress={() => {
-                router.push("/(auth)/(tabs)/jurnal");
+                Alert.alert("Coming soon");
               }}
             >
               <MetaIcon />

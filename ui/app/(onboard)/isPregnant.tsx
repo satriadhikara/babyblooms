@@ -1,5 +1,11 @@
 import { ThemedText } from "@/components/ui/ThemedText";
-import { Pressable, SafeAreaView, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Pressable,
+  SafeAreaView,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import HandSvg from "@/assets/vectors/hand";
 import { ChevronLeft } from "lucide-react-native";
 import { useRouter } from "expo-router";
@@ -82,7 +88,7 @@ const isPregnant = () => {
               justifyContent: "center",
               borderRadius: 48,
             }}
-            onPress={() => router.push("/(auth)/(tabs)/jurnal")}
+            onPress={() => Alert.alert("Coming soon")}
           >
             <ThemedText
               type="titleMedium"
