@@ -51,6 +51,272 @@ const babyDetails = {
       "Aku sudah mulai berkembang. Tak lama lagi, perjalanan kita benar-benar dimulai!",
     tips: "",
   },
+  3:{
+    weight: undefined,
+    height: undefined,
+    naration:
+      "Kini aku mulai berkembang lebih cepat, Bunda! Aku seperti sebuah bola kecil yang tumbuh dengan pesat, dan meski kamu belum merasakannya, aku mulai membentuk diri dengan lebih jelas. Tubuhmu makin menyesuaikan diri untuk menyokongku, sementara aku terus menyerap segala yang aku butuhkan.",
+    tips: "Bunda disarankan untuk berhenti merokok & minum alkohol, mengurangi kafein, banyak makan makanan sehat, dan mencukup kebutuhan cairan setidaknya 6-8 gelas sehari.",
+  },
+  4: {
+    weight: undefined,
+    height: undefined,
+    naration:
+      "Saat ini aku sudah menetap di 'rumah baru' yang terhubung ke pembuluh darahmu. Akhirnya aku mulai menyerap oksigen dan nutrisi darimu, sekaligus membuang sisa kotoranku. Ups! Maaf Bunda, kamu menjadi dapur sekaligus toiletku!",
+    tips: "Bunda disarankan untuk berhenti merokok & minum alkohol, mengurangi kafein, banyak makan makanan sehat, dan mencukup kebutuhan cairan setidaknya 6-8 gelas sehari.",
+  },
+  5: {
+    weight: undefined,
+    height: undefined,
+    naration:
+      "Penampilanku lucu sekali! sekarang aku memiliki kepala dan ekor yang terlihat seperti kecebong. Sistem sarafku juga sudah mulai berkembang",
+    tips: "",
+  },
+  6: {
+    weight: undefined,
+    height: 0.5,
+    naration:
+      "Aku sudah mulai memiliki bentuk tubuh yang lebih jelas. Sekarang aku seperti ikan kecil dengan ekor yang panjang. Semua organ pentingku sedang berkembang, dan aku mulai terlihat sepertiHati-hati dengan makanan dan minumanmu, Bun! Minuman beralkohol, obat-obatan, dan asap rokok bisa membahayakanku.",
+    tips: "",
+  },
+  7: {
+    weight: undefined,
+    height: 0.64,
+    naration:
+      "Ginjal, hati, usus, dan paru-paruku mulai terbentuk. Namun, otakku masih terus berkembang sekarang. Jadi, jangan lupa selalu konsumsi makanan atau nutrisi yang mengandung asam folat ya, Bunda!",
+    tips: "",
+  },
+  8: {
+    weight: undefined,
+    height: 1.5,
+    naration:
+      "Aku sudah mulai memiliki bentuk tubuh yang lebih jelas. Sekarang aku seperti ikan kecil dengan ekor yang panjang. Semua organ pentingku sedang berkembang, dan aku mulai terlihat seperti",
+    tips: "",
+  }, 
+  9: {
+    weight: 2,
+    height: 2.3,
+    naration:
+      "Sel-sel saraf di otakku mulai membentuk koneksi dan jalur saraf. Bahkan hari ini tulang, sumsum belakang, dan ususku mulai terbentuk juga, lho....",
+    tips: "",
+  },
+  10: {
+    weight: 4,
+    height: 3.1,
+    naration:
+      "Yeay, aku mulai bisa menekuk siku. Gerakan kepala, anggota tubuh, dan pinggangku semakin gesit. Aku juga sudah punya otot kecil sekarang. Namun, ,masih terlalu cepat untuk merasakan tendanganku, Bun.",
+    tips: "",
+  },
+  11: {
+    weight: 7,
+    height: 4.1,
+    naration:
+      "Aku makin kuat sekarang! Minggu ini tulang rawanku mulai terbentuk. Lutut dan pergelangan kakiku juga mulai berkembang!",
+    tips: "",
+  },
+  12: {
+    weight: 14,
+    height: 5.4,
+    naration:
+      "Hitung jari tangan dan kakiku, Bunda! Jariku gak berselaput lagi sekarang. Kuku-kuku jariku juga sudah berkembang, lho...",
+    tips: "",
+  },
+  13: {
+    weight: 23,
+    height: 7.4,
+    naration:
+      "Bunda, sumsum tulang belakangku kini sedang kerja ekstra membuat sel darah putih. Supaya aku makin kuat dan kebal dari kuman penyakit saat aku lahir nanti.",
+    tips: "",
+  },
+  14: {
+    weight: 43,
+    height: 8.7,
+    naration:
+      "Minggu ini perkembangan ususku semakin sempurna Bunda. Yuk lihat 3D terbaruku di sini, Bun!.",
+    tips: "",
+  },
+  15: {
+    weight: 70,
+    height: 10.1,
+    naration:
+      "Wah! Leherku semakin panjang lho. Aku juga sudah bisa menjaga kepalaku tetap tegak.",
+    tips: "",
+  },
+  16: {
+    weight: 100,
+    height: 11.6,
+    naration:
+      "Yay! Aku bisa mendengarmu sekarang. Aku bisa mendengar detak jantungmu, bahkan suara gemuruh di perutmu. Jangan lupa ajak aku bicara terus ya, Bun!",
+    tips: "",
+  },
+  17: {
+    weight: 140,
+    height: 13,
+    naration:
+      "Yeay! Sistem peredaran darahku sudah berfungsi baik sekarang. Jantungku bahkan sudah mempompa 28 liter darah dalam sehari.",
+    tips: "",
+  },
+  18:{
+    weight: 190,
+    height: 14.2,
+    naration:
+      "Sekarang aku sudah lebih gemuk! Lemak ditubuhku mulai menumpuk untuk memberiku energi dan membuatku tetap hangat, Bun.",
+    tips: "",
+  },
+  19: {
+    weight: 240,
+    height: 15.3,
+    naration:
+      "Yey! Alat kelaminku semakin jelas sekarang! Bunda bisa mengetahui jenis kelaminku saat USG nanti. Penasaran nggak Bun? hihihihi",
+    tips: "",
+  },
+  20: {
+    weight: 300,
+    height: 25.6,
+    naration:
+      "Kulitku masih lembut, Bunda. Otot dan lemakku juga semakin bertambah banyak sekarang.",
+    tips: "",
+  },
+  21: {
+    weight: 360,
+    height: 27.8,
+    naration:
+      "Bunda bila aku seorang laki-laki, organ testisku semakin berkembang sekarang. Apakah bunda sudah tahu jenis kelaminku sekarang?",
+    tips: "",
+  },
+  22: {
+    weight: 430,
+    height: 27.9,
+    naration:
+      "Berat badanku makin bertambah Bunda. Ususku sekarang sudah cukup berkembang untuk menyerap nutrisi dari cairan ketuban yang aku konsumsi setiap hari",
+    tips: "",
+  },
+  23: {
+    weight: 500,
+    height: 28.9,
+    naration:
+      "Bun, tahu nggak sih? Aku mulai menumpuk kotoran di ususku sekarang. Kotoran ini berupa cairan ketuban, lunago (rambut halus), dan sel kulit mati.",
+    tips: "",
+  },
+  24: {
+    weight: 600,
+    height: 30,
+    naration:
+      "Yeay! Aku sudah bisa mengenali suaramu, Bunda! Bicaralah padaku lebih sering yah.",
+    tips: "",
+  },
+  25: {
+    weight: 660,
+    height: 34.26,
+    naration:
+      "Wuzz! Otak dan paru-paruku tumbuh dengan cepat. bahkan paru-paruku sudah menghasilkan surfaktan atau cairan yang aku perlukan untuk bernapas di luar rahim",
+    tips: "",
+  },
+  26: {
+    weight: 760,
+    height: 35.6,
+    naration:
+      "Lemak dalam tubuhku membuat aku terlibat lebih imut. Lemak itu juga akan membantuku beradaptasi dengan suhu di luar rahim yang relatif rendah.",
+    tips: "",
+  },
+  27: {
+    weight: 875,
+    height: 36.6,
+    naration:
+      "Bunda, coba minta ayah untuk memegang perutmu. Aku kangen sekali padanya. Biarkan dia merasakan gerakanku dan mendengar detak jantungku",
+    tips: "",
+  },
+  28: {
+    weight: 1000,
+    height: 37.6,
+    naration:
+      "Paru-paru, hati, dan sistem kekebalan tubuhku terus berkembang. Aku juga masih berlatih bernapas dengan menghirup dan membuang cairan ketuban",  
+    tips: "",
+  },
+  29: {
+    weight: 1200,
+    height: 38.6,
+    naration:
+      "Aku semakin pinta lho! Otak kecilku telah mengembangkan miliaran neuron. Aku juga telah mampu berkedip, bermimpi, dan mengendalikan suhu tubuh.",
+    tips: "",
+  },
+  30: {
+    weight: 1300,
+    height: 39.9,
+    naration:
+      "Bunda, tahukah kamu bahwa selama 11 minggu terakhir, berat badanku akan naik dua kali lipat?",
+    tips: "", 
+  },
+  31: {
+    weight: 1500,
+    height: 41.1,
+    naration:
+      "Sumsum tulangku dapat menghasilkan sel darah merah sendiri sekarang. Otakku juga semakin besar dan sel-sel otakku terus terhubung.",
+    tips: "",
+  },
+  32: {
+    weight: 1700,
+    height: 42.4,
+    naration:
+      "Apakah Bunda bisa merasakan setidaknya 10 gerakanku dalam 2 jam? ",
+    tips: "",
+  },
+  33: {
+    weight: 1900,
+    height: 43.7,
+    naration:
+      "Aku sekarang bisa menggaruk kulitku sendiri lho ketika gagal. Hahahaha aku pintar kan?",
+    tips: "",
+  },
+  34: {
+    weight: 2100,
+    height: 45,
+    naration:
+      "Selama di dalam kandungan aku mendapatkan antibodi pelindung dari darahmu lho Bunda. Terima kasih yaa, kamu sangat berarti dalam hidupku.",
+    tips: "",
+  },
+  35: {
+    weight: 2400,
+    height: 46.2,
+    naration:
+      "Di tahap ini, tulangku sudah berkembang sepenuhnya lho Bunda! Kekebalan tubuh dan paru-paruku juga semakin kuat.",
+    tips: "",
+  },
+  36: {
+    weight: 2600,
+    height: 47.4,
+    naration:
+      "Badanku semakij gendut, kulitku semakin halus, dan mulai berwarna merah muda. Siap-siap ya Bunda, kamu pasti akan gemas sekali melihatku!",
+    tips: "",
+  },
+  37: {
+    weight: 2900,
+    height: 48.6,
+    naration:
+      "Yeay! Otot menghisapku semakin berkembang! Aku sudah siap untuk minum ASI nanti setelah lahir.",
+    tips: "",
+  },
+  38: {
+    weight: 3100,
+    height: 49.8,
+    naration:
+      "Bunda semalam kamu tidur menghadap mana? Banyak ahli menyarankan tidur miring ke kiri. Karena ketika kamu tidur telentang, aku kekurangan oksigen dan suplai darah. Ini bisa membatasi pertumbuhanku. Tidur telentang juga bisa meningkatkan risiko stillbirth (bayi lahir mati) dan memengaruhi berat lahirku.",
+    tips: "",
+  },
+  39: {
+    weight: 3300,
+    height: 50.7,
+    naration:
+      "Katanya kepala bayi akan sedikit runcing atau memanjang saat dilahirkan. Itu benar karena tengkorakku belum cukup keras sekarang. Namun, jangan khawatir ya Bunda, kepalaku akan kembali ke bentuk normal beberapa bulan setelah kelahiranku.",
+    tips: "",
+  },
+  40: {
+    weight: 3500,
+    height: 51.2,
+    naration:
+      "Tahukah Bunda? Dokter akan memeriksa detak jantung, pernapasan, tonus otot, refleks, dan bahkan warna kulitku saat aku lahir. Ini penting untuk memastikan aku benar-benar sehat.",
+    tips: "",
+  },
 };
 
 const PregnancyTrackerApp = () => {
