@@ -1,7 +1,6 @@
 # BabyBlooms
 
 ## Tim FiveMonkeys
----
 | **Nama Anggota** |
 |-----------   |
 | Yusril Fazri Mahendra |
@@ -11,7 +10,6 @@
 | Farrel Natha Saskoro |
 
 ## Tentang BabyBlooms
----
 BabyBlooms adalah aplikasi digital yang membantu meningkatkan kesehatan ibu hamil dengan pemantauan kehamilan, komunitas, dan edukasi berbasis digital. Dikembangkan untuk mengatasi tingginya angka kematian ibu hamil di Indonesia, aplikasi ini menyediakan akses informasi terpercaya dan mendorong keterlibatan pasangan/pendamping dalam proses kehamilan.
 
 Berikut adalah beberapa fitur yang telah terimplementasi pada produk MVP kami.
