@@ -154,12 +154,21 @@ userRoute.get("/pregnantInfo", async (c) => {
       (hpl.getTime() - hpht.getTime()) / (1000 * 3600 * 24)
     );
 
+    // Calculate which trimester the pregnancy is in
+    let trimester = 1;
+    if (week >= 13 && week <= 26) {
+      trimester = 2;
+    } else if (week > 26) {
+      trimester = 3;
+    }
+
     return c.json(
       {
         hpl: childData.estimatedDateOfBirth,
         hpht,
         week,
         day,
+        trimester,
         totalDay,
       },
       200

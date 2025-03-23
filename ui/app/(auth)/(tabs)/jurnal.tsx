@@ -8,6 +8,7 @@ import {
   StatusBar,
   ScrollView,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
@@ -20,25 +21,162 @@ import {
   Plus,
 } from "lucide-react-native";
 import { useAuth } from "../_layout";
+import { authClient } from "@/utils/auth-client";
+import LoadingComponent from "@/components/ui/Loading";
 
 const PregnancyTrackerApp = () => {
   const { session, isPending } = useAuth();
   const router = useRouter();
-  const today = 24;
+  const today = new Date().getDate();
   const daysOfWeek = ["M", "S", "S", "R", "K", "J", "S"];
-  const dates = [23, 24, 25, 26, 27, 28, 29];
 
-  // Add dummy pregnancy data state
+  // Generate dates for the current week
+  const generateDatesForCurrentWeek = () => {
+    const currentDate = new Date();
+    const dayOfWeek = currentDate.getDay(); // 0 is Sunday, 1 is Monday, etc.
+    const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // Calculate offset to Monday
+
+    const monday = new Date(currentDate);
+    monday.setDate(currentDate.getDate() + mondayOffset);
+
+    const dates = [];
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(monday);
+      date.setDate(monday.getDate() + i);
+      dates.push(date.getDate());
+    }
+    return dates;
+  };
+
+  const dates = generateDatesForCurrentWeek();
+
+  // Add pregnancy data state
   const [pregnancyData, setPregnancyData] = useState({
-    week: 10,
-    day: 4,
-    dueDate: "1 Okt 2025",
-    daysLeft: 246,
+    week: 0,
+    day: 0,
+    hpl: "",
+    hpht: "",
+    daysLeft: 0,
     trimester: 1,
+    isLoading: true,
+    error: null,
   });
+
+  // Fetch pregnancy data
+  useEffect(() => {
+    const fetchPregnancyInfo = async () => {
+      if (!session) return;
+
+      try {
+        const cookies = authClient.getCookie();
+        const headers = {
+          Cookie: cookies,
+        };
+
+        const response = await fetch(
+          `${process.env.EXPO_PUBLIC_API_URL}/api/user/pregnantInfo`,
+          {
+            method: "GET",
+            headers: headers,
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Calculate days left and trimester
+        const hplDate = new Date(data.hpl);
+        const today = new Date();
+        const daysLeft = Math.floor(
+          (hplDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
+        );
+
+        let trimester = 1;
+        if (data.week >= 13 && data.week <= 26) {
+          trimester = 2;
+        } else if (data.week >= 27) {
+          trimester = 3;
+        }
+
+        // Format HPL (due date)
+        const options = { day: "numeric", month: "short", year: "numeric" };
+        const formattedHpl = hplDate.toLocaleDateString("id-ID", options);
+
+        setPregnancyData({
+          week: data.week,
+          day: data.day,
+          hpl: data.hpl,
+          hpht: data.hpht,
+          daysLeft: daysLeft,
+          trimester: trimester,
+          formattedHpl: formattedHpl,
+          isLoading: false,
+          error: null,
+        });
+      } catch (error) {
+        console.error("Error fetching pregnancy info:", error);
+        setPregnancyData((prev) => ({
+          ...prev,
+          isLoading: false,
+          error: "Failed to load pregnancy data",
+        }));
+      }
+    };
+
+    fetchPregnancyInfo();
+  }, [session]);
+
+  // Use this function to render the trimester-based progress bar
+  const renderProgressBar = () => {
+    const { trimester } = pregnancyData;
+
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          marginTop: 10,
+        }}
+      >
+        <View
+          style={{
+            height: 6,
+            flex: 1,
+            backgroundColor: trimester >= 1 ? "#4A0D32" : "#E89AC7",
+            borderRadius: 3,
+            marginRight: 4,
+          }}
+        />
+        <View
+          style={{
+            height: 6,
+            flex: 1,
+            backgroundColor: trimester >= 2 ? "#4A0D32" : "#E89AC7",
+            borderRadius: 3,
+            marginRight: 4,
+          }}
+        />
+        <View
+          style={{
+            height: 6,
+            flex: 1,
+            backgroundColor: trimester >= 3 ? "#4A0D32" : "#E89AC7",
+            borderRadius: 3,
+          }}
+        />
+      </View>
+    );
+  };
 
   if (isPending) {
     return <ActivityIndicator />;
+  }
+
+  if (pregnancyData.isLoading) {
+    return <LoadingComponent style={{ marginTop: 200 }} />;
   }
 
   return (
@@ -100,7 +238,7 @@ const PregnancyTrackerApp = () => {
             >
               <Flame size={16} color="#FF481F" fill="#FFC633" />
               <ThemedText type="titleMedium" style={{ marginLeft: 4 }}>
-                23
+                1
               </ThemedText>
             </View>
             <TouchableOpacity>
@@ -236,7 +374,7 @@ const PregnancyTrackerApp = () => {
               type="bodyLarge"
               style={{ color: "#FFF", fontSize: 18 }}
             >
-              HPL: {pregnancyData.dueDate}
+              HPL: {pregnancyData.formattedHpl || "-"}
             </ThemedText>
             <TouchableOpacity>
               <ThemedText
@@ -252,63 +390,32 @@ const PregnancyTrackerApp = () => {
             </TouchableOpacity>
           </View>
 
-          {/* Progress Bar */}
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginTop: 10,
-            }}
-          >
-            <View
-              style={{
-                height: 6,
-                flex: 1,
-                backgroundColor: "#4A0D32",
-                borderRadius: 3,
-                marginRight: 4,
-              }}
-            />
-            <View
-              style={{
-                height: 6,
-                flex: 1,
-                backgroundColor: "#E89AC7",
-                borderRadius: 3,
-                marginRight: 4,
-              }}
-            />
-            <View
-              style={{
-                height: 6,
-                flex: 1,
-                backgroundColor: "#E89AC7",
-                borderRadius: 3,
-              }}
-            />
-          </View>
+          {/* Progress Bar - Replace with dynamic version */}
+          {renderProgressBar()}
 
           {/* Button */}
-          <TouchableOpacity
-            style={{
-              marginTop: 14,
-              backgroundColor: "#FFF",
-              paddingVertical: 12,
-              borderRadius: 30,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-            onPress={() => router.push("/(auth)/contractionCounter")}
-          >
-            <Plus size={20} color="#C85A9D" />
-            <ThemedText
-              type="labelLarge"
-              style={{ color: "#C85A9D", marginLeft: 8 }}
+          {pregnancyData.week >= 28 && (
+            <TouchableOpacity
+              style={{
+                marginTop: 14,
+                backgroundColor: "#FFF",
+                paddingVertical: 12,
+                borderRadius: 30,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onPress={() => router.push("/(auth)/contractionCounter")}
             >
-              Lacak kontraksimu!
-            </ThemedText>
-          </TouchableOpacity>
+              <Plus size={20} color="#C85A9D" />
+              <ThemedText
+                type="labelLarge"
+                style={{ color: "#C85A9D", marginLeft: 8 }}
+              >
+                Lacak kontraksimu!
+              </ThemedText>
+            </TouchableOpacity>
+          )}
         </LinearGradient>
 
         <ScrollView
