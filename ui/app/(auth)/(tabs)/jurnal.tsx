@@ -51,7 +51,7 @@ const babyDetails = {
       "Aku sudah mulai berkembang. Tak lama lagi, perjalanan kita benar-benar dimulai!",
     tips: "",
   },
-  3:{
+  3: {
     weight: undefined,
     height: undefined,
     naration:
@@ -92,7 +92,7 @@ const babyDetails = {
     naration:
       "Aku sudah mulai memiliki bentuk tubuh yang lebih jelas. Sekarang aku seperti ikan kecil dengan ekor yang panjang. Semua organ pentingku sedang berkembang, dan aku mulai terlihat seperti",
     tips: "",
-  }, 
+  },
   9: {
     weight: 2,
     height: 2.3,
@@ -156,7 +156,7 @@ const babyDetails = {
       "Yeay! Sistem peredaran darahku sudah berfungsi baik sekarang. Jantungku bahkan sudah mempompa 28 liter darah dalam sehari.",
     tips: "",
   },
-  18:{
+  18: {
     weight: 190,
     height: 14.2,
     naration:
@@ -230,7 +230,7 @@ const babyDetails = {
     weight: 1000,
     height: 37.6,
     naration:
-      "Paru-paru, hati, dan sistem kekebalan tubuhku terus berkembang. Aku juga masih berlatih bernapas dengan menghirup dan membuang cairan ketuban",  
+      "Paru-paru, hati, dan sistem kekebalan tubuhku terus berkembang. Aku juga masih berlatih bernapas dengan menghirup dan membuang cairan ketuban",
     tips: "",
   },
   29: {
@@ -245,7 +245,7 @@ const babyDetails = {
     height: 39.9,
     naration:
       "Bunda, tahukah kamu bahwa selama 11 minggu terakhir, berat badanku akan naik dua kali lipat?",
-    tips: "", 
+    tips: "",
   },
   31: {
     weight: 1500,
@@ -395,7 +395,7 @@ const PregnancyTrackerApp = () => {
         };
 
         const response = await fetch(
-          `${process.env.EXPO_PUBLIC_API_URL}/api/user/pregnantInfo`,
+          `http://babyblooms-api-mhtx1y-ea3f25-91-108-110-101.traefik.me/api/user/pregnantInfo`,
           {
             method: "GET",
             headers: headers,

@@ -6,12 +6,20 @@ import {
   FlashMode,
 } from "expo-camera";
 import { useRef, useState, useEffect } from "react";
-import { Button, Pressable, StyleSheet, Text, View, ActivityIndicator, ScrollView } from "react-native";
+import {
+  Button,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+  ScrollView,
+} from "react-native";
 import { Image } from "expo-image";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { ThemedText } from "@/components/ui/ThemedText";
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from "expo-file-system";
 
 export default function Kamera() {
   const [permission, requestPermission] = useCameraPermissions();
@@ -23,7 +31,7 @@ export default function Kamera() {
 
   const router = useRouter();
 
-  const apiKey = process.env.EXPO_PUBLIC_API_KEY;
+  const apiKey = "AIzaSyBJkpM9ECF2-F2rc_xY9GsqB9657TnCtaM";
 
   useEffect(() => {
     if (!apiKey) {
@@ -64,7 +72,9 @@ export default function Kamera() {
     setAnalysisResult(null); // Clear previous result
 
     try {
-      const base64 = await FileSystem.readAsStringAsync(imageUri, { encoding: 'base64' });
+      const base64 = await FileSystem.readAsStringAsync(imageUri, {
+        encoding: "base64",
+      });
 
       const prompt = `Analisis gambar makanan ini dan beri tahu saya:
         1. Apa nama makanan ini?
@@ -77,13 +87,18 @@ export default function Kamera() {
       const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
         {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             contents: [
-              { parts: [{ text: prompt }, { inline_data: { mime_type: "image/jpeg", data: base64 } }] },
+              {
+                parts: [
+                  { text: prompt },
+                  { inline_data: { mime_type: "image/jpeg", data: base64 } },
+                ],
+              },
             ],
           }),
         }
@@ -95,11 +110,18 @@ export default function Kamera() {
         console.log("Gemini API Response:", responseText);
 
         // Attempt to extract JSON - simple approach, might need refinement
-        const jsonStartIndex = responseText.indexOf('{');
-        const jsonEndIndex = responseText.lastIndexOf('}');
+        const jsonStartIndex = responseText.indexOf("{");
+        const jsonEndIndex = responseText.lastIndexOf("}");
 
-        if (jsonStartIndex !== -1 && jsonEndIndex !== -1 && jsonStartIndex < jsonEndIndex) {
-          responseText = responseText.substring(jsonStartIndex, jsonEndIndex + 1);
+        if (
+          jsonStartIndex !== -1 &&
+          jsonEndIndex !== -1 &&
+          jsonStartIndex < jsonEndIndex
+        ) {
+          responseText = responseText.substring(
+            jsonStartIndex,
+            jsonEndIndex + 1
+          );
         }
 
         try {
@@ -110,7 +132,9 @@ export default function Kamera() {
         } catch (parseError) {
           console.error("Error parsing JSON response:", parseError);
           const errorMessage = (parseError as Error).message;
-          setAnalysisResult(`Maaf, tidak dapat mengurai respons dari AI. Kesalahan: ${errorMessage}`);
+          setAnalysisResult(
+            `Maaf, tidak dapat mengurai respons dari AI. Kesalahan: ${errorMessage}`
+          );
         }
       } else {
         setAnalysisResult("Maaf, tidak ada respons yang valid dari AI.");
@@ -140,9 +164,7 @@ export default function Kamera() {
         <Pressable onPress={() => setUri(null)}>
           <AntDesign name="arrowleft" size={24} color="black" />
         </Pressable>
-        <ThemedText type='titleMedium'>
-          Hasil Pencarian
-        </ThemedText>
+        <ThemedText type="titleMedium">Hasil Pencarian</ThemedText>
         <Pressable>
           <Feather name="help-circle" size={24} color="black" />
         </Pressable>
@@ -163,7 +185,9 @@ export default function Kamera() {
       )}
 
       {/* Opsi Tambahan */}
-      <Text style={styles.alternativeText}>Tidak menemukan nama makanan yang sesuai?</Text>
+      <Text style={styles.alternativeText}>
+        Tidak menemukan nama makanan yang sesuai?
+      </Text>
       <Pressable onPress={() => router.push("/(auth)/chatMakanan")}>
         <Text style={styles.askAI}>Tanyakan manual ke BloomsAI</Text>
       </Pressable>
@@ -172,8 +196,12 @@ export default function Kamera() {
 
   const renderCamera = () => (
     <View style={styles.cameraContainer}>
-      <CameraView style={styles.camera} ref={ref} mode={"picture"} facing={"back"}>
-
+      <CameraView
+        style={styles.camera}
+        ref={ref}
+        mode={"picture"}
+        facing={"back"}
+      >
         {/* Black padding untuk framing foto */}
         <View style={styles.blackTop} />
         <View style={styles.blackBottom} />
@@ -181,13 +209,21 @@ export default function Kamera() {
         {/* Header */}
         <View style={styles.header}>
           <Pressable
-            style={{ backgroundColor: "#E5E5E526", borderRadius: 112, padding: 10 }}
+            style={{
+              backgroundColor: "#E5E5E526",
+              borderRadius: 112,
+              padding: 10,
+            }}
             onPress={() => router.back()}
           >
             <AntDesign name="close" size={24} color="white" />
           </Pressable>
           <Pressable
-            style={{ backgroundColor: "#E5E5E526", borderRadius: 112, padding: 10 }}
+            style={{
+              backgroundColor: "#E5E5E526",
+              borderRadius: 112,
+              padding: 10,
+            }}
             onPress={() => setFlashMode(flashMode === "on" ? "off" : "on")}
           >
             <Feather name="zap" size={24} color="white" />
@@ -306,17 +342,22 @@ const styles = StyleSheet.create({
   permissionText: { textAlign: "center", color: "#fff", marginBottom: 10 },
 
   alternativeText: { marginTop: 15, fontSize: 14, color: "#555" },
-  askAI: { color: "#007AFF", fontSize: 16, marginTop: 5, textDecorationLine: "underline" },
+  askAI: {
+    color: "#007AFF",
+    fontSize: 16,
+    marginTop: 5,
+    textDecorationLine: "underline",
+  },
 
   loadingOverlay: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
     zIndex: 1,
   },
 });

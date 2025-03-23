@@ -81,7 +81,7 @@ const CommunityScreen = () => {
       const headers = {
         Cookie: cookies,
       };
-      let url = `${process.env.EXPO_PUBLIC_API_URL}/api/post`;
+      let url = `http://babyblooms-api-mhtx1y-ea3f25-91-108-110-101.traefik.me/api/post`;
 
       // Convert UI category to API category
       if (activeTab !== "Semua") {
@@ -159,7 +159,7 @@ const CommunityScreen = () => {
         Cookie: cookies,
       };
       const response = await fetch(
-        `${process.env.EXPO_PUBLIC_API_URL}/api/post/${postId}/like`,
+        `http://babyblooms-api-mhtx1y-ea3f25-91-108-110-101.traefik.me/api/post/${postId}/like`,
         {
           method: "POST",
           headers: {
