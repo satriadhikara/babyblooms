@@ -28,116 +28,119 @@ const Profil = () => {
         <SafeAreaView 
             style={{ 
                 flex: 1, 
-                backgroundColor: "#F8F7F4", 
+                backgroundColor: "#FFF", 
             }} 
         >
-            {/* Header */}
-            <View
-                style={{
-                height: 96,
-                width: "100%",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingHorizontal: 20,
-                marginBottom: 20,
-                backgroundColor: "#FFF",
-                }}
-            >
-                <Pressable onPress={() => handleBack()}>
-                    <AntDesign name="arrowleft" size={24} color="black" />
-                </Pressable>
-                <ThemedText type='titleMedium'>
-                    Edit Profil
-                </ThemedText>
-                <Pressable>
-                    <Ellipsis color={'#000'} size={24}/>
-                </Pressable>
-            </View>
-            <View
-                style={{
-                    backgroundColor: "#F8F7F4",
+            <View style={{ backgroundColor: "#F8F7F4" }}>      
+                {/* Header */}
+                <View
+                    style={{
+                    height: 96,
+                    width: "100%",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
                     paddingHorizontal: 20,
+                    marginBottom: 20,
+                    backgroundColor: "#FFF",
                 }}
-            >
-                <View style={{ flexDirection: "column", alignItems: "center", gap: 20, marginBottom: 20 }}>
-                    <View
-                        style={{
-                            flexDirection: "column",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            gap: 20,
-                            backgroundColor: "#F8F7F4",
-                            paddingVertical: 15,
-                        }}
-                    >
-                        <Image
-                            source={
-                                userImage
-                                    ? { uri: userImage }
-                                    : require("@/assets/images/ProfPic.png")
-                            }
+                >
+                    <Pressable onPress={() => handleBack()}>
+                        <AntDesign name="arrowleft" size={24} color="black" />
+                    </Pressable>
+                    <ThemedText type='titleMedium'>
+                        Edit Profil
+                    </ThemedText>
+                    <Pressable>
+                        <Ellipsis color={'#000'} size={24}/>
+                    </Pressable>
+                </View>
+                <View
+                    style={{
+                        backgroundColor: "#F8F7F4",
+                        paddingHorizontal: 20,
+                        height: "100%",
+                    }}
+                >
+                    <View style={{ flexDirection: "column", alignItems: "center", gap: 20, marginBottom: 20 }}>
+                        <View
                             style={{
-                                width: 100,
-                                height: 100,
-                                resizeMode: "contain",
-                                borderRadius: 100,
+                                flexDirection: "column",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                gap: 20,
+                                backgroundColor: "#F8F7F4",
+                                paddingVertical: 15,
                             }}
-                        />
-                        <View style={{ gap: 4, alignItems: "center" }}>
-                            <ThemedText type="titleLarge">{userName}</ThemedText>
-                            <ThemedText type="bodyMedium" style={{ color: "#7E7E7E" }}>
-                                {userEmail}
-                            </ThemedText>
+                        >
+                            <Image
+                                source={
+                                    userImage
+                                        ? { uri: userImage }
+                                        : require("@/assets/images/ProfPic.png")
+                                }
+                                style={{
+                                    width: 100,
+                                    height: 100,
+                                    resizeMode: "contain",
+                                    borderRadius: 100,
+                                }}
+                            />
+                            <View style={{ gap: 4, alignItems: "center" }}>
+                                <ThemedText type="titleLarge">{userName}</ThemedText>
+                                <ThemedText type="bodyMedium" style={{ color: "#7E7E7E" }}>
+                                    {userEmail}
+                                </ThemedText>
+                            </View>
                         </View>
-                    </View>
-                    {/* edit nama atau email */}
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            paddingVertical: 15,
-                            width: "100%",
-                            marginHorizontal: 34,
-                            
-                        }}
-                    >
-                        <ThemedText type="bodyMedium" style={{ color: "#000" }}>
-                            Nama
-                        </ThemedText>
-                        <TouchableOpacity
+                        {/* edit nama atau email */}
+                        <View
                             style={{
                                 flexDirection: "row",
                                 alignItems: "center",
                                 justifyContent: "space-between",
+                                paddingVertical: 15,
+                                width: "100%",
+                                marginHorizontal: 34,
+                                
                             }}
                         >
                             <ThemedText type="bodyMedium" style={{ color: "#000" }}>
-                                {userName}
+                                Nama
                             </ThemedText>
-                            <ChevronRight size={20} color="#000" />
-                        </TouchableOpacity>
-                    </View>
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            paddingVertical: 15,
-                            width: "100%",
-                            marginHorizontal: 34,
-                            
-                        }}
-                    >
-                        <ThemedText type="bodyMedium" style={{ color: "#000" }}>
-                            Email
-                        </ThemedText>
-                        <ThemedText type="bodyMedium" style={{ color: "#000" }}>
-                            {userEmail}
-                        </ThemedText>
-                    </View>
-                </View>    
+                            <TouchableOpacity
+                                style={{
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                }}
+                            >
+                                <ThemedText type="bodyMedium" style={{ color: "#000" }}>
+                                    {userName}
+                                </ThemedText>
+                                <ChevronRight size={20} color="#000" />
+                            </TouchableOpacity>
+                        </View>
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                paddingVertical: 15,
+                                width: "100%",
+                                marginHorizontal: 34,
+                                
+                            }}
+                        >
+                            <ThemedText type="bodyMedium" style={{ color: "#000" }}>
+                                Email
+                            </ThemedText>
+                            <ThemedText type="bodyMedium" style={{ color: "#000" }}>
+                                {userEmail}
+                            </ThemedText>
+                        </View>
+                    </View>    
+                </View>
             </View>
         </SafeAreaView>
     )

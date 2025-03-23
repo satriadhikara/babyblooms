@@ -7,6 +7,10 @@ import { ChevronLeft } from 'lucide-react-native';
 
 export default function JournalScreen() {
     const router = useRouter();
+    const handleBack = () => {
+        router.back();
+    }
+
     return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#F7F6F1'}}>
         {/* Header */}
@@ -21,7 +25,7 @@ export default function JournalScreen() {
             }}>
                 <TouchableOpacity 
                     style={{ padding: 8 }}
-                    onPress={() => router.push('/(auth)/(tabs)/jurnal')}
+                    onPress={() => handleBack()}
                 >
                     <ChevronLeft size={24} color="#000" />
                 </TouchableOpacity>
