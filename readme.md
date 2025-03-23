@@ -1,4 +1,4 @@
-#🌸 BabyBlooms
+# 🌸 BabyBlooms
 
 **BabyBlooms** adalah aplikasi digital yang membantu meningkatkan kesehatan ibu hamil dengan pemantauan kehamilan, komunitas, dan edukasi berbasis digital. Dikembangkan untuk mengatasi tingginya angka kematian ibu hamil di Indonesia, aplikasi ini menyediakan akses informasi terpercaya dan mendorong keterlibatan pasangan/pendamping dalam proses kehamilan.
 
@@ -9,7 +9,7 @@ Berikut adalah beberapa fitur yang telah terimplementasi pada produk MVP kami.
 4. **Jurnal Medis** 🏥 - Fitur ini membantu ibu hamil dan juga pendamping dalam manajemen pertemuan medis mulai dari menambahkan jadwal pengingat janji konsultasi dengan dokter hingga mencatat hasil pemeriksaan dokter.
 6. **Contraction Counter** ⏱️ - Fitur ini membantu ibu hamil melacak kontraksi secara akurat. Fitur ini akan merekam durasi dan frekuensi kontraksi secara _real-time_. Lalu menampilkan pola kontraksi untuk mengetahui tanda persalinan. Setelah itu memberikan peringatan jika kontraksi sudah teratur dan perlu segera ke rumah sakit.
 
-##⭐ Our Team 
+## ⭐ Our Team 
 ### Tim FiveMonkeys
 | **Nama Anggota** |
 |-----------   |
@@ -19,8 +19,8 @@ Berikut adalah beberapa fitur yang telah terimplementasi pada produk MVP kami.
 | Mohammad Andhika Fadillah |
 | Farrel Natha Saskoro |
  
-##📱 Install Aplikasi
+## 📱 Install Aplikasi
 [Coba BabyBlooms sekarang!](https://s.hmif.dev/BabyBloomsMVP)
 
-##🔗 Akses Video Demo
+## 🔗 Akses Video Demo
 [Tonton video demo Babyblooms disini.](https://s.hmif.dev/VideoDemoMVPBabyblooms)
