@@ -9,6 +9,7 @@ import {
   ScrollView,
   ActivityIndicator,
   Alert,
+  Pressable,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
@@ -24,11 +25,38 @@ import { useAuth } from "../_layout";
 import { authClient } from "@/utils/auth-client";
 import LoadingComponent from "@/components/ui/Loading";
 
+// Define the baby details data - this should be expanded to include all weeks of pregnancy
+// Currently just a sample with fallback values
+const babyDetails = {
+  // Default values for any week
+  default: {
+    weight: 0,
+    height: 0,
+    naration:
+      "Bayimu sedang berkembang dengan baik. Setiap minggu membawa perubahan baru yang menakjubkan!",
+    tips: "",
+  },
+  // Week-specific data
+  1: {
+    weight: undefined,
+    height: undefined,
+    naration:
+      "Aku baru saja berada dalam perjalanan menuju rahimmu, Bunda. Kamu mungkin belum merasakan kehadiranku, tapi tubuhmu sedang mempersiapkan tempat yang nyaman untukku.",
+    tips: "",
+  },
+  2: {
+    weight: undefined,
+    height: undefined,
+    naration:
+      "Aku sudah mulai berkembang. Tak lama lagi, perjalanan kita benar-benar dimulai!",
+    tips: "",
+  },
+};
+
 const PregnancyTrackerApp = () => {
   const { session, isPending } = useAuth();
   const router = useRouter();
-  const today = new Date().getDate();
-  const daysOfWeek = ["M", "S", "S", "R", "K", "J", "S"]; // Standard day abbreviations
+  const daysOfWeek = ["M", "S", "S", "R", "K", "J", "S"]; // Indonesian day abbreviations
 
   // Get current time-based greeting
   const getGreeting = () => {
@@ -50,16 +78,21 @@ const PregnancyTrackerApp = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  // Generate dates for the current week starting from Sunday
+  // Generate dates for the current week starting with Monday
   const generateCurrentWeekDates = () => {
     const currentDate = new Date();
-    const currentDay = currentDate.getDay(); // 0 is Sunday
+    // Adjust day calculation to start with Monday (1) instead of Sunday (0)
+    let currentDay = currentDate.getDay(); // 0 is Sunday, 1 is Monday, etc.
+    if (currentDay === 0) currentDay = 7; // Make Sunday the 7th day instead of 0
     const result = [];
 
-    // Go back to the start of the week (Sunday)
+    // Calculate days to go back to Monday
+    const daysToMonday = currentDay - 1;
+
+    // Generate the week starting from Monday
     for (let i = 0; i < 7; i++) {
       const date = new Date(currentDate);
-      date.setDate(currentDate.getDate() - currentDay + i);
+      date.setDate(currentDate.getDate() - daysToMonday + i);
       result.push({
         date: date.getDate(),
         month: date.getMonth(),
@@ -116,12 +149,7 @@ const PregnancyTrackerApp = () => {
           (hplDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
         );
 
-        let trimester = 1;
-        if (data.week >= 13 && data.week <= 26) {
-          trimester = 2;
-        } else if (data.week >= 27) {
-          trimester = 3;
-        }
+        let trimester = data.trimester || 1;
 
         // Format HPL (due date)
         const options = { day: "numeric", month: "short", year: "numeric" };
@@ -150,6 +178,11 @@ const PregnancyTrackerApp = () => {
 
     fetchPregnancyInfo();
   }, [session]);
+
+  // Get baby details for current week with fallback to default
+  const getBabyDetails = (week) => {
+    return babyDetails[week] || babyDetails.default;
+  };
 
   // Use this function to render the trimester-based progress bar
   const renderProgressBar = () => {
@@ -200,6 +233,9 @@ const PregnancyTrackerApp = () => {
   if (pregnancyData.isLoading) {
     return <LoadingComponent style={{ marginTop: 200 }} />;
   }
+
+  // Get current baby details
+  const currentBabyDetails = getBabyDetails(pregnancyData.week);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -314,6 +350,7 @@ const PregnancyTrackerApp = () => {
           </View>
         </View>
 
+        {/* Remainder of your component unchanged */}
         {/* Fetus Visualization */}
         <View
           style={{ alignItems: "center", marginTop: 20, position: "relative" }}
@@ -443,14 +480,13 @@ const PregnancyTrackerApp = () => {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={true}
-          indicatorStyle="black" // Add this to change the color
-          contentContainerStyle={{ paddingRight: 20 }} // Add padding for the indicator
+          indicatorStyle="black"
+          contentContainerStyle={{ paddingRight: 20 }}
           style={{
             padding: 20,
             marginTop: 20,
           }}
           scrollIndicatorInsets={{
-            // Add this to customize the indicator position
             right: 5,
             bottom: 0,
           }}
@@ -495,7 +531,7 @@ const PregnancyTrackerApp = () => {
             </View>
           </TouchableOpacity>
 
-          {/* Baby Development Card */}
+          {/* Baby Development Card - Fixed to use currentBabyDetails */}
           <TouchableOpacity onPress={() => router.push("/(auth)/infoMingguan")}>
             <View
               style={{
@@ -509,10 +545,11 @@ const PregnancyTrackerApp = () => {
                 shadowRadius: 4,
                 elevation: 3,
                 marginRight: 10,
+                height: "100%",
               }}
             >
               <ThemedText type="titleMedium" style={{ color: "#D43066" }}>
-                Si kecil pada minggu ke-10
+                Si kecil pada minggu ke-{pregnancyData.week}
               </ThemedText>
               <View
                 style={{
@@ -535,10 +572,10 @@ const PregnancyTrackerApp = () => {
                 }}
               >
                 <ThemedText type="bodyLarge" style={{ color: "#000" }}>
-                  3.1 cm
+                  {currentBabyDetails.height || "-"} cm
                 </ThemedText>
                 <ThemedText type="bodyLarge" style={{ color: "#000" }}>
-                  4.0 g
+                  {currentBabyDetails.weight || "-"} g
                 </ThemedText>
               </View>
               <ThemedText
@@ -551,9 +588,7 @@ const PregnancyTrackerApp = () => {
                   marginTop: 10,
                 }}
               >
-                Aku bukan embrio lagi. Sekarang aku sudah menjadi janin!
-                Jari-jariku sempurna, dan sikuku bisa menekuk. Aku juga mulai
-                menelan dan menendang kecil.
+                {currentBabyDetails.naration}
               </ThemedText>
             </View>
           </TouchableOpacity>
@@ -572,6 +607,7 @@ const PregnancyTrackerApp = () => {
                 shadowRadius: 4,
                 elevation: 3,
                 marginRight: 40,
+                height: "100%",
               }}
             >
               <View
@@ -589,7 +625,7 @@ const PregnancyTrackerApp = () => {
                       marginLeft: 6,
                     }}
                   >
-                    Tips untuk Minggu ke-10
+                    Tips untuk Minggu ke-{pregnancyData.week}
                   </ThemedText>
                 </View>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -610,11 +646,12 @@ const PregnancyTrackerApp = () => {
                   marginTop: 10,
                 }}
               >
-                Pada minggu ke-10 kehamilan, tubuh terus beradaptasi dengan
+                {/* Pada minggu ke-10 kehamilan, tubuh terus beradaptasi dengan
                 berbagai perubahan hormon yang dapat menyebabkan kelelahan,
                 mual, dan sensitivitas terhadap makanan atau bau tertentu.
                 Meskipun ini bisa menjadi masa yang menantang, ada banyak cara
-                untuk tetap merasa sehat dan nyaman. Dengan pola makan...
+                untuk tetap merasa sehat dan nyaman. Dengan pola makan... */}
+                Coming soon!
               </ThemedText>
             </View>
           </TouchableOpacity>
