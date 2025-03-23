@@ -10,7 +10,7 @@ Berikut adalah beberapa fitur yang telah terimplementasi pada produk MVP kami.
 6. **Contraction Counter** ⏱️ - Fitur ini membantu ibu hamil melacak kontraksi secara akurat. Fitur ini akan merekam durasi dan frekuensi kontraksi secara _real-time_. Lalu menampilkan pola kontraksi untuk mengetahui tanda persalinan. Setelah itu memberikan peringatan jika kontraksi sudah teratur dan perlu segera ke rumah sakit.
 
 ## ⭐ Our Team 
-### Tim FiveMonkeys
+### Tim FiveMonkeys🐵
 | **Nama Anggota** |
 |-----------   |
 | Yusril Fazri Mahendra |
