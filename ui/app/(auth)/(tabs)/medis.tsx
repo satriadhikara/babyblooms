@@ -426,9 +426,10 @@ const MedicalAppScreen = () => {
           alignItems: "center",
           justifyContent: "center",
           }}
+          onPress={() => router.push('/(auth)/infoPraHamil')}
         >
           <Plus size={20} color="#FFF"/>
-          <ThemedText type='labelLarge' style={{ color: "#FFF", marginLeft: 8 }} onPress={() => router.push('/(auth)/infoPraHamil')}>
+          <ThemedText type='labelLarge' style={{ color: "#FFF", marginLeft: 8 }}>
               Buat Catatan Baru
           </ThemedText>
         </TouchableOpacity>  
