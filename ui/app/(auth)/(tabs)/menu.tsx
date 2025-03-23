@@ -5,6 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { TouchableOpacity } from "react-native";
 import { useAuth } from "../_layout";
 import LoadingComponent from "@/components/ui/Loading";
+import { useRouter } from "expo-router";
 
 export default function Menu() {
   const { session, isPending } = useAuth();
@@ -12,6 +13,8 @@ export default function Menu() {
   if (isPending) {
     return <LoadingComponent />;
   }
+
+  const router = useRouter();
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#F8F7F4" }}>
@@ -63,6 +66,7 @@ export default function Menu() {
           size={24}
           color="#000"
           style={{ position: "absolute", right: 20, top: 95 }}
+          onPress={() => router.push("/(auth)/profil")}
         />
         <View>
           <ThemedText
