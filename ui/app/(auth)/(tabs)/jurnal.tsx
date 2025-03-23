@@ -685,7 +685,7 @@ const PregnancyTrackerApp = () => {
                   lineHeight: 20,
                 }}
               >
-                Tiba tiba ngidam dipeluk yusril
+                Tiba tiba ngidam apel madura :((
               </ThemedText>
               <View
                 style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
