@@ -180,6 +180,7 @@ userRoute.get("/pregnantInfo", async (c) => {
         day,
         trimester,
         totalDay,
+        isMom: userData.role === "mom",
       },
       200
     );
