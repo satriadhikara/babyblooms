@@ -7,11 +7,14 @@ import {
   FlatList,
   StyleSheet,
   Image,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { ThemedText } from "@/components/ui/ThemedText";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Send } from "lucide-react-native";
 
 const ChatMakanan = () => {
   const [messages, setMessages] = useState<{ text: string; sender: string }[]>([
@@ -142,38 +145,44 @@ const ChatMakanan = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <AntDesign
-          name="arrowleft"
-          size={24}
-          color="black"
-          onPress={handleBack}
+    <KeyboardAvoidingView 
+                      style={{ flex: 1 }}
+                      behavior={Platform.OS === "ios" ? "padding" : "height"}
+                      keyboardVerticalOffset={Platform.OS === "ios" ? -32 : 0}
+    >
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <AntDesign
+            name="arrowleft"
+            size={24}
+            color="black"
+            onPress={handleBack}
+          />
+          <ThemedText type="titleMedium">BloomsAI</ThemedText>
+          <View style={{ width: 24 }} />
+        </View>
+        <FlatList
+          data={
+            isTyping ? [...messages, { text: "...", sender: "bot" }] : messages
+          } // Tampilkan indikator pengetikan
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+          style={styles.chatContainer}
+          contentContainerStyle={{ paddingBottom: 20 }}
         />
-        <ThemedText type="titleMedium">BloomsAI</ThemedText>
-        <AntDesign name="menu-fold" size={24} color="black" />
-      </View>
-      <FlatList
-        data={
-          isTyping ? [...messages, { text: "...", sender: "bot" }] : messages
-        } // Tampilkan indikator pengetikan
-        renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
-        style={styles.chatContainer}
-        contentContainerStyle={{ paddingBottom: 20 }}
-      />
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          value={inputText}
-          onChangeText={setInputText}
-          placeholder="Chat"
-        />
-        <TouchableOpacity onPress={handleSend}>
-          <AntDesign name="arrowright" size={24} color="#007BFF" />
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            value={inputText}
+            onChangeText={setInputText}
+            placeholder="Chat"
+          />
+          <TouchableOpacity onPress={handleSend}>
+            <Send color="#000" size={24} />
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -245,10 +254,11 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 10,
+    padding: 12,
     backgroundColor: "white",
     borderTopWidth: 1,
     borderTopColor: "#ccc",
+    gap: 8,
   },
   input: {
     flex: 1,
