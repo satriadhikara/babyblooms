@@ -1078,14 +1078,12 @@ const PregnancyTrackerApp = () => {
               alignItems: "center",
               justifyContent: "center",
             }}
-            // onPress={() => router.push('/(auth)/infoMingguan')}
-            onPress={() => router.push("/(auth)/jurnalKondisimu")}
+            onPress={() => router.push("/(auth)/infoPraHamil")}
           >
             <Plus size={20} color="#FFF" />
             <ThemedText
               type="labelLarge"
               style={{ color: "#FFF", marginLeft: 8 }}
-              onPress={() => router.push("/(auth)/infoPraHamil")}
             >
               Catat kondisi hari ini
             </ThemedText>
