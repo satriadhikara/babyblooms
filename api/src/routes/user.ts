@@ -178,3 +178,45 @@ userRoute.get("/pregnantInfo", async (c) => {
     return c.json({ error: "Failed to fetch child data" }, 500);
   }
 });
+
+userRoute.post(
+  "/connect",
+  zValidator(
+    "param",
+    z.object({
+      connectionCode: z.string(),
+    })
+  ),
+  async (c) => {
+    const session = c.get("session");
+    const user = c.get("user");
+    const validated = c.req.valid("param");
+
+    if (!session || !user) {
+      return c.json({ error: "Unauthorized" }, 401);
+    }
+
+    try {
+      const [childData] = await db
+        .select()
+        .from(child)
+        .where(eq(child.connectionCode, validated.connectionCode));
+
+      if (!childData) {
+        return c.json({ error: "Child not found" }, 404);
+      }
+
+      await db
+        .update(userTable)
+        .set({
+          role: "guardian",
+        })
+        .where(eq(userTable.id, user.id));
+
+      return c.json({ message: "Connected successfully" }, 200);
+    } catch (error) {
+      console.error("Error connecting to child:", error);
+      return c.json({ error: "Failed to connect to child" }, 500);
+    }
+  }
+);
