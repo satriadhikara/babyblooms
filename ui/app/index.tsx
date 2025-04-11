@@ -13,6 +13,11 @@ import { useRouter } from "expo-router";
 import { authClient } from "@/utils/auth-client";
 import LoadingComponent from "@/components/ui/Loading";
 import PagerView from "react-native-pager-view";
+import Animated, {
+  useAnimatedStyle,
+  withSpring,
+  withTiming
+} from 'react-native-reanimated';
 
 const { width, height } = Dimensions.get("window");
 
@@ -22,6 +27,32 @@ interface PageData {
   imageSource: any;
   type: number;
 }
+
+const PageIndicator = ({ isActive }: { isActive: boolean }) => {
+  const animatedStyle = useAnimatedStyle(() => ({
+    width: withSpring(isActive ? 20 : 8, {
+      damping: 20,
+      stiffness: 200,
+    }),
+    backgroundColor: withTiming(
+      isActive ? '#000' : '#FFF',
+      { duration: 300 }
+    ),
+  }));
+
+  return (
+    <Animated.View
+      style={[
+        {
+          height: 8,
+          borderRadius: 4,
+          marginHorizontal: 6,
+        },
+        animatedStyle,
+      ]}
+    />
+  );
+};
 
 export default function App() {
   const { data: session, isPending } = authClient.useSession();
@@ -114,18 +145,9 @@ export default function App() {
       }}
     >
       {pages.map((_, index) => (
-        <View
-          key={index}
-          style={{
-            width: 8,
-            height: 8,
-            borderRadius: 4,
-            backgroundColor: "white",
-            marginHorizontal: 6,
-            ...(index === currentPage
-              ? { backgroundColor: "black", width: 20 }
-              : {}),
-          }}
+        <PageIndicator 
+          key={index} 
+          isActive={index === currentPage} 
         />
       ))}
     </View>

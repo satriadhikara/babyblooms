@@ -560,7 +560,7 @@ const PregnancyTrackerApp = () => {
             paddingBottom: 30,
           }}
         >
-          <View>
+          <View style={{ flex: 1, marginRight: 20 }}>
             <ThemedText
               type="titleMedium"
               style={{ fontSize: 14, color: "#0C0C0C" }}
@@ -569,17 +569,21 @@ const PregnancyTrackerApp = () => {
             </ThemedText>
             <ThemedText
               type="headlineSmall"
-              style={{ color: "#0C0C0C", marginTop: 5 }}
+              style={{ 
+                color: "#0C0C0C", 
+                marginTop: 5,
+                flexWrap: 'wrap' 
+              }}
+              numberOfLines={2}
             >
-              {session?.user?.name && session.user.name.length > 20
-                ? `${session.user.name.substring(0, 22)}...`
-                : session?.user?.name}
+              {session?.user?.name}
             </ThemedText>
           </View>
           <View
             style={{
               flexDirection: "row",
-              alignItems: "center",
+              alignItems: "flex-start",
+              justifyContent: "center",
               paddingTop: 35,
             }}
           >
@@ -587,16 +591,29 @@ const PregnancyTrackerApp = () => {
               style={{
                 flexDirection: "row",
                 alignItems: "center",
-                marginRight: 20,
+                marginTop: 5,
               }}
             >
-              <Flame size={16} color="#FF481F" fill="#FFC633" />
+              <Flame size={28} color="#FF481F" fill="#FFC633" />
               <ThemedText type="titleMedium" style={{ marginLeft: 4 }}>
                 1
               </ThemedText>
             </View>
-            <TouchableOpacity>
-              <Bell size={24} color="#333" />
+\           <TouchableOpacity onPress={() => router.push("/(auth)/akunSaya")}>
+              <Image
+                source={
+                  session?.user.image
+                    ? { uri: session.user.image }
+                    : require("@/assets/images/ProfPic.png")
+                }
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 20,
+                  marginLeft: 15,
+                  backgroundColor: "#e0e0e0",
+                }}
+              />
             </TouchableOpacity>
           </View>
         </View>
@@ -621,6 +638,7 @@ const PregnancyTrackerApp = () => {
               flexDirection: "row",
               justifyContent: "space-between",
               marginTop: 6,
+              marginBottom: 20,
             }}
           >
             {currentWeekDates.map((dateObj, index) => (
@@ -645,11 +663,9 @@ const PregnancyTrackerApp = () => {
             ))}
           </View>
         </View>
-
-        {/* Remainder of your component unchanged */}
         {/* Fetus Visualization */}
         <View
-          style={{ alignItems: "center", marginTop: 20, position: "relative" }}
+          style={{ alignItems: "center", position: "relative" }}
         >
           <Image
             source={require("@/assets/images/yusril.png")}
@@ -660,7 +676,7 @@ const PregnancyTrackerApp = () => {
               position: "absolute",
               right: 25,
               bottom: 10,
-              backgroundColor: isPlaying ? "#C85A9D" : "#FFF", // Change background color based on isPlaying state
+              backgroundColor: isPlaying ? "#C85A9D" : "#FFF", 
               width: 54,
               height: 54,
               borderRadius: 27,

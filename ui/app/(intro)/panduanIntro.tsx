@@ -205,7 +205,6 @@ const PanduanPage = () => {
               paddingLeft: 25,
             }}
             scrollIndicatorInsets={{
-              // Add this to customize the indicator position
               right: 5,
               bottom: 0,
             }}
