@@ -5,16 +5,13 @@ import {
     SafeAreaView, 
     TouchableOpacity, 
     Image,
-    StatusBar,
     ScrollView,
     TextInput,
     Dimensions,
-    Animated
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Feather, Ionicons } from '@expo/vector-icons';
 import { useRouter } from "expo-router";
-import { Sparkle,ArrowUpRight } from 'lucide-react-native';
+import { Search } from "lucide-react-native";
 
 const PanduanPage = () => {
     
@@ -48,6 +45,50 @@ const PanduanPage = () => {
             title: "",
             description: "",
         },
+    ];
+
+    interface Article {
+        id: number;
+        image: any;
+        category: string;
+        title: string;
+        author: string;
+        date: string;
+    }
+    
+    const articles: Article[] = [
+    {
+        id: 1,
+        image: require("../../../assets/images/HamilKosong.png"),
+        category: "Kesehatan",
+        title: "Mengenal penyebab Hamil Kosong, Apa Saja Gejalanya?",
+        author: "Citra Maharani",
+        date: "28 Feb 2025"
+    },
+    {
+        id: 2,
+        image: require("../../../assets/images/GulaDarahMelonjak.png"),
+        category: "Kesehatan",
+        title: "Tips Buka Puasa Aman Khusus Bumil Biar Gula Darah Tak Melonjak",
+        author: "Averus Kautsar",
+        date: "06 Mar 2025"
+    },
+    {
+        id: 3,
+        image: require("../../../assets/images/PentingnyaOlahraga.png"),
+        category: "Olahraga",
+        title: "Pentingnya Olahraga Saat Hamil",
+        author: "Ni Komang",
+        date: "10 Jan 2025"
+    },
+    {
+        id: 4,
+        image: require("../../../assets/images/GayaHidupBumil.png"),
+        category: "Gaya Hidup",
+        title: "Gaya Hidup yang Baik untuk Ibu Hamil",
+        author: "Redaksi",
+        date: "28 Feb 2025"
+    }
     ];
 
     // Handle scroll event to determine current index
@@ -104,51 +145,53 @@ const PanduanPage = () => {
                     bottom: 0,
                 }}
             />
+            {/* Header */}
+            <ThemedText type='headlineSmall' style={{color: "#000000", marginTop: 30, marginLeft: 25}} >
+                Momspedia
+            </ThemedText>
+
+            <View style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                height: 40,
+                borderWidth: 1,
+                borderColor: '#E0E0E0',
+                borderRadius: 48,
+                marginTop: 20,
+                marginLeft: 25,
+                marginRight: 15,
+                marginBottom: 20,
+                backgroundColor: "#EFEFF0",
+                paddingHorizontal: 16,
+            }}>
+                <Search size={20} color="#BFBFBF" />
+                <TextInput
+                    ref={textInputRef}
+                    style={{
+                        flex: 1,
+                        marginLeft: 8,
+                        fontSize: 14,
+                        color: "#000000",
+                        fontFamily: 'switzer',
+                        lineHeight: 20,
+                    }}
+                    placeholder="Cari topik, artikel, lainnya"
+                    placeholderTextColor="#BFBFBF" 
+                    value={entryText}
+                    onChangeText={setEntryText}
+                />
+            </View>
             <ScrollView 
                 style={{ flex: 1 }}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ paddingBottom: 30 }}
             >
-            
-                {/* Header */}
-                <ThemedText type='bodyLarge' style={{color: "#000000", fontWeight:"bold", fontSize: 24, marginTop: 60, marginLeft: 25}} >
-                    Momspedia
-                </ThemedText>
-
-                <TextInput
-                    ref={textInputRef}
-                    style={{
-                        height: 40,
-                        borderWidth: 1,
-                        borderColor: '#E0E0E0',
-                        borderRadius: 48,
-                        paddingVertical: 10,
-                        paddingHorizontal: 20,
-                        textAlignVertical: 'center',
-                        marginTop: 20,
-                        marginLeft: 25,
-                        marginRight: 15,
-                        backgroundColor: "#EFEFF0",
-                        fontSize: 14,
-                        color: "#000000",
-                        fontWeight: 400,
-                        fontFamily: 'switzer',
-                        lineHeight: 20,
-                    }}
-                    placeholder="Cari topik, artikel, lainnya"
-                    value={entryText}
-                    onChangeText={setEntryText}
-                    multiline
-                    autoFocus
-                />
-    
                 <ScrollView
                     horizontal
                     showsHorizontalScrollIndicator={false}
                     style={{
                         marginTop: 30,
-                        marginLeft: 25,
-                        marginRight: 25,
+                        paddingLeft: 25,
                     }}
                     scrollIndicatorInsets={{ // Add this to customize the indicator position
                         right: 5,
@@ -302,40 +345,32 @@ const PanduanPage = () => {
                     Rekomendasi
                 </ThemedText>
                 
-                {/* Enhanced Recommendation Carousel */}
                 <View style={{ marginTop: 10 }}>
                     <ScrollView
                         ref={scrollViewRef}
                         horizontal
                         pagingEnabled
                         showsHorizontalScrollIndicator={false}
-                        style={{
-                            marginLeft: 25,
-                            marginRight: 25,
-                        }}
                         contentContainerStyle={{
-                            paddingRight: screenWidth - cardWidth - 25 - cardMargin,
-                            // Add left padding to make first item centered when selected
-                            paddingLeft: (screenWidth - cardWidth) / 2 - 25,
+                            paddingHorizontal: (screenWidth - cardWidth) / 2 , 
+                            alignItems: 'center',
+                            justifyContent: 'center', 
                         }}
                         snapToInterval={cardViewWidth}
                         decelerationRate="fast"
                         onScroll={handleScroll}
                         onScrollEndDrag={(e) => {
                             const offsetX = e.nativeEvent.contentOffset.x;
-                            
-                            // Handle wrap-around logic for infinite scroll
+                        
                             if (offsetX < 0) {
-                                // Scrolled left of the first item, jump to the last item
                                 const lastIndex = recommendationItems.length - 1;
-                                scrollViewRef.current && scrollViewRef.current.scrollTo({
+                                scrollViewRef.current?.scrollTo({
                                     x: lastIndex * cardViewWidth,
                                     animated: false
                                 });
                                 setCurrentIndex(lastIndex);
                             } else if (offsetX > (recommendationItems.length - 1) * cardViewWidth) {
-                                // Scrolled right of the last item, jump to the first item
-                                scrollViewRef.current && scrollViewRef.current.scrollTo({
+                                scrollViewRef.current?.scrollTo({
                                     x: 0,
                                     animated: false
                                 });
@@ -417,13 +452,13 @@ const PanduanPage = () => {
                     style={{
                         marginTop: 10,
                         marginLeft: 25,
-                        marginRight: 25,
+                        marginRight: 5,
                     }}
                 >
                     <TouchableOpacity
                         style={{
-                            width: 77,
-                            height: 26,
+                            width: 80,
+                            height:30,
                             backgroundColor: "#4A4F87",
                             borderRadius: 100,
                             alignItems: "center",
@@ -450,7 +485,7 @@ const PanduanPage = () => {
                     <TouchableOpacity
                         style={{
                             width: 100,
-                            height: 26,
+                            height: 30,
                             backgroundColor: "#4A4F87",
                             borderRadius: 100,
                             alignItems: "center",
@@ -476,8 +511,8 @@ const PanduanPage = () => {
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{
-                            width: 105,
-                            height: 26,
+                            width: 115,
+                            height: 30,
                             backgroundColor: "#4A4F87",
                             borderRadius: 100,
                             alignItems: "center",
@@ -504,7 +539,7 @@ const PanduanPage = () => {
                     <TouchableOpacity
                         style={{
                             width: 91,
-                            height: 26,
+                            height: 30,
                             backgroundColor: "#4A4F87",
                             borderRadius: 100,
                             alignItems: "center",
@@ -528,47 +563,48 @@ const PanduanPage = () => {
                         </ThemedText>
                     </TouchableOpacity>
                 </ScrollView>
-                {/* Artikel 1 */}
-                <TouchableOpacity
-                    style={{
-                        height: 108,
-                        borderRadius: 12,
-                        alignItems: "flex-start",
-                        marginTop: 20,
-                        marginLeft: 25,
-                        marginRight: 25,
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignContent: "center",
-                    }}
-                >
-                    <View
+                {articles.map((article) => (
+                    <TouchableOpacity
+                        key={article.id}
+                        style={{
+                            height: 108,
+                            borderRadius: 12,
+                            alignItems: "flex-start",
+                            marginTop: 20,
+                            marginLeft: 25,
+                            marginRight: 25,
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignContent: "center",
+                        }}
+                    >
+                        <View
                         style={{
                             width: 146,
                             height: 108,
                             borderRadius: 12,
                             alignItems: "center",
                         }}
-                    >
+                        >
                         <Image
-                            source={require("../../../assets/images/HamilKosong.png")}
+                            source={article.image}
                             style={{
-                                width: '100%',
-                                height: '100%',
+                                width: 146,
+                                height: 115,
                                 borderRadius: 12,
                                 position: 'absolute',
                             }}
                         />
-                    </View>
-                    <View
-                        style={{
-                            width: 200,
-                            height: 108,
-                            borderRadius: 12,
-                            alignItems: "flex-start",
-                            backgroundColor: "#F8F7F4",
-                        }}
-                    >
+                        </View>
+                        <View
+                            style={{
+                                width: 200,
+                                height: 108,
+                                borderRadius: 12,
+                                alignItems: "flex-start",
+                                backgroundColor: "#F8F7F4",
+                            }}
+                        >
                         <ThemedText
                             style={{
                                 fontSize: 12,
@@ -577,17 +613,17 @@ const PanduanPage = () => {
                                 fontWeight: 500,
                             }}
                         >
-                            Kesehatan
+                            {article.category}
                         </ThemedText>
                         <ThemedText
                             style={{
-                                fontSize: 14,
+                                fontSize: 16,
                                 color: "#000000",
                                 fontFamily: 'plusJakartaSans',
                                 fontWeight: 700,
                             }}
                         >
-                            Mengenal penyebab Hamil Kosong, Apa Saja Gejalanya?
+                            {article.title}
                         </ThemedText>
                         <ThemedText
                             style={{
@@ -597,229 +633,11 @@ const PanduanPage = () => {
                                 fontWeight: 500,
                             }}
                         >
-                            oleh Citra Maharani - 28 Feb 2025
+                            oleh {article.author} - {article.date}
                         </ThemedText>
-                    </View>
-                </TouchableOpacity>
-                {/* Artikel 2 */}
-                <TouchableOpacity
-                    style={{
-                        height: 108,
-                        borderRadius: 12,
-                        alignItems: "flex-start",
-                        marginTop: 20,
-                        marginLeft: 25,
-                        marginRight: 25,
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignContent: "center",
-                    }}
-                >
-                    <View
-                        style={{
-                            width: 146,
-                            height: 108,
-                            borderRadius: 12,
-                            alignItems: "center",
-                        }}
-                    >
-                        <Image
-                            source={require("../../../assets/images/GulaDarahMelonjak.png")}
-                            style={{
-                                width: '100%',
-                                height: '100%',
-                                borderRadius: 12,
-                                position: 'absolute',
-                            }}
-                        />
-                    </View>
-                    <View
-                        style={{
-                            width: 200,
-                            height: 108,
-                            borderRadius: 12,
-                            alignItems: "flex-start",
-                            backgroundColor: "#F8F7F4",
-                        }}
-                    >
-                        <ThemedText
-                            style={{
-                                fontSize: 12,
-                                color: "#AFB1B6",
-                                fontFamily: 'switzer',
-                                fontWeight: 500,
-                            }}
-                        >
-                            Kesehatan
-                        </ThemedText>
-                        <ThemedText
-                            style={{
-                                fontSize: 14,
-                                color: "#000000",
-                                fontFamily: 'plusJakartaSans',
-                                fontWeight: 700,
-                            }}
-                        >
-                            Tips Buka Puasa Aman Khusus Bumil Biar Gula Darah Tak Melonjak
-                        </ThemedText>
-                        <ThemedText
-                            style={{
-                                fontSize: 12,
-                                color: "#AFB1B6",
-                                fontFamily: 'switzer',
-                                fontWeight: 500,
-                            }}
-                        >
-                            oleh Averus Kautsar - 06 Mar 2025
-                        </ThemedText>
-                    </View>
-                </TouchableOpacity>
-                {/* Artikel 3 */}
-                <TouchableOpacity
-                    style={{
-                        height: 108,
-                        borderRadius: 12,
-                        alignItems: "flex-start",
-                        marginTop: 20,
-                        marginLeft: 25,
-                        marginRight: 25,
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignContent: "center",
-                    }}
-                >
-                    <View
-                        style={{
-                            width: 146,
-                            height: 108,
-                            borderRadius: 12,
-                            alignItems: "center",
-                        }}
-                    >
-                        <Image
-                            source={require("../../../assets/images/PentingnyaOlahraga.png")}
-                            style={{
-                                width: '100%',
-                                height: '100%',
-                                borderRadius: 12,
-                                position: 'absolute',
-                            }}
-                        />
-                    </View>
-                    <View
-                        style={{
-                            width: 200,
-                            height: 108,
-                            borderRadius: 12,
-                            alignItems: "flex-start",
-                            backgroundColor: "#F8F7F4",
-                        }}
-                    >
-                        <ThemedText
-                            style={{
-                                fontSize: 12,
-                                color: "#AFB1B6",
-                                fontFamily: 'switzer',
-                                fontWeight: 500,
-                            }}
-                        >
-                            Olahraga
-                        </ThemedText>
-                        <ThemedText
-                            style={{
-                                fontSize: 14,
-                                color: "#000000",
-                                fontFamily: 'plusJakartaSans',
-                                fontWeight: 700,
-                            }}
-                        >
-                            Pentingnya Olahraga Saat Hamil
-                        </ThemedText>
-                        <ThemedText
-                            style={{
-                                fontSize: 12,
-                                color: "#AFB1B6",
-                                fontFamily: 'switzer',
-                                fontWeight: 500,
-                            }}
-                        >
-                            oleh Ni Komang... - 10 Jan 2025
-                        </ThemedText>
-                    </View>
-                </TouchableOpacity>
-                {/* Artikel 4 */}
-                <TouchableOpacity
-                    style={{
-                        height: 108,
-                        borderRadius: 12,
-                        alignItems: "flex-start",
-                        marginTop: 20,
-                        marginLeft: 25,
-                        marginRight: 25,
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignContent: "center",
-                    }}
-                >
-                    <View
-                        style={{
-                            width: 146,
-                            height: 108,
-                            borderRadius: 12,
-                            alignItems: "center",
-                        }}
-                    >
-                        <Image
-                            source={require("../../../assets/images/GayaHidupBumil.png")}
-                            style={{
-                                width: '100%',
-                                height: '100%',
-                                borderRadius: 12,
-                                position: 'absolute',
-                            }}
-                        />
-                    </View>
-                    <View
-                        style={{
-                            width: 200,
-                            height: 108,
-                            borderRadius: 12,
-                            alignItems: "flex-start",
-                            backgroundColor: "#F8F7F4",
-                        }}
-                    >
-                        <ThemedText
-                            style={{
-                                fontSize: 12,
-                                color: "#AFB1B6",
-                                fontFamily: 'switzer',
-                                fontWeight: 500,
-                            }}
-                        >
-                            Gaya Hidup
-                        </ThemedText>
-                        <ThemedText
-                            style={{
-                                fontSize: 14,
-                                color: "#000000",
-                                fontFamily: 'plusJakartaSans',
-                                fontWeight: 700,
-                            }}
-                        >
-                            Gaya Hidup yang Baik untuk Ibu Hamil
-                        </ThemedText>
-                        <ThemedText
-                            style={{
-                                fontSize: 12,
-                                color: "#AFB1B6",
-                                fontFamily: 'switzer',
-                                fontWeight: 500,
-                            }}
-                        >
-                            oleh Redaksi... - 28 Feb 2025
-                        </ThemedText>
-                    </View>
-                </TouchableOpacity>
+                        </View>
+                    </TouchableOpacity>
+                ))}
             </ScrollView>
         </SafeAreaView>
     );
