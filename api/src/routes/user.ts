@@ -216,12 +216,14 @@ userRoute.post(
         return c.json({ error: "Child not found" }, 404);
       }
 
-      await db
-        .update(userTable)
-        .set({
-          role: "guardian",
-        })
-        .where(eq(userTable.id, user.id));
+      const uuid = randomUUIDv7("base64url");
+
+      await db.insert(guardian).values({
+        id: uuid,
+        guardianUserId: user.id,
+        motherId: childData.motherId,
+        connectedAt: new Date(),
+      });
 
       return c.json({ message: "Connected successfully" }, 200);
     } catch (error) {
