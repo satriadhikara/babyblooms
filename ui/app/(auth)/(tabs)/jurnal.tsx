@@ -350,7 +350,7 @@ const PregnancyTrackerApp = () => {
     setIsPlaying(true); // Set isPlaying to true when sound starts playing
 
     sound.setOnPlaybackStatusUpdate((status) => {
-      if (status.didJustFinish) {
+      if (status.isLoaded && status.didJustFinish) {
         setIsPlaying(false); // Reset isPlaying when sound finishes
       }
     });
@@ -401,8 +401,22 @@ const PregnancyTrackerApp = () => {
 
   const currentWeekDates = generateCurrentWeekDates();
 
-  // Add pregnancy data state
-  const [pregnancyData, setPregnancyData] = useState({
+  // Define the type for pregnancy data
+  interface PregnancyData {
+    week: number;
+    day: number;
+    hpl: string;
+    hpht: string;
+    daysLeft: number;
+    trimester: number;
+    formattedHpl?: string; // Make formattedHpl optional as it's added later
+    isLoading: boolean;
+    isMom: boolean;
+    error: string | null; // Allow error to be string or null
+  }
+
+  // Add pregnancy data state with explicit type
+  const [pregnancyData, setPregnancyData] = useState<PregnancyData>({
     week: 0,
     day: 0,
     hpl: "",
@@ -410,6 +424,7 @@ const PregnancyTrackerApp = () => {
     daysLeft: 0,
     trimester: 1,
     isLoading: true,
+    isMom: true,
     error: null,
   });
 
@@ -438,6 +453,8 @@ const PregnancyTrackerApp = () => {
 
         const data = await response.json();
 
+        console.log("Pregnancy data:", data);
+
         // Calculate days left and trimester
         const hplDate = new Date(data.hpl);
         const today = new Date();
@@ -448,7 +465,11 @@ const PregnancyTrackerApp = () => {
         let trimester = data.trimester || 1;
 
         // Format HPL (due date)
-        const options = { day: "numeric", month: "short", year: "numeric" };
+        const options: Intl.DateTimeFormatOptions = {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        };
         const formattedHpl = hplDate.toLocaleDateString("id-ID", options);
 
         setPregnancyData({
@@ -459,6 +480,7 @@ const PregnancyTrackerApp = () => {
           daysLeft: daysLeft,
           trimester: trimester,
           formattedHpl: formattedHpl,
+          isMom: data.isMom,
           isLoading: false,
           error: null,
         });
@@ -476,8 +498,9 @@ const PregnancyTrackerApp = () => {
   }, [session]);
 
   // Get baby details for current week with fallback to default
-  const getBabyDetails = (week) => {
-    return babyDetails[week] || babyDetails.default;
+  const getBabyDetails = (week: number) => {
+    // Cast week to the expected key type to satisfy TypeScript
+    return babyDetails[week as keyof typeof babyDetails] || babyDetails.default;
   };
 
   // Use this function to render the trimester-based progress bar
@@ -569,10 +592,10 @@ const PregnancyTrackerApp = () => {
             </ThemedText>
             <ThemedText
               type="headlineSmall"
-              style={{ 
-                color: "#0C0C0C", 
+              style={{
+                color: "#0C0C0C",
                 marginTop: 5,
-                flexWrap: 'wrap' 
+                flexWrap: "wrap",
               }}
               numberOfLines={2}
             >
@@ -599,7 +622,8 @@ const PregnancyTrackerApp = () => {
                 1
               </ThemedText>
             </View>
-\           <TouchableOpacity onPress={() => router.push("/(auth)/akunSaya")}>
+
+            <TouchableOpacity onPress={() => router.push("/(auth)/akunSaya")}>
               <Image
                 source={
                   session?.user.image
@@ -664,9 +688,7 @@ const PregnancyTrackerApp = () => {
           </View>
         </View>
         {/* Fetus Visualization */}
-        <View
-          style={{ alignItems: "center", position: "relative" }}
-        >
+        <View style={{ alignItems: "center", position: "relative" }}>
           <Image
             source={require("@/assets/images/yusril.png")}
             style={{ width: 400, height: 400, resizeMode: "contain" }}
@@ -676,7 +698,7 @@ const PregnancyTrackerApp = () => {
               position: "absolute",
               right: 25,
               bottom: 10,
-              backgroundColor: isPlaying ? "#C85A9D" : "#FFF", 
+              backgroundColor: isPlaying ? "#C85A9D" : "#FFF",
               width: 54,
               height: 54,
               borderRadius: 27,
@@ -766,7 +788,7 @@ const PregnancyTrackerApp = () => {
           {renderProgressBar()}
 
           {/* Button */}
-          {pregnancyData.week >= 28 && (
+          {pregnancyData.isMom && pregnancyData.week >= 28 && (
             <TouchableOpacity
               style={{
                 marginTop: 14,
@@ -981,7 +1003,9 @@ const PregnancyTrackerApp = () => {
             }}
           >
             <ThemedText type="titleMedium" style={{ fontSize: 20 }}>
-              Jurnal Kondisimu
+              {pregnancyData.isMom
+                ? "Jurnal Kondisimu"
+                : "Jurnal Kondisi Pasanganmu"}
             </ThemedText>
             <TouchableOpacity
               onPress={() => router.push("/(auth)/jurnalKondisimu")}
@@ -1083,27 +1107,29 @@ const PregnancyTrackerApp = () => {
           </View>
 
           {/* Button */}
-          <TouchableOpacity
-            style={{
-              marginTop: 14,
-              marginHorizontal: 20,
-              backgroundColor: "#4697C1",
-              paddingVertical: 20,
-              borderRadius: 30,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-            onPress={() => router.push("/(auth)/infoPraHamil")}
-          >
-            <Plus size={20} color="#FFF" />
-            <ThemedText
-              type="labelLarge"
-              style={{ color: "#FFF", marginLeft: 8 }}
+          {pregnancyData.isMom && (
+            <TouchableOpacity
+              style={{
+                marginTop: 14,
+                marginHorizontal: 20,
+                backgroundColor: "#4697C1",
+                paddingVertical: 20,
+                borderRadius: 30,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              onPress={() => router.push("/(auth)/infoPraHamil")}
             >
-              Catat kondisi hari ini
-            </ThemedText>
-          </TouchableOpacity>
+              <Plus size={20} color="#FFF" />
+              <ThemedText
+                type="labelLarge"
+                style={{ color: "#FFF", marginLeft: 8 }}
+              >
+                Catat kondisi hari ini
+              </ThemedText>
+            </TouchableOpacity>
+          )}
         </View>
 
         <View style={{ marginTop: 20, flexDirection: "column" }}>
