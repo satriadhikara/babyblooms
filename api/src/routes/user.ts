@@ -218,6 +218,11 @@ userRoute.post(
 
       const uuid = randomUUIDv7("base64url");
 
+      await db
+        .update(userTable)
+        .set({ role: "guardian" })
+        .where(eq(userTable.id, user.id));
+
       await db.insert(guardian).values({
         id: uuid,
         guardianUserId: user.id,
