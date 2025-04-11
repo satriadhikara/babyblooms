@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import type { auth } from "../utils/auth";
 import { db } from "../db";
-import { user as userTable, child } from "../db/schema";
+import { user as userTable, child, guardian } from "../db/schema";
 import { eq } from "drizzle-orm";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
@@ -126,15 +126,25 @@ userRoute.get("/pregnantInfo", async (c) => {
     .select()
     .from(userTable)
     .where(eq(userTable.id, user.id));
-  if (!userData || userData.role !== "mom") {
-    return c.json({ error: "User is not a mom" }, 403);
+
+  let motherId = user.id;
+
+  if (userData.role !== "mom") {
+    const [mother] = await db
+      .select({
+        motherId: guardian.motherId,
+      })
+      .from(guardian)
+      .where(eq(guardian.guardianUserId, user.id));
+
+    motherId = mother.motherId;
   }
 
   try {
     const [childData] = await db
       .select()
       .from(child)
-      .where(eq(child.motherId, user.id));
+      .where(eq(child.motherId, motherId));
 
     if (!childData) {
       return c.json({ error: "Child not found" }, 404);
