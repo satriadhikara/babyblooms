@@ -180,7 +180,7 @@ userRoute.get("/pregnantInfo", async (c) => {
 });
 
 userRoute.post(
-  "/connect",
+  "/connect/:connectionCode",
   zValidator(
     "param",
     z.object({
