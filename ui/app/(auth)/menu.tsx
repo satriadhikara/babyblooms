@@ -3,7 +3,7 @@ import { ThemedText } from "@/components/ui/ThemedText";
 import { Settings, ChevronRight, Plus, Scroll } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TouchableOpacity } from "react-native";
-import { useAuth } from "../_layout";
+import { useAuth } from "./_layout";
 import LoadingComponent from "@/components/ui/Loading";
 import { useRouter } from "expo-router";
 
@@ -66,7 +66,7 @@ export default function Menu() {
           size={24}
           color="#000"
           style={{ position: "absolute", right: 20, top: 95 }}
-          onPress={() => router.push("/(auth)/profil")}
+          onPress={() => router.push("/(auth)/editprofil")}
         />
         <View>
           <ThemedText
@@ -81,7 +81,7 @@ export default function Menu() {
             Bayimu & Keluarga
           </ThemedText>
         </View>
-        <View
+        <TouchableOpacity
           style={{
             flexDirection: "row",
             backgroundColor: "#F8F7F4",
@@ -98,6 +98,7 @@ export default function Menu() {
             marginHorizontal: 16,
             marginVertical: 8,
           }}
+          onPress={() => router.push("/profilbayi")}
         >
           <View style={{ gap: 16 }}>
             <View style={{ gap: 2 }}>
@@ -114,7 +115,7 @@ export default function Menu() {
                 4 Minggu 5 Hari
               </ThemedText>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => router.push("/anggotaKeluarga")}>
               <View
                 style={{
                   marginTop: 4,
@@ -146,7 +147,7 @@ export default function Menu() {
               resizeMode: "contain",
             }}
           />
-        </View>
+        </TouchableOpacity>
         <TouchableOpacity
           style={{
             backgroundColor: "#B6B6B6",
