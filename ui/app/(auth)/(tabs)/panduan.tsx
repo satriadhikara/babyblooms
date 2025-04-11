@@ -138,7 +138,7 @@ const PanduanPage = () => {
     return (
         <SafeAreaView style={{ flex: 1 , backgroundColor:"#F8F7F4"}}>
             {/* Header */}
-            <View style={{flexDirection: "row",justifyContent: "space-between", alignItems: "center", paddingHorizontal: 24, paddingVertical: 20, backgroundColor: "#F8F7F4",}}>
+            <View style={{flexDirection: "row",justifyContent: "space-between", alignItems: "center", paddingHorizontal: 24, paddingTop: 20,paddingBottom:10, backgroundColor: "#F8F7F4",}}>
                 <ThemedText type='headlineSmall' style={{color: "#000000"}} >
                     Momspedia
                 </ThemedText>
@@ -164,47 +164,47 @@ const PanduanPage = () => {
                 flex: 1,
                 }}
             >
-                <View style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    height: 40,
-                    borderWidth: 1,
-                    borderColor: '#E0E0E0',
-                    borderRadius: 48,
-                    marginTop: 20,
-                    marginLeft: 25,
-                    marginRight: 15,
-                    marginBottom: 20,
-                    backgroundColor: "#EFEFF0",
-                    paddingHorizontal: 16,
-                }}>
-                    <Search size={20} color="#BFBFBF" />
-                    <TextInput
-                        ref={textInputRef}
-                        style={{
-                            flex: 1,
-                            marginLeft: 8,
-                            fontSize: 14,
-                            color: "#000000",
-                            fontFamily: 'switzer',
-                            lineHeight: 20,
-                        }}
-                        placeholder="Cari topik, artikel, lainnya"
-                        placeholderTextColor="#BFBFBF" 
-                        value={entryText}
-                        onChangeText={setEntryText}
-                    />
-                </View>
                 <ScrollView 
                     style={{ flex: 1 }}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ paddingBottom: 30 }}
                 >
+                    <View style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        height: 40,
+                        borderWidth: 1,
+                        borderColor: '#E0E0E0',
+                        borderRadius: 48,
+                        marginTop: 20,
+                        marginLeft: 25,
+                        marginRight: 15,
+                        marginBottom: 18,
+                        backgroundColor: "#EFEFF0",
+                        paddingHorizontal: 16,
+                    }}>
+                        <Search size={20} color="#BFBFBF" />
+                        <TextInput
+                            ref={textInputRef}
+                            style={{
+                                flex: 1,
+                                marginLeft: 8,
+                                fontSize: 14,
+                                color: "#000000",
+                                fontFamily: 'switzer',
+                                lineHeight: 20,
+                            }}
+                            placeholder="Cari topik, artikel, lainnya"
+                            placeholderTextColor="#BFBFBF" 
+                            value={entryText}
+                            onChangeText={setEntryText}
+                        />
+                    </View>
                     <ScrollView
                         horizontal
                         showsHorizontalScrollIndicator={false}
                         style={{
-                            marginTop: 30,
+                            marginTop: 5,
                             paddingLeft: 25,
                         }}
                         scrollIndicatorInsets={{ // Add this to customize the indicator position

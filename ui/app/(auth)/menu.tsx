@@ -1,6 +1,6 @@
 import { View, Text, Image, ScrollView } from "react-native";
 import { ThemedText } from "@/components/ui/ThemedText";
-import { Settings, ChevronRight, Plus, Scroll } from "lucide-react-native";
+import { Settings, ChevronRight, Plus, ChevronLeft } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TouchableOpacity } from "react-native";
 import { useAuth } from "./_layout";
@@ -17,57 +17,73 @@ export default function Menu() {
   const router = useRouter();
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#F8F7F4" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          paddingHorizontal: 20,
+          paddingVertical: 15,
+          backgroundColor: "white",
+        }}
+      >
+        <TouchableOpacity onPress={() => router.back()} style={{ marginRight: 90 }}>
+          <ChevronLeft size={24} color="black" />
+        </TouchableOpacity>
+        <ThemedText type="titleMedium" style={{marginLeft:50}}>Profil</ThemedText>
+      </View>
       <ScrollView style={{ flex: 1, backgroundColor: "#F8F7F4" }}>
-        <View
+        <ThemedText
+          type="titleMedium"
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
+            fontSize: 18,
             paddingHorizontal: 20,
-            paddingVertical: 15,
-            backgroundColor: "#F8F7F4",
+            marginTop: 20,
+            color: "#000",
           }}
         >
-          <ThemedText type="headlineSmall">Menu</ThemedText>
-          <Settings size={24} color="#000" />
-        </View>
+          Profilmu
+        </ThemedText>
         <View
           style={{
             flexDirection: "row",
             alignItems: "center",
+            justifyContent: "space-between",
             gap: 20,
             backgroundColor: "#F8F7F4",
             paddingHorizontal: 20,
             paddingVertical: 15,
           }}
         >
-          <Image
-            source={
-              session?.user.image
-                ? { uri: session.user.image }
-                : require("@/assets/images/ProfPic.png")
-            }
-            style={{
-              width: 60,
-              height: 60,
-              resizeMode: "contain",
-              borderRadius: 100,
-            }}
-          />
-          <View style={{ gap: 4 }}>
-            <ThemedText type="titleMedium">{session?.user.name}</ThemedText>
-            <ThemedText type="bodySmall" style={{ color: "#7E7E7E" }}>
-              {session?.user.email}
-            </ThemedText>
+          hackathon di tengah2 pertubesan dan uts ini
+          <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
+            <Image
+              source={
+                session?.user.image
+                  ? { uri: session.user.image }
+                  : require("@/assets/images/ProfPic.png")
+              }
+              style={{
+                width: 60,
+                height: 60,
+                resizeMode: "contain",
+                borderRadius: 100,
+              }}
+            />
+            <View style={{ gap: 4 }}>
+              <ThemedText type="titleMedium">{session?.user.name}</ThemedText>
+              <ThemedText type="bodySmall" style={{ color: "#7E7E7E" }}>
+                {session?.user.email}
+              </ThemedText>
+            </View>
           </View>
+          <ChevronRight
+            size={24}
+            color="#000"
+            style={{ }}
+            onPress={() => router.push("/(auth)/editprofil")}
+          />
         </View>
-        <ChevronRight
-          size={24}
-          color="#000"
-          style={{ position: "absolute", right: 20, top: 95 }}
-          onPress={() => router.push("/(auth)/editprofil")}
-        />
         <View>
           <ThemedText
             type="titleMedium"
