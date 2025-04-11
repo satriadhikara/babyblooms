@@ -45,7 +45,7 @@ const LittleZodiac = () => {
         const prompt = `Anda adalah LittleZodiac yang seorang ahli dalam memberikan informasi informatif dalam hal ramalan zodiak, Jika ia memberikan tanggal HPL atau tanggal lahirnya si bayi maka kamu akan memberikan informasi ramalan zodiak nya. Jawab pertanyaan berikut dengan gaya bahasa yang ramah dan informatif serta memberikan kesan bahagia kepada ibu atau pendamping yang bertanya: ${userMessage} . Berikan jawaban dalam teks biasa, tanpa menggunakan format Markdown atau sintaks lainnya. Jangan gunakan simbol ** untuk membuat teks tebal. Saya ingin kamu bisa membedakan konteks dan pertanyaan. Jika konteks zodiac tetapi pertanyaan diluar zodiac maka tidak masuk dalam lingkup pengetahuanmu. Kamu hanya menjawab pertanyaan seputar zodiac dan tidak menjawab pertanyaan lain diluar zodiac. Jika diluar konteks dalam informasi pengetahuan yang ditanyakan walaupun ada kata zodiac maupun hal-hal lain tentang zodiac maka bukan lingkup pengetahuamu. Kamu berikan juga consent bahwa hal ini jangan ditelan mentah-mentah. Berikan jawaban yang singkat tentang ramalan zodiac tetapi tetap informatif`;
 
         const response = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
           {
             method: "POST",
             headers: {

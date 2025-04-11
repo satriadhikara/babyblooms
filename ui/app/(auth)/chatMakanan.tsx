@@ -45,7 +45,7 @@ const ChatMakanan = () => {
         const prompt = `Anda adalah seorang ahli gizi yang memberikan saran kepada ibu hamil. Jawab pertanyaan berikut dengan gaya bahasa yang ramah dan informatif: ${userMessage}. Berikan jawaban dalam teks biasa, tanpa menggunakan format Markdown atau sintaks lainnya. Jangan gunakan simbol ** untuk membuat teks tebal.`;
 
         const response = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
           {
             method: "POST",
             headers: {
