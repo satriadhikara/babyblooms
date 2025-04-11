@@ -1,3 +1,4 @@
+import { desc } from "drizzle-orm";
 import {
   pgTable,
   text,
@@ -14,6 +15,8 @@ import {
 
 export const genderEnum = pgEnum("gender", ["male", "female", "unknown"]);
 // export const safeStatusEnum = pgEnum('safe_status', ['safe', 'caution', 'small_portion', 'unsafe']);
+export const activityCategoryEnum = pgEnum("activity_category", ["Terkait Bepergian", "Olahraga", "Kesehatan", "Hiburan", "Fashion", "Rumah Tangga", "Gerakan Tubuh", "Kecantikan & Kosmetik", "Perawatan Rambut"]);
+export const medicineCategoryEnum = pgEnum("medicine_category", ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]);
 export const postCategoryEnum = pgEnum("post_category", [
   "pregnancyQNA",
   "tipsAndRecommendations",
@@ -106,6 +109,22 @@ export const guardian = pgTable("guardian", {
     .references(() => user.id, { onDelete: "cascade" }),
   // Timestamp when the connection was made.
   connectedAt: timestamp("connected_at").notNull(),
+});
+
+export const activity = pgTable("activity", {
+  id: text("id").primaryKey(),
+  category: activityCategoryEnum("category").notNull(),
+  title: text("title"),
+  imageUrl: text("image_url"),
+  isSafe: boolean("is_safe"),
+});
+
+export const medicine = pgTable("medicine", {
+  id: text("id").primaryKey(),
+  name: text("name"),
+  category: medicineCategoryEnum("category").notNull(),
+  description: text("description"),
+  isSafe: boolean("is_safe"),
 });
 
 // export const food = pgTable("food", {
