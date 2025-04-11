@@ -24,6 +24,7 @@ import {
 import { useAuth } from "../_layout";
 import { authClient } from "@/utils/auth-client";
 import LoadingComponent from "@/components/ui/Loading";
+import { Audio } from "expo-av";
 
 // Define the baby details data - this should be expanded to include all weeks of pregnancy
 // Currently just a sample with fallback values
@@ -322,7 +323,7 @@ const babyDetails = {
 const PregnancyTrackerApp = () => {
   const { session, isPending } = useAuth();
   const router = useRouter();
-  const daysOfWeek = ["M", "S", "S", "R", "K", "J", "S"]; // Indonesian day abbreviations
+  const daysOfWeek = ["S", "S", "R", "K", "J", "S", "M"]; // Indonesian day abbreviations
 
   // Get current time-based greeting
   const getGreeting = () => {
@@ -334,6 +335,35 @@ const PregnancyTrackerApp = () => {
   };
 
   const [greeting, setGreeting] = useState(getGreeting());
+  const [sound, setSound] = useState<Audio.Sound | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  async function playSound() {
+    console.log("Loading Sound");
+    const { sound } = await Audio.Sound.createAsync(
+      require("@/assets/sounds/detakjantung.mp3")
+    );
+    setSound(sound);
+
+    console.log("Playing Sound");
+    await sound.playAsync();
+    setIsPlaying(true); // Set isPlaying to true when sound starts playing
+
+    sound.setOnPlaybackStatusUpdate((status) => {
+      if (status.didJustFinish) {
+        setIsPlaying(false); // Reset isPlaying when sound finishes
+      }
+    });
+  }
+
+  useEffect(() => {
+    return sound
+      ? () => {
+          console.log("Unloading Sound");
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
 
   // Update greeting every minute
   useEffect(() => {
@@ -630,7 +660,7 @@ const PregnancyTrackerApp = () => {
               position: "absolute",
               right: 25,
               bottom: 10,
-              backgroundColor: "#FFF",
+              backgroundColor: isPlaying ? "#C85A9D" : "#FFF", // Change background color based on isPlaying state
               width: 54,
               height: 54,
               borderRadius: 27,
@@ -642,8 +672,9 @@ const PregnancyTrackerApp = () => {
               shadowRadius: 4,
               elevation: 2,
             }}
+            onPress={playSound} // Add onPress to play sound
           >
-            <Volume2 size={20} color="#8C8C8C" />
+            <Volume2 size={20} color={isPlaying ? "#FFF" : "#8C8C8C"} />
           </TouchableOpacity>
         </View>
 
