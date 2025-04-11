@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
 import {
   View,
-  Text,
   ScrollView,
   TouchableOpacity,
   Image,
   SafeAreaView,
   StatusBar,
-  Platform,
   Animated,
   ActivityIndicator,
   Alert,
-  RefreshControl, // Add this import
+  RefreshControl
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { ThemedText } from "@/components/ui/ThemedText";
@@ -36,7 +34,7 @@ const CommunityScreen = () => {
   const [overlayAnimation] = useState(new Animated.Value(0));
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
-  const [refreshing, setRefreshing] = useState(false); // Add this state
+  const [refreshing, setRefreshing] = useState(false); 
   const router = useRouter();
 
   interface Post {
@@ -104,11 +102,10 @@ const CommunityScreen = () => {
       Alert.alert("Error", "Failed to load posts");
     } finally {
       setLoading(false);
-      setRefreshing(false); // Add this line to stop refreshing
+      setRefreshing(false); 
     }
   };
 
-  // Add this function for pull-to-refresh
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     fetchPosts();
