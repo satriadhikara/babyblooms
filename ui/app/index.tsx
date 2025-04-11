@@ -1,38 +1,100 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
-  StyleSheet,
   Text,
   View,
   Image,
   TouchableOpacity,
   SafeAreaView,
   Dimensions,
-  Alert,
+  StatusBar,
 } from "react-native";
 import { ThemedText } from "@/components/ui/ThemedText";
-import GoogleIcon from "@/assets/vectors/google";
-import MetaIcon from "@/assets/vectors/meta";
 import { useRouter } from "expo-router";
 import { authClient } from "@/utils/auth-client";
 import LoadingComponent from "@/components/ui/Loading";
+import PagerView from "react-native-pager-view";
+
+const { width, height } = Dimensions.get("window");
+
+interface PageProps {
+  title: string;
+  description: string;
+  imageSource: any;
+  type?: number;
+}
+
+const Page: React.FC<PageProps> = ({
+  title,
+  description,
+  imageSource,
+  type,
+}) => (
+  <View style={{ flex: 1, width: width }}>
+    <Image
+      source={imageSource}
+      style={{
+        width: width,
+        height: height,
+        position: "absolute",
+        top: 0,
+        left: 0,
+      }}
+      resizeMode="cover"
+    />
+    <SafeAreaView
+      style={{
+        flex: 1,
+        justifyContent: "space-between",
+        marginVertical: 24,
+      }}
+    >
+      <View
+        style={{
+          paddingHorizontal: 24,
+          paddingBottom: 24,
+          paddingTop: 20,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+        }}
+      >
+        <ThemedText
+          type="displaySmall"
+          style={{
+            color: "#D33995",
+            marginBottom: 16,
+            marginTop: 12,
+          }}
+        >
+          {title}
+        </ThemedText>
+        <ThemedText
+          type="bodyLarge"
+          style={{ marginBottom: 24, color: "#373737" }}
+        >
+          {description}
+        </ThemedText>
+      </View>
+    </SafeAreaView>
+  </View>
+);
+
+interface PageData {
+  title: string;
+  description: string;
+  imageSource: any;
+  type: number;
+}
 
 export default function App() {
   const { data: session, isPending } = authClient.useSession();
   const router = useRouter();
   const [isCheckingRole, setIsCheckingRole] = useState(false);
-  const [isArtificialLoading, setIsArtificialLoading] = useState(true);
-
-  // Demo purpose
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsArtificialLoading(false);
-    }, 2000); // Seconds
-
-    return () => clearTimeout(timer);
-  }, []);
+  const pagerRef = useRef<PagerView>(null);
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     const checkUserRole = async () => {
+      console.log("Checking user role...");
       if (!isPending && session) {
         setIsCheckingRole(true);
         const cookies = authClient.getCookie();
@@ -74,111 +136,260 @@ export default function App() {
     checkUserRole();
   }, [session, isPending, router]);
 
-  const signInGoogle = async () => {
-    await authClient.signIn.social({
-      provider: "google",
-      callbackURL: "/",
-    });
-  };
-
-  // if (isPending || isCheckingRole || isArtificialLoading) {
-  //   return <LoadingComponent />;
-  // }
-
   if (isPending || isCheckingRole) {
     return <LoadingComponent />;
   }
 
+  const pages: PageData[] = [
+    {
+      title: "Temani Perjalanan Kehamilanmu",
+      description:
+        "Dari trimester pertama hingga persiapan persalinan, BabyBlooms hadir menjadi pendamping setiamu.",
+      imageSource: require("@/assets/images/intro-screen.png"),
+      type: 1,
+    },
+    {
+      title: "Selalu Terhubung dengan Si Kecil",
+      description: "Deskripsi untuk halaman kedua.",
+      imageSource: require("@/assets/images/intro-screen-2.png"),
+      type: 2,
+    },
+    {
+      title: "Bergabunglah dengan Komunitas Kami",
+      description: "Deskripsi untuk halaman ketiga.",
+      imageSource: require("@/assets/images/intro-screen-3.png"),
+      type: 2,
+    },
+  ];
+
+  const renderPageIndicators = () => (
+    <View
+      style={{
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        marginBottom: 64,
+        position: "absolute",
+        bottom: 64,
+        left: 0,
+        right: 0,
+      }}
+    >
+      {pages.map((_, index) => (
+        <View
+          key={index}
+          style={{
+            width: 8,
+            height: 8,
+            borderRadius: 4,
+            backgroundColor: "white",
+            marginHorizontal: 6,
+            ...(index === currentPage
+              ? { backgroundColor: "black", width: 20 }
+              : {}),
+          }}
+        />
+      ))}
+    </View>
+  );
+
   return (
-    <View style={{ flex: 1 }}>
-      <Image
-        source={require("@/assets/images/landing-page-bg.png")}
-        style={{
-          width: Dimensions.get("window").width,
-          height: Dimensions.get("window").height,
-          position: "absolute",
-          top: 0,
-          left: 0,
+    <View style={{ flex: 1, height: "100%" }}>
+      <StatusBar backgroundColor="white" barStyle="dark-content" />
+      <PagerView
+        style={{ flex: 1 }}
+        initialPage={0}
+        ref={pagerRef}
+        scrollEnabled={true}
+        onPageSelected={(e) => {
+          setCurrentPage(e.nativeEvent.position);
         }}
-        resizeMode="cover"
-      />
-      <View style={{ flex: 1, justifyContent: "flex-end" }}>
-        <SafeAreaView style={{ flex: 0 }}>
-          <View style={styles.container}>
-            <ThemedText
-              type="displaySmall"
+      >
+        <View id={"0"} style={{ flex: 1, width: width }}>
+          <Image
+            source={require("@/assets/images/intro-screen.png")}
+            style={{
+              width: width,
+              height: height,
+              position: "absolute",
+              top: 0,
+              left: 0,
+            }}
+            resizeMode="cover"
+          />
+          <SafeAreaView
+            style={{
+              flex: 1,
+              justifyContent: "space-between",
+              marginVertical: 24,
+            }}
+          >
+            <View
               style={{
-                color: "#992269",
-                marginBottom: 16,
+                paddingHorizontal: 24,
+                paddingBottom: 24,
+                paddingTop: 20,
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20,
               }}
             >
-              Siap Memulai Perjalananmu?
-            </ThemedText>
-            <Text style={{ marginBottom: 48 }}>
-              Kehamilan penuh kejutan, dan kami siap menjadi teman setiamu!
-            </Text>
-            <TouchableOpacity
-              style={{
-                backgroundColor: "white",
-                padding: 12,
-                borderRadius: 32,
-                marginBottom: 10,
-                alignItems: "center",
-                flexDirection: "row",
-                justifyContent: "center",
-                gap: 10,
-              }}
-              onPress={signInGoogle}
-            >
-              <GoogleIcon />
-              <Text
+              <ThemedText
+                type="displaySmall"
                 style={{
-                  color: "#BA2980",
-                  fontFamily: "Switzer-Medium",
-                  fontWeight: "medium",
+                  color: "#D33995",
+                  marginBottom: 16,
+                  marginTop: 20,
                 }}
               >
-                Masuk dengan Google
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+                Temani Perjalanan Kehamilanmu
+              </ThemedText>
+              <ThemedText
+                type="bodyLarge"
+                style={{ marginBottom: 24, color: "#373737" }}
+              >
+                Dari trimester pertama hingga persiapan persalinan, BabyBlooms
+                hadir menjadi pendamping setiamu.
+              </ThemedText>
+            </View>
+          </SafeAreaView>
+        </View>
+
+        <View id={"1"} style={{ flex: 1, width: width }}>
+          <Image
+            source={require("@/assets/images/intro-screen-2.png")}
+            style={{
+              width: width,
+              height: height,
+              position: "absolute",
+              top: 0,
+              left: 0,
+            }}
+            resizeMode="cover"
+          />
+          <SafeAreaView
+            style={{
+              flex: 1,
+              justifyContent: "space-between",
+              marginVertical: 24,
+            }}
+          >
+            <View
               style={{
-                backgroundColor: "#4A4F87",
-                padding: 12,
-                borderRadius: 32,
-                alignItems: "center",
-                flexDirection: "row",
-                justifyContent: "center",
-                gap: 10,
-              }}
-              onPress={() => {
-                Alert.alert("Coming soon");
+                paddingHorizontal: 24,
+                paddingBottom: 24,
+                paddingTop: 20,
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20,
               }}
             >
-              <MetaIcon />
-              <Text
+              <ThemedText
+                type="displaySmall"
                 style={{
-                  color: "white",
-                  fontFamily: "Switzer-Medium",
-                  fontWeight: "medium",
+                  color: "#fff",
+                  marginBottom: 16,
+                  marginTop: 80,
                 }}
               >
-                Masuk dengan Meta
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </SafeAreaView>
-      </View>
+                Selalu Terhubung dengan Si Kecil
+              </ThemedText>
+            </View>
+          </SafeAreaView>
+        </View>
+
+        <View id={"2"} style={{ flex: 1, width: width }}>
+          <Image
+            source={require("@/assets/images/intro-screen-3.png")}
+            style={{
+              width: width,
+              height: height,
+              position: "absolute",
+              top: 0,
+              left: 0,
+            }}
+            resizeMode="cover"
+          />
+          <SafeAreaView
+            style={{
+              flex: 1,
+              justifyContent: "space-between",
+              marginVertical: 24,
+            }}
+          >
+            <View
+              style={{
+                paddingHorizontal: 24,
+                paddingBottom: 24,
+                paddingTop: 20,
+                borderTopLeftRadius: 20,
+                borderTopRightRadius: 20,
+              }}
+            >
+              <ThemedText
+                type="displaySmall"
+                style={{
+                  color: "#fff",
+                  marginBottom: 16,
+                  marginTop: 24,
+                  width: "80%",
+                }}
+              >
+                Punya pertanyaan seputar kehamilan?
+              </ThemedText>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "flex-end",
+                alignItems: "center",
+                marginBottom: 24,
+              }}
+            >
+              <ThemedText
+                type="bodyLarge"
+                style={{
+                  color: "#fff",
+                  marginBottom: 128,
+                  textAlign: "center",
+                  width: "80%",
+                }}
+              >
+                Bergabunglah dengan komunitas kami dan temukan jawaban dari para
+                ahli!
+              </ThemedText>
+            </View>
+          </SafeAreaView>
+        </View>
+      </PagerView>
+      {renderPageIndicators()}
+
+      <TouchableOpacity
+        style={{
+          backgroundColor: "black",
+          padding: 16,
+          flexDirection: "row",
+          justifyContent: "center",
+          marginHorizontal: 24,
+          borderRadius: 37,
+          marginBottom: 20,
+          position: "absolute",
+          bottom: 16,
+          left: 0,
+          right: 0,
+        }}
+        onPress={() => {
+          router.push("/onboard");
+        }}
+      >
+        <Text
+          style={{
+            color: "#F8F7F4",
+            fontFamily: "Switzer-Medium",
+            fontSize: 16,
+          }}
+        >
+          Mulai Sekarang!
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 24,
-    paddingBottom: 24,
-    paddingTop: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-  },
-});
