@@ -268,14 +268,20 @@ const CommunityScreen = () => {
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
+        scrollsToTop={false}
+        scrollToOverflowEnabled={false}
+        showsVerticalScrollIndicator={false}
+        bounces={false}
+        alwaysBounceVertical={false}
         style={{
           backgroundColor: "white",
           borderBottomWidth: 1,
           borderBottomColor: "#eee",
-          paddingBottom: 4,
+          paddingBottom: 0,
+          height: 48,
         }}
         contentContainerStyle={{
-          height: 48,
+          height: "auto",
         }}
       >
         {["Semua", "Pregnancy Q&A", "Tips & Rekomendasi", "Gaya Hidup"].map(
@@ -285,8 +291,7 @@ const CommunityScreen = () => {
               <TouchableOpacity
                 key={category}
                 style={{
-                  paddingHorizontal: 35,
-                  height: "100%",
+                  paddingHorizontal: 44,
                   justifyContent: "center",
                   alignItems: "center",
                 }}
@@ -304,7 +309,7 @@ const CommunityScreen = () => {
                 <View
                   style={{
                     position: "absolute",
-                    bottom: 2,
+                    bottom: 0,
                     left: 0,
                     right: 0,
                     height: 4,
