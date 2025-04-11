@@ -5,7 +5,7 @@ import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
 import { eq, like } from "drizzle-orm";
 
-const app = new Hono();
+export const app = new Hono();
 
 // Get all activities
 app.get("/activity", async (c) => {
