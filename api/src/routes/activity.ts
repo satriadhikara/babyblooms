@@ -8,7 +8,7 @@ import { eq, like } from "drizzle-orm";
 const app = new Hono();
 
 // Get all activities
-app.get("/category", async (c) => {
+app.get("/activity", async (c) => {
   try {
     const activities = await db.select().from(activity);
     
@@ -26,7 +26,7 @@ app.get("/category", async (c) => {
 });
 
 // Get activities by category
-app.get("/category/:category", async (c) => {
+app.get("/activity/:category", async (c) => {
   const category = c.req.param("category");
   
   try {
@@ -50,7 +50,7 @@ app.get("/category/:category", async (c) => {
 });
 
 // Search activities
-app.get("/search", async (c) => {
+app.get("/activity/search", async (c) => {
   const query = c.req.query("query") || "";
   
   try {
