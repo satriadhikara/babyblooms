@@ -13,6 +13,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Feather, AntDesign } from '@expo/vector-icons';
 import { useRouter } from "expo-router";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Search, ScanLine } from "lucide-react-native";
 
 const Makanan = () => {
 
@@ -28,20 +29,21 @@ const Makanan = () => {
         <SafeAreaView 
             style={{ 
                 flex: 1, 
-                backgroundColor: "#F8F7F4", 
+                backgroundColor: "white", 
             }} 
         >
             {/* Header */}
             <View
                 style={{
-                height: 96,
+                height: 70,
                 width: "100%",
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
+                paddingTop: 30,
                 paddingHorizontal: 20,
                 marginBottom: 20,
-                backgroundColor: "#F8F7F4",
+                backgroundColor: "white",
                 }}
             >
                 <Pressable onPress={() => handleBack()}>
@@ -59,38 +61,42 @@ const Makanan = () => {
                 style={{
                     flex: 1,
                     backgroundColor: "#F8F7F4",
+                    marginBottom: 35,
                 }}
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
             >
-                <TextInput
-                    ref={textInputRef}
-                    style={{
-                        height: 40,
-                        borderWidth: 1,
-                        borderColor: '#E0E0E0',
-                        borderRadius: 48,
-                        paddingVertical: 10,
-                        paddingHorizontal: 20,
-                        textAlignVertical: 'center',
-                        marginTop: 10,
-                        marginLeft: 20,
-                        marginRight: 20,
-                        backgroundColor: "#EFEFF0",
-                        fontSize: 14,
-                        color: "#000000",
-                        fontWeight: 400,
-                        fontFamily: 'switzer',
-                        lineHeight: 20,
-                    }}
-                    placeholder="Cari nama makanan, minuman"
-                    value={entryText}
-                    onChangeText={setEntryText}
-                    multiline
-                    autoFocus
-                />
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    height: 40,
+                    borderRadius: 48,
+                    marginTop: 20,
+                    marginLeft: 25,
+                    marginRight: 15,
+                    marginBottom: 20,
+                    backgroundColor: "#EFEFF0",
+                    paddingHorizontal: 16,
+                }}>
+                    <Search size={20} color="#BFBFBF" />
+                    <TextInput
+                        ref={textInputRef}
+                        style={{
+                            flex: 1,
+                            marginLeft: 8,
+                            fontSize: 14,
+                            color: "#000000",
+                            fontFamily: 'switzer',
+                            lineHeight: 20,
+                        }}
+                        placeholder="Cari nama makanan, minuman"
+                        placeholderTextColor="#BFBFBF" 
+                        value={entryText}
+                        onChangeText={setEntryText}
+                    />
+                </View>
 
-                <ThemedText type='bodyMedium' style={{ marginTop: 20, marginLeft: 20, marginRight: 20, color: "#A1A1A1", textAlign: "justify", }}>
+                <ThemedText type='bodyMedium' style={{ marginTop:7, marginLeft: 20, marginRight: 20, marginBottom:15 , color: "#A1A1A1", textAlign: "justify", }}>
                     Cari tahu makanan dan minuman yang aman selama kehamilan! Gunakan pencarian atau ambil foto makananmu dan BloomsAI akan membantu menganalisis dan memberi informasi apakah makananmu aman dikonsumsi.
                 </ThemedText>
 
@@ -129,6 +135,8 @@ const Makanan = () => {
             <TouchableOpacity 
                 style={{
                     position: 'absolute',
+                    flexDirection: "row",
+                    gap: 16,
                     bottom: 40,
                     left: 30,
                     right: 30,
@@ -136,9 +144,11 @@ const Makanan = () => {
                     borderRadius: 48,
                     paddingVertical: 15,
                     alignItems: 'center',
+                    justifyContent: 'center',
                 }}
                 onPress={() => router.push("/(auth)/kamera")}
             >
+                <ScanLine size={24} color="#FFFFFF"/>
                 <ThemedText type='titleMedium' style={{ color: "#FFFFFF" }}>
                     Ambil foto makanan
                 </ThemedText>
