@@ -8,7 +8,7 @@ import { eq, like } from "drizzle-orm";
 const app = new Hono();
 
 // Get all activities
-app.get("/", async (c) => {
+app.get("/category", async (c) => {
   try {
     const activities = await db.select().from(activity);
     
