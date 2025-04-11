@@ -20,14 +20,21 @@ import { AntDesign, Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { ThemedText } from "@/components/ui/ThemedText";
 import * as FileSystem from "expo-file-system";
+import { set } from "better-auth/*";
+import { CircleAlert } from "lucide-react-native";
+import { CircleCheck } from "lucide-react-native";
+import { CircleMinus } from "lucide-react-native";
+import { CircleX } from "lucide-react-native";
+import { CircleHelp } from "lucide-react-native";
 
 export default function Kamera() {
   const [permission, requestPermission] = useCameraPermissions();
   const ref = useRef<CameraView>(null);
   const [uri, setUri] = useState<string | null>(null);
   const [flashMode, setFlashMode] = useState<string | null>(null);
-  const [analysisResult, setAnalysisResult] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [foodName, setFoodName] = useState<string | null>(null);
+  const [safeForPregnancy, setSafeForPregnancy] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -61,7 +68,8 @@ export default function Kamera() {
       }
     } catch (error) {
       console.error("Error taking picture:", error);
-      setAnalysisResult("Maaf, terjadi kesalahan saat mengambil gambar.");
+      setFoodName("Maaf, terjadi kesalahan saat mengambil gambar.");
+      setSafeForPregnancy("Maaf, terjadi kesalahan saat mengambil gambar.");
     } finally {
       setIsLoading(false);
     }
@@ -69,7 +77,8 @@ export default function Kamera() {
 
   const analyzeImage = async (imageUri: string) => {
     setIsLoading(true);
-    setAnalysisResult(null); // Clear previous result
+    setFoodName(null);
+    setSafeForPregnancy(null);
 
     try {
       const base64 = await FileSystem.readAsStringAsync(imageUri, {
@@ -78,7 +87,7 @@ export default function Kamera() {
 
       const prompt = `Analisis gambar makanan ini dan beri tahu saya:
         1. Apa nama makanan ini?
-        2. Apakah aman dikonsumsi oleh wanita hamil? (Ya/Tidak/Mungkin)
+        2. Apakah aman dikonsumsi oleh wanita hamil? (Aman/Tidak/Hati-Hati/Porsi Kecil)
         Berikan jawaban dalam format JSON: {foodName: string, safeForPregnancy: string}
         nama makanannya tidak perlu menyertakan merk atau brand, hanya nama makanan saja.
         Jangan gunakan simbol ** untuk membuat teks tebal.
@@ -126,22 +135,31 @@ export default function Kamera() {
 
         try {
           const parsedResult = JSON.parse(responseText);
-          setAnalysisResult(
-            `Food: ${parsedResult.foodName}\nSafe for Pregnancy: ${parsedResult.safeForPregnancy}`
-          );
+          if (parsedResult === "Gambar bukan makanan") {
+            setFoodName("Gambar bukan makanan.");
+            setSafeForPregnancy("Gambar bukan makanan.");
+            return;
+          }
+          setFoodName(parsedResult.foodName);
+          setSafeForPregnancy(parsedResult.safeForPregnancy);
         } catch (parseError) {
           console.error("Error parsing JSON response:", parseError);
           const errorMessage = (parseError as Error).message;
-          setAnalysisResult(
+          setFoodName(
+            `Maaf, tidak dapat mengurai respons dari AI. Kesalahan: ${errorMessage}`
+          );
+          setSafeForPregnancy(
             `Maaf, tidak dapat mengurai respons dari AI. Kesalahan: ${errorMessage}`
           );
         }
       } else {
-        setAnalysisResult("Maaf, tidak ada respons yang valid dari AI.");
+        setFoodName("Maaf, tidak ada respons yang valid dari AI.");
+        setSafeForPregnancy("Maaf, tidak ada respons yang valid dari AI.");
       }
     } catch (error) {
       console.error("Error analyzing image:", error);
-      setAnalysisResult("Maaf, terjadi kesalahan saat menganalisis gambar.");
+      setFoodName("Maaf, terjadi kesalahan saat menganalisis gambar.");
+      setSafeForPregnancy("Maaf, terjadi kesalahan saat menganalisis gambar.");
     } finally {
       setIsLoading(false);
     }
@@ -176,9 +194,26 @@ export default function Kamera() {
       {isLoading && <ActivityIndicator size="large" color="#007AFF" />}
 
       {/* Informasi Makanan */}
-      {analysisResult ? (
+      {foodName && safeForPregnancy ? (
         <View style={styles.resultInfo}>
-          <Text style={styles.resultText}>{analysisResult}</Text>
+          <Image
+            source={{ uri: uri ?? undefined }}
+            style={styles.resultThumb}
+          />
+          <ThemedText type="titleMedium" style={styles.resultText}>
+            {foodName}
+          </ThemedText>
+          {safeForPregnancy === "Aman" ? (
+            <CircleCheck size={24} color="white" fill="green" style={{ marginLeft: 10 }} />
+          ) : safeForPregnancy === "Tidak" ? (
+            <CircleX size={24} color="white" fill="red" style={{ marginLeft: 10 }} />
+          ) : safeForPregnancy === "Porsi Kecil" ? (
+            <CircleMinus size={24} color="white" fill="orange" style={{ marginLeft: 10 }} />
+          ) : safeForPregnancy == "Hati-Hati" ? (
+            <CircleAlert size={24} color="white" fill="yellow" style={{ marginLeft: 10}} />
+          ) : (
+            <CircleHelp size={24} color="white" fill="gray" style={{ marginLeft: 10 }} />
+          )}
         </View>
       ) : (
         <Text>Menganalisis gambar...</Text>
@@ -317,6 +352,9 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     elevation: 5,
     marginBottom: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   resultThumb: {
     width: 50,
