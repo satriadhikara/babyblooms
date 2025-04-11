@@ -90,7 +90,9 @@ const RoleSelectionScreen = () => {
           </ImageBackground>
         </TouchableOpacity>
 
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => router.push("/(onboard)/guardianForm")}
+        >
           <ImageBackground
             source={require("@/assets/images/father.png")}
             resizeMode="cover"
