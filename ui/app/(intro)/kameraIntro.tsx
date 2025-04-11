@@ -49,7 +49,14 @@ export default function Kamera() {
   if (!permission) return null;
   if (!permission.granted) {
     return (
-      <View style={styles.container}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#000",
+        }}
+      >
         <Text style={styles.permissionText}>
           Kami memerlukan izin untuk mengakses kamera.
         </Text>
