@@ -26,7 +26,7 @@ app.get("/activity", async (c) => {
 });
 
 // Get activities by category
-app.get("/activity/:category", async (c) => {
+app.get("/activity/category/:category", async (c) => {
   const category = c.req.param("category");
   
   try {
