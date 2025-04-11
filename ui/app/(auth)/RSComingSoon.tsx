@@ -30,8 +30,8 @@ export default function JournalScreen() {
                     <ChevronLeft size={24} color="#000" />
                 </TouchableOpacity>
                 <View style={{flexDirection: 'column', alignItems: 'center'}}>
-                <ThemedText type='titleMedium'>RS/Klinik Sekitar</ThemedText>
-                    </View>
+                    <ThemedText type='titleMedium'>RS/Klinik Sekitar</ThemedText>
+                </View>
                 <View style={{ width: 40 }} /> 
             </View>
         </View>
