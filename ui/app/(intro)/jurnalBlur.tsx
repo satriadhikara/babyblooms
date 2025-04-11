@@ -1,35 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ThemedText } from "@/components/ui/ThemedText";
 import {
   View,
   SafeAreaView,
   TouchableOpacity,
   Image,
-  StatusBar,
   ScrollView,
-  ActivityIndicator,
-  Alert,
-  Pressable,
   Dimensions,
+  Animated,
+  Pressable, // Added Pressable for the overlay
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { useRouter } from "expo-router";
-import {
-  Sparkle,
-  ArrowUpRight,
-  Flame,
-  Bell,
-  Volume2,
-  Plus,
-} from "lucide-react-native";
-import { authClient } from "@/utils/auth-client";
-import LoadingComponent from "@/components/ui/Loading";
+import { router } from "expo-router";
+import { Volume2, X, ArrowDown } from "lucide-react-native"; // Added ArrowDown
 import { Audio } from "expo-av";
+import Svg, { Polygon } from "react-native-svg";
+
+const { width, height } = Dimensions.get("window");
+const DRAWER_HEIGHT = height * 0.65;
+const SCROLL_THRESHOLD = 50;
 
 const JurnalBlur = () => {
-  const daysOfWeek = ["S", "S", "R", "K", "J", "S", "M"]; // Indonesian day abbreviations
+  const daysOfWeek = ["S", "S", "R", "K", "J", "S", "M"];
 
-  // Get current time-based greeting
   const getGreeting = () => {
     const hour = new Date().getHours();
     if (hour >= 5 && hour < 12) return "Selamat pagi";
@@ -41,23 +33,64 @@ const JurnalBlur = () => {
   const [greeting, setGreeting] = useState(getGreeting());
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isDrawerVisible, setIsDrawerVisible] = useState(false);
+  const animatedDrawerY = useRef(new Animated.Value(DRAWER_HEIGHT)).current;
+  // --- Spotlight State ---
+  const [isSpotlightVisible, setIsSpotlightVisible] = useState(true); // Start with spotlight visible
+  // --- End Spotlight State ---
 
+  // --- Audio Playback Logic ---
   async function playSound() {
+    // Prevent interaction if spotlight is visible
+    if (isSpotlightVisible) return;
     console.log("Loading Sound");
-    const { sound } = await Audio.Sound.createAsync(
-      require("@/assets/sounds/detakjantung.mp3")
-    );
-    setSound(sound);
-
-    console.log("Playing Sound");
-    await sound.playAsync();
-    setIsPlaying(true); // Set isPlaying to true when sound starts playing
-
-    sound.setOnPlaybackStatusUpdate((status) => {
-      if (status.didJustFinish) {
-        setIsPlaying(false); // Reset isPlaying when sound finishes
+    if (isPlaying) {
+      console.log("Sound is already playing.");
+      // Optional: Stop sound if playing
+      // if (sound) {
+      //   await sound.stopAsync();
+      //   setIsPlaying(false);
+      // }
+      return;
+    }
+    try {
+      if (sound) {
+        await sound.unloadAsync();
+        setSound(null);
       }
-    });
+      const { sound: newSound } = await Audio.Sound.createAsync(
+        require("@/assets/sounds/detakjantung.mp3")
+      );
+      setSound(newSound);
+      console.log("Playing Sound");
+      await newSound.playAsync();
+      setIsPlaying(true);
+      newSound.setOnPlaybackStatusUpdate((status) => {
+        if (status && status.isLoaded && status.didJustFinish) {
+          console.log("Sound Finished Playing");
+          setIsPlaying(false);
+        } else if (status && !status.isLoaded && status.error) {
+          console.error("Playback Error:", status.error);
+          setIsPlaying(false);
+          newSound.unloadAsync().catch((unloadError) => {
+            console.error(
+              "Error unloading sound after playback error:",
+              unloadError
+            );
+          });
+          setSound(null);
+        }
+      });
+    } catch (error) {
+      console.error("Error loading or playing sound:", error);
+      setIsPlaying(false);
+      if (sound) {
+        sound.unloadAsync().catch((unloadError) => {
+          console.error("Error unloading sound after catch:", unloadError);
+        });
+        setSound(null);
+      }
+    }
   }
 
   useEffect(() => {
@@ -68,28 +101,22 @@ const JurnalBlur = () => {
         }
       : undefined;
   }, [sound]);
+  // --- End Audio Playback Logic ---
 
   // Update greeting every minute
   useEffect(() => {
     const intervalId = setInterval(() => {
       setGreeting(getGreeting());
     }, 60000);
-
     return () => clearInterval(intervalId);
   }, []);
 
-  // Generate dates for the current week starting with Monday
   const generateCurrentWeekDates = () => {
     const currentDate = new Date();
-    // Adjust day calculation to start with Monday (1) instead of Sunday (0)
-    let currentDay = currentDate.getDay(); // 0 is Sunday, 1 is Monday, etc.
-    if (currentDay === 0) currentDay = 7; // Make Sunday the 7th day instead of 0
+    let currentDay = currentDate.getDay();
+    if (currentDay === 0) currentDay = 7;
     const result = [];
-
-    // Calculate days to go back to Monday
     const daysToMonday = currentDay - 1;
-
-    // Generate the week starting from Monday
     for (let i = 0; i < 7; i++) {
       const date = new Date(currentDate);
       date.setDate(currentDate.getDate() - daysToMonday + i);
@@ -104,54 +131,52 @@ const JurnalBlur = () => {
   };
 
   const currentWeekDates = generateCurrentWeekDates();
-  const { width, height } = Dimensions.get("window");
 
-  // Use this function to render the trimester-based progress bar
-  const renderProgressBar = () => {
-    const { trimester } = {
-      trimester: 1, // Replace with dynamic trimester calculation
-    };
-
-    return (
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          marginTop: 10,
-        }}
-      >
-        <View
-          style={{
-            height: 6,
-            flex: 1,
-            backgroundColor: trimester >= 1 ? "#4A0D32" : "#E89AC7",
-            borderRadius: 3,
-            marginRight: 4,
-          }}
-        />
-        <View
-          style={{
-            height: 6,
-            flex: 1,
-            backgroundColor: trimester >= 2 ? "#4A0D32" : "#E89AC7",
-            borderRadius: 3,
-            marginRight: 4,
-          }}
-        />
-        <View
-          style={{
-            height: 6,
-            flex: 1,
-            backgroundColor: trimester >= 3 ? "#4A0D32" : "#E89AC7",
-            borderRadius: 3,
-          }}
-        />
-      </View>
-    );
+  // --- Drawer Animation Logic ---
+  const showDrawer = () => {
+    // Only show drawer if spotlight is not visible
+    if (!isDrawerVisible && !isSpotlightVisible) {
+      setIsDrawerVisible(true);
+      Animated.timing(animatedDrawerY, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
   };
 
+  const hideDrawer = () => {
+    Animated.timing(animatedDrawerY, {
+      toValue: DRAWER_HEIGHT,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setIsDrawerVisible(false);
+    });
+  };
+  // --- End Drawer Animation Logic ---
+
+  // --- Scroll Handler ---
+  const handleScroll = (event: any) => {
+    // Only trigger drawer if spotlight is hidden
+    if (!isSpotlightVisible) {
+      const scrollY = event.nativeEvent.contentOffset.y;
+      if (scrollY > SCROLL_THRESHOLD && !isDrawerVisible) {
+        showDrawer();
+      }
+    }
+  };
+  // --- End Scroll Handler ---
+
+  // --- Spotlight Dismiss Handler ---
+  const dismissSpotlight = () => {
+    setIsSpotlightVisible(false);
+  };
+  // --- End Spotlight Dismiss Handler ---
+
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#FFF" }}>
+      {/* Background Image stays */}
       <Image
         source={require("@/assets/images/jurnalBlur.png")}
         style={{
@@ -163,10 +188,16 @@ const JurnalBlur = () => {
         }}
         resizeMode="cover"
       />
+
+      {/* Scrollable Content */}
       <ScrollView
         style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 90 }}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
+        // Disable scroll while spotlight is visible
+        scrollEnabled={!isSpotlightVisible}
       >
         {/* Header */}
         <View
@@ -199,6 +230,7 @@ const JurnalBlur = () => {
 
         {/* Calendar */}
         <View style={{ marginHorizontal: 20, marginTop: 8 }}>
+          {/* Day Labels */}
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
@@ -212,6 +244,7 @@ const JurnalBlur = () => {
               </ThemedText>
             ))}
           </View>
+          {/* Dates */}
           <View
             style={{
               flexDirection: "row",
@@ -241,6 +274,8 @@ const JurnalBlur = () => {
             ))}
           </View>
         </View>
+
+        {/* Image and Sound Button */}
         <View style={{ alignItems: "center", position: "relative" }}>
           <Image
             source={require("@/assets/images/yusril.png")}
@@ -251,7 +286,7 @@ const JurnalBlur = () => {
               position: "absolute",
               right: 25,
               bottom: 10,
-              backgroundColor: isPlaying ? "#C85A9D" : "#FFF", // Change background color based on isPlaying state
+              backgroundColor: isPlaying ? "#C85A9D" : "#FFF",
               width: 54,
               height: 54,
               borderRadius: 27,
@@ -262,22 +297,183 @@ const JurnalBlur = () => {
               shadowOpacity: 0.1,
               shadowRadius: 4,
               elevation: 2,
+              // Make button less prominent when spotlight is visible
+              opacity: isSpotlightVisible ? 0.5 : 1,
             }}
-            onPress={playSound} // Add onPress to play sound
+            onPress={playSound}
+            activeOpacity={0.7}
+            // Disable button when spotlight is visible
+            disabled={isSpotlightVisible}
           >
             <Volume2 size={20} color={isPlaying ? "#FFF" : "#8C8C8C"} />
           </TouchableOpacity>
         </View>
 
-        <View
-          style={{
-            alignItems: "flex-start",
-            paddingHorizontal: 20,
-          }}
-        >
+        {/* Week/Day Info */}
+        <View style={{ alignItems: "flex-start", paddingHorizontal: 20 }}>
           <ThemedText type="titleLarge">Minggu ke-10, Hari ke-4</ThemedText>
         </View>
       </ScrollView>
+      {/* End Scrollable Content */}
+
+      {/* --- Bottom Drawer (Rendered after ScrollView) --- */}
+      {isDrawerVisible && (
+        <Animated.View
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: DRAWER_HEIGHT,
+            backgroundColor: "white",
+            borderTopLeftRadius: 32,
+            borderTopRightRadius: 32,
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: -3 },
+            shadowOpacity: 0.1,
+            shadowRadius: 5,
+            elevation: 10, // Ensure drawer elevation is high
+            paddingTop: 10,
+            zIndex: 20, // Drawer needs high zIndex
+            transform: [{ translateY: animatedDrawerY }],
+          }}
+        >
+          {/* Close Button */}
+          <TouchableOpacity
+            style={{
+              position: "absolute",
+              top: 10,
+              right: 15,
+              padding: 5,
+              zIndex: 1, // Above drawer content
+            }}
+            onPress={hideDrawer}
+          >
+            <X size={24} color="#666" />
+          </TouchableOpacity>
+
+          {/* Drawer Content */}
+          <View
+            style={{
+              flex: 1,
+              paddingHorizontal: 24,
+              paddingTop: 32,
+              paddingBottom: 20,
+            }}
+          >
+            <ThemedText
+              type="titleLarge"
+              style={{
+                textAlign: "center",
+                paddingHorizontal: 20,
+                color: "#0C0C0C",
+              }}
+            >
+              Ingin mengeksplor seluruh fitur BabyBlooms?
+            </ThemedText>
+            <ThemedText
+              type="bodyLarge"
+              style={{ marginTop: 10, color: "#626262", textAlign: "center" }}
+            >
+              Mulai dari jurnal harian, informasi mingguan, hingga akses penuh
+              BloomsAI
+            </ThemedText>
+            <Image
+              source={require("@/assets/images/drawer.png")}
+              style={{
+                width: "100%",
+                height: 300,
+                marginTop: 15,
+              }}
+              resizeMode="contain"
+            />
+            <TouchableOpacity
+              style={{
+                backgroundColor: "#D33995",
+                paddingVertical: 16,
+                borderRadius: 48,
+                alignItems: "center",
+                marginTop: 20,
+              }}
+              onPress={() => {
+                hideDrawer(); // Hide drawer before navigating
+                router.push("/onboard");
+              }}
+            >
+              <ThemedText
+                type="titleMedium"
+                style={{
+                  color: "#EFEFF0",
+                }}
+              >
+                Login Sekarang!
+              </ThemedText>
+            </TouchableOpacity>
+          </View>
+          {/* --- END DRAWER CONTENT --- */}
+        </Animated.View>
+      )}
+      {/* --- End Bottom Drawer --- */}
+
+      {/* --- Spotlight Overlay --- */}
+      {isSpotlightVisible && (
+        <Pressable // Use Pressable to capture taps anywhere on the overlay
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.6)", // Semi-transparent black
+            justifyContent: "flex-end", // Align spotlight hint to bottom
+            alignItems: "center", // Center hint horizontally
+            zIndex: 15, // Above content, below drawer
+          }}
+          onPress={dismissSpotlight} // Dismiss on tap
+        >
+          {/* Optional: Hint text/icon at the bottom center */}
+          <View style={{ marginBottom: 40, alignItems: "center" }}>
+            <View
+              style={{
+                backgroundColor: "#DA5AA7",
+                paddingTop: 12,
+                paddingHorizontal: 12,
+                paddingBottom: 20,
+                borderRadius: 8,
+                width: "80%",
+                alignItems: "center",
+              }}
+            >
+              <ThemedText
+                type="titleMedium"
+                style={{ color: "#FFF", textAlign: "center", marginBottom: 12 }}
+              >
+                Coba AI Camera Sekarang!
+              </ThemedText>
+              <ThemedText
+                type="bodyMedium"
+                style={{ color: "#FFF", textAlign: "center" }}
+              >
+                Cukup foto makananmu, dan Blooms AI bantu kasih tahu apakah
+                makanan itu aman atau sebaiknya dihindari selama kehamilan.
+              </ThemedText>
+            </View>
+            <Svg
+              height="20" // Height of the SVG area
+              width="30" // Width of the SVG area
+              style={{ marginTop: -1 }}
+            >
+              <Polygon
+                points="0,0 30,0 15,15" // Defines the triangle points (top-left, top-right, bottom-center)
+                fill="#DA5AA7" // Match the hint box background color
+              />
+            </Svg>
+
+            {/* <ArrowDown size={32} color="#DA5AA7" style={{ marginTop: 10 }} /> */}
+          </View>
+        </Pressable>
+      )}
+      {/* --- End Spotlight Overlay --- */}
     </SafeAreaView>
   );
 };

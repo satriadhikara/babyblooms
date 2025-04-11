@@ -16,68 +16,6 @@ import PagerView from "react-native-pager-view";
 
 const { width, height } = Dimensions.get("window");
 
-interface PageProps {
-  title: string;
-  description: string;
-  imageSource: any;
-  type?: number;
-}
-
-const Page: React.FC<PageProps> = ({
-  title,
-  description,
-  imageSource,
-  type,
-}) => (
-  <View style={{ flex: 1, width: width }}>
-    <Image
-      source={imageSource}
-      style={{
-        width: width,
-        height: height,
-        position: "absolute",
-        top: 0,
-        left: 0,
-      }}
-      resizeMode="cover"
-    />
-    <SafeAreaView
-      style={{
-        flex: 1,
-        justifyContent: "space-between",
-        marginVertical: 24,
-      }}
-    >
-      <View
-        style={{
-          paddingHorizontal: 24,
-          paddingBottom: 24,
-          paddingTop: 20,
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
-        }}
-      >
-        <ThemedText
-          type="displaySmall"
-          style={{
-            color: "#D33995",
-            marginBottom: 16,
-            marginTop: 12,
-          }}
-        >
-          {title}
-        </ThemedText>
-        <ThemedText
-          type="bodyLarge"
-          style={{ marginBottom: 24, color: "#373737" }}
-        >
-          {description}
-        </ThemedText>
-      </View>
-    </SafeAreaView>
-  </View>
-);
-
 interface PageData {
   title: string;
   description: string;
@@ -377,7 +315,7 @@ export default function App() {
           right: 0,
         }}
         onPress={() => {
-          router.push("/onboard");
+          router.push("/jurnalBlur");
         }}
       >
         <Text
