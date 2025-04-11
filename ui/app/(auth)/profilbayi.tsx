@@ -16,9 +16,9 @@ import Modal from 'react-native-modal';
 import { AntDesign } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ChevronRight, Ellipsis, LogOut } from "lucide-react-native";
+import { ChevronRight, Ellipsis, Radio } from "lucide-react-native";
 import { useAuth } from "./_layout";
-import { authClient } from "@/utils/auth-client";
+import { Calendar as RNCalendar } from 'react-native-calendars';
 
 const Profil = () => {
   const router = useRouter();
@@ -39,33 +39,32 @@ const Profil = () => {
   };
 
   const { session } = useAuth();
-  const userName = session?.user.name;
-  const userEmail = session?.user.email;
-  const userImage = session?.user.image;
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [genderModalVisible, setGenderModalVisible] = useState(false);
+  const [selectedGender, setSelectedGender] = useState('Laki Laki');
 
-  const handleLogout = async () => {
-    Alert.alert("Logout", "Apakah Anda yakin ingin keluar?", [
-      {
-        text: "Batal",
-        style: "cancel",
-      },
-      {
-        text: "Keluar",
-        style: "destructive",
-        onPress: async () => {
-          try {
-            await authClient.signOut();
-            router.replace("/");
-          } catch (error) {
-            console.error("Error during logout:", error);
-            Alert.alert("Error", "Gagal keluar. Silakan coba lagi.");
-          }
-        },
-      },
-    ]);
+  // Add after other state declarations
+  const [dateModalVisible, setDateModalVisible] = useState(false);
+
+  // Add function to handle date selection
+  const addNewDate = () => {
+    if (!selectedDate) {
+      Alert.alert("Peringatan", "Pilih tanggal terlebih dahulu.");
+      return;
+    }
+    setDateModalVisible(false);
+    Alert.alert("Berhasil", "Tanggal telah disimpan.");
   };
 
-  const addNewEntry = () => {
+  const genderOptions = [
+    { label: 'Laki Laki', value: 'Laki Laki' },
+    { label: 'Perempuan', value: 'Perempuan' },
+    { label: 'Belum Diketahui', value: 'belum diketahui' }
+  ];
+
+
+
+  const addNewEntryName = () => {
     if (entryText.trim() === "") {
       Alert.alert("Peringatan", "Nama tidak boleh kosong.");
       return;
@@ -74,6 +73,15 @@ const Profil = () => {
     setModalVisible(false);
 
     Alert.alert("Berhasil", "Nama baru telah disimpan.");
+  };
+
+  const addNewGender = () => {
+    if (!selectedGender) {
+      Alert.alert("Peringatan", "Pilih jenis kelamin terlebih dahulu.");
+      return;
+    }
+    setGenderModalVisible(false);
+    Alert.alert("Berhasil", "Jenis kelamin telah disimpan.");
   };
 
   return (
@@ -197,6 +205,7 @@ const Profil = () => {
                   alignItems: "center",
                   justifyContent: "space-between",
                 }}
+                onPress={() => setGenderModalVisible(true)}
               >
                 <ThemedText type="bodyMedium" style={{ color: "#000" }}>
                   Laki Laki
@@ -223,6 +232,7 @@ const Profil = () => {
                   alignItems: "center",
                   justifyContent: "space-between",
                 }}
+                onPress={() => setDateModalVisible(true)}
               >
                 <ThemedText type="bodyMedium" style={{ color: "#000" }}>
                   1 Okt 2025
@@ -296,11 +306,177 @@ const Profil = () => {
                 marginTop: 15,
                 marginBottom: 10,
               }}
-              onPress={addNewEntry}
+              onPress={addNewEntryName}
             >
               <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}>Simpan</Text>
             </TouchableOpacity>
           </KeyboardAvoidingView>
+        </Modal>
+        <Modal
+          isVisible={genderModalVisible}
+          onBackdropPress={() => setGenderModalVisible(false)}
+          onSwipeComplete={() => setGenderModalVisible(false)}
+          swipeDirection="down"
+          style={{
+            justifyContent: 'flex-end',
+            margin: 0,
+          }}
+        >
+          <View style={{
+            backgroundColor: 'white',
+            padding: 20,
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
+          }}>
+            <View style={{ 
+              width: 80, 
+              height: 5, 
+              backgroundColor: '#E0E0E0', 
+              borderRadius: 3, 
+              alignSelf: 'center', 
+              marginBottom: 15 
+            }} />
+            
+            <Text style={{ 
+              fontSize: 16, 
+              fontWeight: 'bold', 
+              marginBottom: 20 
+            }}>
+              Jenis Kelamin
+            </Text>
+
+            {genderOptions.map((option) => (
+              <TouchableOpacity
+                key={option.value}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  paddingVertical: 12,
+                }}
+                onPress={() => {
+                  setSelectedGender(option.value);
+                  setGenderModalVisible(false);
+                }}
+              >
+                <View style={{
+                  width: 24,
+                  height: 24,
+                  borderRadius: 12,
+                  borderWidth: 2,
+                  borderColor: '#545F71',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginRight: 12,
+                }}>
+                  {selectedGender === option.value && (
+                    <View style={{
+                      width: 12,
+                      height: 12,
+                      borderRadius: 6,
+                      backgroundColor: '#545F71',
+                    }} />
+                  )}
+                </View>
+                <Text style={{ 
+                  fontSize: 16,
+                  color: '#545F71',
+                }}>
+                  {option.label}
+                </Text>
+              </TouchableOpacity>
+            ))}
+            <TouchableOpacity
+              style={{
+                backgroundColor: '#4697C1',
+                borderRadius: 25,
+                paddingVertical: 12,
+                alignItems: 'center',
+                marginTop: 15,
+                marginBottom: 10,
+              }}
+              onPress={addNewGender}
+            >
+              <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}>Simpan</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+        <Modal
+          isVisible={dateModalVisible}
+          onBackdropPress={() => setDateModalVisible(false)}
+          onSwipeComplete={() => setDateModalVisible(false)}
+          swipeDirection="down"
+          style={{
+            justifyContent: 'flex-end',
+            margin: 0,
+          }}
+        >
+          <View style={{
+            backgroundColor: 'white',
+            padding: 20,
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
+          }}>
+            <View style={{ 
+              width: 80, 
+              height: 5, 
+              backgroundColor: '#E0E0E0', 
+              borderRadius: 3, 
+              alignSelf: 'center', 
+              marginBottom: 15 
+            }} />
+            
+            <Text style={{ 
+              fontSize: 16, 
+              fontWeight: 'bold', 
+              marginBottom: 20 
+            }}>
+              Pilih Tanggal
+            </Text>
+
+            <RNCalendar
+              current={selectedDate}
+              onDayPress={(day: { dateString: string; day: number; month: number; year: number }) => {
+              setSelectedDate(day.dateString);
+              }}
+              markedDates={{
+              [selectedDate]: {
+                selected: true,
+                selectedColor: '#4697C1'
+              }
+              }}
+              theme={{
+              backgroundColor: '#ffffff',
+              calendarBackground: '#ffffff',
+              textSectionTitleColor: '#545F71',
+              selectedDayBackgroundColor: '#D65DB1',
+              selectedDayTextColor: '#ffffff',
+              todayTextColor: '#4697C1',
+              dayTextColor: '#545F71',
+              textDisabledColor: '#d9e1e8',
+              arrowColor: 'black',
+              }}
+            />
+
+            <TouchableOpacity
+              style={{
+                backgroundColor: '#4697C1',
+                borderRadius: 25,
+                paddingVertical: 12,
+                alignItems: 'center',
+                marginTop: 15,
+                marginBottom: 10,
+              }}
+              onPress={addNewDate}
+            >
+              <Text style={{ 
+                color: 'white', 
+                fontWeight: 'bold', 
+                fontSize: 16 
+              }}>
+                Konfirmasi
+              </Text>
+            </TouchableOpacity>
+          </View>
         </Modal>
       </View>
     </SafeAreaView>
