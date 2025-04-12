@@ -239,49 +239,40 @@ userRoute.post(
   }
 );
 
-userRoute.get(
-  "/child",
-  async (c) => {
-    const session = c.get("session");
-    const user = c.get("user");
+userRoute.get("/child", async (c) => {
+  const session = c.get("session");
+  const user = c.get("user");
 
-    if (!session || !user) {
-      return c.json({ error: "Unauthorized" }, 401);
-    }
-
-    try {
-      // Check if the user is a mom or guardian
-      const [userData] = await db
-        .select()
-        .from(userTable)
-        .where(eq(userTable.id, user.id));
-
-      let motherId = user.id;
-
-      if (userData.role !== "mom") {
-        const [mother] = await db
-          .select({
-            motherId: guardian.motherId,
-          })
-          .from(guardian)
-          .where(eq(guardian.guardianUserId, user.id));
-
-        motherId = mother.motherId;
-      }
-      
-      const [childData] = await db
-        .select()
-        .from(child)
-        .where(eq(child.motherId, user.id));
-
-      if (!childData) {
-        return c.json({ error: "Child not found" }, 404);
-      }
-
-      return c.json(childData, 200);
-    } catch (error) {
-      console.error("Error fetching child data:", error);
-      return c.json({ error: "Failed to fetch child data" }, 500);
-    }
+  if (!session || !user) {
+    return c.json({ error: "Unauthorized" }, 401);
   }
-);
+
+  try {
+    let motherId = user.id;
+
+    if (user.role !== "mom") {
+      const [mother] = await db
+        .select({
+          motherId: guardian.motherId,
+        })
+        .from(guardian)
+        .where(eq(guardian.guardianUserId, user.id));
+
+      motherId = mother.motherId;
+    }
+
+    const [childData] = await db
+      .select()
+      .from(child)
+      .where(eq(child.motherId, motherId));
+
+    if (!childData) {
+      return c.json({ error: "Child not found" }, 404);
+    }
+
+    return c.json(childData, 200);
+  } catch (error) {
+    console.error("Error fetching child data:", error);
+    return c.json({ error: "Failed to fetch child data" }, 500);
+  }
+});
