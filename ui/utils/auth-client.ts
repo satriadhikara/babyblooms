@@ -10,7 +10,7 @@ import * as SecureStore from "expo-secure-store";
 // };
 
 export const authClient = createAuthClient({
-  baseURL: "http://babyblooms-api-mhtx1y-ea3f25-91-108-110-101.traefik.me",
+  baseURL: `${process.env.EXPO_PUBLIC_API_URL}`,
   plugins: [
     expoClient({
       scheme: "babyblooms",

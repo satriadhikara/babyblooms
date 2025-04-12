@@ -16,8 +16,8 @@ import PagerView from "react-native-pager-view";
 import Animated, {
   useAnimatedStyle,
   withSpring,
-  withTiming
-} from 'react-native-reanimated';
+  withTiming,
+} from "react-native-reanimated";
 
 const { width, height } = Dimensions.get("window");
 
@@ -34,10 +34,7 @@ const PageIndicator = ({ isActive }: { isActive: boolean }) => {
       damping: 20,
       stiffness: 200,
     }),
-    backgroundColor: withTiming(
-      isActive ? '#000' : '#FFF',
-      { duration: 300 }
-    ),
+    backgroundColor: withTiming(isActive ? "#000" : "#FFF", { duration: 300 }),
   }));
 
   return (
@@ -72,7 +69,7 @@ export default function App() {
         };
         try {
           const response = await fetch(
-            "http://babyblooms-api-mhtx1y-ea3f25-91-108-110-101.traefik.me/api/user/role",
+            `${process.env.EXPO_PUBLIC_API_URL}/api/user/role`,
             {
               method: "GET",
               headers: headers,
@@ -145,10 +142,7 @@ export default function App() {
       }}
     >
       {pages.map((_, index) => (
-        <PageIndicator 
-          key={index} 
-          isActive={index === currentPage} 
-        />
+        <PageIndicator key={index} isActive={index === currentPage} />
       ))}
     </View>
   );

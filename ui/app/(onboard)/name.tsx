@@ -216,7 +216,7 @@ const nameScreen = () => {
       };
 
       const response = await fetch(
-        `http://babyblooms-api-mhtx1y-ea3f25-91-108-110-101.traefik.me/api/user/momUserData`,
+        `${process.env.EXPO_PUBLIC_API_URL}/api/user/momUserData`,
         {
           method: "POST",
           headers: {

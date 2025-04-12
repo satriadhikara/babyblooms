@@ -41,7 +41,7 @@ export default function Kamera() {
 
   const router = useRouter();
 
-  const apiKey = "AIzaSyBJkpM9ECF2-F2rc_xY9GsqB9657TnCtaM";
+  const apiKey = process.env.EXPO_PUBLIC_API_KEY;
 
   useEffect(() => {
     if (!apiKey) {
@@ -56,7 +56,7 @@ export default function Kamera() {
       const timer = setTimeout(() => {
         setHelpModalVisible(true);
       }, 500);
-      
+
       return () => clearTimeout(timer);
     }
   }, [foodName, safeForPregnancy, uri, isLoading]);
@@ -181,156 +181,214 @@ export default function Kamera() {
   };
 
   const renderPicture = () => (
-      <ScrollView contentContainerStyle={styles.resultContainer}>
-        {/* Header */}
-        <View
-          style={{
-            height: 72,
-            width: "100%",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingHorizontal: 20,
-            marginBottom: 20,
-          }}
-        >
-          <Pressable onPress={() => setUri(null)}>
-            <AntDesign name="arrowleft" size={24} color="black" />
-          </Pressable>
-          <ThemedText type="titleMedium">Hasil Pencarian</ThemedText>
-          <Pressable onPress={() => setHelpModalVisible(true)}>
-            <Feather name="help-circle" size={24} color="black" />
-          </Pressable>
-        </View>
-
-        {/* Foto Hasil */}
-        <Image source={{ uri: uri ?? undefined }} style={styles.resultImage} />
-
-        {isLoading && <ActivityIndicator size="large" color="#007AFF" />}
-
-        {/* Informasi Makanan */}
-        {foodName && safeForPregnancy ? (
-          <View style={styles.resultInfo}>
-            <Image
-              source={{ uri: uri ?? undefined }}
-              style={styles.resultThumb}
-            />
-            <ThemedText type="titleMedium" style={styles.resultText}>
-              {foodName}
-            </ThemedText>
-            {safeForPregnancy === "Aman" ? (
-              <CircleCheck size={24} color="white" fill="green" style={{ marginLeft: 10 }} />
-            ) : safeForPregnancy === "Tidak" ? (
-              <CircleX size={24} color="white" fill="red" style={{ marginLeft: 10 }} />
-            ) : safeForPregnancy === "Porsi Kecil" ? (
-              <CircleMinus size={24} color="white" fill="orange" style={{ marginLeft: 10 }} />
-            ) : safeForPregnancy === "Hati-Hati" ? (
-              <CircleAlert size={24} color="white" fill="yellow" style={{ marginLeft: 10}} />
-            ) : (
-              <CircleHelp size={24} color="white" fill="gray" style={{ marginLeft: 10 }} />
-            )}
-          </View>
-        ) : (
-          <Text>Menganalisis gambar...</Text>
-        )}
-
-        {/* Opsi Tambahan */}
-        <Text style={styles.alternativeText}>
-          Tidak menemukan nama makanan yang sesuai?
-        </Text>
-        <Pressable onPress={() => router.push("/(auth)/chatMakanan")}>
-          <Text style={styles.askAI}>Tanyakan manual ke BloomsAI</Text>
+    <ScrollView contentContainerStyle={styles.resultContainer}>
+      {/* Header */}
+      <View
+        style={{
+          height: 72,
+          width: "100%",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          paddingHorizontal: 20,
+          marginBottom: 20,
+        }}
+      >
+        <Pressable onPress={() => setUri(null)}>
+          <AntDesign name="arrowleft" size={24} color="black" />
         </Pressable>
-        <Modal
-            visible={HelpModalVisible}
-            animationType="slide"
-            transparent={true}
-            onRequestClose={() => setHelpModalVisible(false)}
-        >
-            <TouchableOpacity
-                style={{
-                    flex: 1,
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                    justifyContent: 'flex-end',
-                }}
-                activeOpacity={1}
-                onPress={() => setHelpModalVisible(false)}
-            >
-                <TouchableOpacity 
-                    activeOpacity={1} 
-                    onPress={(e) => e.stopPropagation()}
-                    style={{
-                        backgroundColor: 'white',
-                        padding: 20,
-                        borderTopLeftRadius: 30,
-                        borderTopRightRadius: 30,
-                    }}
-                >
-                    <View style={{ 
-                        width: 80, 
-                        height: 5, 
-                        backgroundColor: '#E0E0E0', 
-                        borderRadius: 3, 
-                        alignSelf: 'center', 
-                        marginBottom: 15 
-                    }} />
-                    <View style={{ paddingHorizontal: 20 }}>
-                        <Text style={{ 
-                            fontSize: 20, 
-                            fontWeight: 'bold', 
-                            marginBottom: 20,
-                            textAlign: 'center',
-                            fontFamily: 'PlusJakarta-Sans-Bold',
-                        }}>
-                            Ketahui aktivitas yang bisa dan tidak aman untuk dilakukan!
-                        </Text>
-                    </View>
-                    
-                    <View style={{ alignItems:'center' ,marginBottom: 20 }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12, backgroundColor: '#D1FADF', padding: 13, borderRadius: 25 }}>
-                            <CircleCheck size={24} color="#ECFDF3" fill="#039855" />
-                            <Text style={{ marginLeft: 12, fontFamily: 'Switzer-Regular' }}>
-                                Aman!
-                            </Text>
-                        </View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12, backgroundColor: '#FFF8C9', padding: 13, borderRadius: 25  }}>
-                            <CircleAlert size={24} color="#F8F7F4" fill="#FFDD00" />
-                            <Text style={{ marginLeft: 12, fontFamily: 'Switzer-Regular' }}>
-                                Hati-hati
-                            </Text>
-                        </View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12, backgroundColor: '#FADCD9', padding: 13, borderRadius: 25  }}>
-                            <CircleX size={24} color="#F8F7F4" fill="#D91F11" />
-                            <Text style={{ marginLeft: 12, fontFamily: 'Switzer-Regular' }}>
-                                Tidak aman
-                            </Text>
-                        </View>
-                    </View>
+        <ThemedText type="titleMedium">Hasil Pencarian</ThemedText>
+        <Pressable onPress={() => setHelpModalVisible(true)}>
+          <Feather name="help-circle" size={24} color="black" />
+        </Pressable>
+      </View>
 
-                    <TouchableOpacity
-                        style={{
-                            backgroundColor: '#D33995',
-                            borderRadius: 30,
-                            paddingVertical: 20,
-                            alignItems: 'center',
-                            marginTop: 15,
-                            marginBottom: 10,
-                        }}
-                        onPress={() => setHelpModalVisible(false)}
-                    >
-                        <Text style={{ 
-                            color: 'white', 
-                            fontWeight: 'bold', 
-                            fontSize: 16,
-                            fontFamily: 'Switzer-Medium',
-                        }}>
-                            Mengerti
-                        </Text>
-                    </TouchableOpacity>
-                </TouchableOpacity>
+      {/* Foto Hasil */}
+      <Image source={{ uri: uri ?? undefined }} style={styles.resultImage} />
+
+      {isLoading && <ActivityIndicator size="large" color="#007AFF" />}
+
+      {/* Informasi Makanan */}
+      {foodName && safeForPregnancy ? (
+        <View style={styles.resultInfo}>
+          <Image
+            source={{ uri: uri ?? undefined }}
+            style={styles.resultThumb}
+          />
+          <ThemedText type="titleMedium" style={styles.resultText}>
+            {foodName}
+          </ThemedText>
+          {safeForPregnancy === "Aman" ? (
+            <CircleCheck
+              size={24}
+              color="white"
+              fill="green"
+              style={{ marginLeft: 10 }}
+            />
+          ) : safeForPregnancy === "Tidak" ? (
+            <CircleX
+              size={24}
+              color="white"
+              fill="red"
+              style={{ marginLeft: 10 }}
+            />
+          ) : safeForPregnancy === "Porsi Kecil" ? (
+            <CircleMinus
+              size={24}
+              color="white"
+              fill="orange"
+              style={{ marginLeft: 10 }}
+            />
+          ) : safeForPregnancy === "Hati-Hati" ? (
+            <CircleAlert
+              size={24}
+              color="white"
+              fill="yellow"
+              style={{ marginLeft: 10 }}
+            />
+          ) : (
+            <CircleHelp
+              size={24}
+              color="white"
+              fill="gray"
+              style={{ marginLeft: 10 }}
+            />
+          )}
+        </View>
+      ) : (
+        <Text>Menganalisis gambar...</Text>
+      )}
+
+      {/* Opsi Tambahan */}
+      <Text style={styles.alternativeText}>
+        Tidak menemukan nama makanan yang sesuai?
+      </Text>
+      <Pressable onPress={() => router.push("/(auth)/chatMakanan")}>
+        <Text style={styles.askAI}>Tanyakan manual ke BloomsAI</Text>
+      </Pressable>
+      <Modal
+        visible={HelpModalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setHelpModalVisible(false)}
+      >
+        <TouchableOpacity
+          style={{
+            flex: 1,
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            justifyContent: "flex-end",
+          }}
+          activeOpacity={1}
+          onPress={() => setHelpModalVisible(false)}
+        >
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={(e) => e.stopPropagation()}
+            style={{
+              backgroundColor: "white",
+              padding: 20,
+              borderTopLeftRadius: 30,
+              borderTopRightRadius: 30,
+            }}
+          >
+            <View
+              style={{
+                width: 80,
+                height: 5,
+                backgroundColor: "#E0E0E0",
+                borderRadius: 3,
+                alignSelf: "center",
+                marginBottom: 15,
+              }}
+            />
+            <View style={{ paddingHorizontal: 20 }}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  marginBottom: 20,
+                  textAlign: "center",
+                  fontFamily: "PlusJakarta-Sans-Bold",
+                }}
+              >
+                Ketahui aktivitas yang bisa dan tidak aman untuk dilakukan!
+              </Text>
+            </View>
+
+            <View style={{ alignItems: "center", marginBottom: 20 }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginBottom: 12,
+                  backgroundColor: "#D1FADF",
+                  padding: 13,
+                  borderRadius: 25,
+                }}
+              >
+                <CircleCheck size={24} color="#ECFDF3" fill="#039855" />
+                <Text style={{ marginLeft: 12, fontFamily: "Switzer-Regular" }}>
+                  Aman!
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginBottom: 12,
+                  backgroundColor: "#FFF8C9",
+                  padding: 13,
+                  borderRadius: 25,
+                }}
+              >
+                <CircleAlert size={24} color="#F8F7F4" fill="#FFDD00" />
+                <Text style={{ marginLeft: 12, fontFamily: "Switzer-Regular" }}>
+                  Hati-hati
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginBottom: 12,
+                  backgroundColor: "#FADCD9",
+                  padding: 13,
+                  borderRadius: 25,
+                }}
+              >
+                <CircleX size={24} color="#F8F7F4" fill="#D91F11" />
+                <Text style={{ marginLeft: 12, fontFamily: "Switzer-Regular" }}>
+                  Tidak aman
+                </Text>
+              </View>
+            </View>
+
+            <TouchableOpacity
+              style={{
+                backgroundColor: "#D33995",
+                borderRadius: 30,
+                paddingVertical: 20,
+                alignItems: "center",
+                marginTop: 15,
+                marginBottom: 10,
+              }}
+              onPress={() => setHelpModalVisible(false)}
+            >
+              <Text
+                style={{
+                  color: "white",
+                  fontWeight: "bold",
+                  fontSize: 16,
+                  fontFamily: "Switzer-Medium",
+                }}
+              >
+                Mengerti
+              </Text>
             </TouchableOpacity>
-        </Modal>
-      </ScrollView>
+          </TouchableOpacity>
+        </TouchableOpacity>
+      </Modal>
+    </ScrollView>
   );
 
   const renderCamera = () => (

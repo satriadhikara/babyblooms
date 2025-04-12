@@ -9,7 +9,7 @@ import {
   Animated,
   ActivityIndicator,
   Alert,
-  RefreshControl
+  RefreshControl,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { ThemedText } from "@/components/ui/ThemedText";
@@ -34,7 +34,7 @@ const CommunityScreen = () => {
   const [overlayAnimation] = useState(new Animated.Value(0));
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
-  const [refreshing, setRefreshing] = useState(false); 
+  const [refreshing, setRefreshing] = useState(false);
   const router = useRouter();
 
   interface Post {
@@ -79,7 +79,7 @@ const CommunityScreen = () => {
       const headers = {
         Cookie: cookies,
       };
-      let url = `http://babyblooms-api-mhtx1y-ea3f25-91-108-110-101.traefik.me/api/post`;
+      let url = `${process.env.EXPO_PUBLIC_API_URL}/api/post`;
 
       // Convert UI category to API category
       if (activeTab !== "Semua") {
@@ -102,7 +102,7 @@ const CommunityScreen = () => {
       Alert.alert("Error", "Failed to load posts");
     } finally {
       setLoading(false);
-      setRefreshing(false); 
+      setRefreshing(false);
     }
   };
 
@@ -156,7 +156,7 @@ const CommunityScreen = () => {
         Cookie: cookies,
       };
       const response = await fetch(
-        `http://babyblooms-api-mhtx1y-ea3f25-91-108-110-101.traefik.me/api/post/${postId}/like`,
+        `${process.env.EXPO_PUBLIC_API_URL}/api/post/${postId}/like`,
         {
           method: "POST",
           headers: {

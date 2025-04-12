@@ -81,7 +81,7 @@ const MyAccount = () => {
         Cookie: cookies,
       };
       const response = await fetch(
-        `http://babyblooms-api-mhtx1y-ea3f25-91-108-110-101.traefik.me/api/post/personal`,
+        `${process.env.EXPO_PUBLIC_API_URL}/api/post/personal`,
         {
           headers,
         }
@@ -111,7 +111,7 @@ const MyAccount = () => {
         Cookie: cookies,
       };
       const response = await fetch(
-        `http://babyblooms-api-mhtx1y-ea3f25-91-108-110-101.traefik.me/api/post`,
+        `${process.env.EXPO_PUBLIC_API_URL}/api/post`,
         {
           headers,
         }
@@ -146,7 +146,7 @@ const MyAccount = () => {
         Cookie: cookies,
       };
       const response = await fetch(
-        `http://babyblooms-api-mhtx1y-ea3f25-91-108-110-101.traefik.me/api/post/${postId}/like`,
+        `${process.env.EXPO_PUBLIC_API_URL}/api/post/${postId}/like`,
         {
           method: "POST",
           headers: {

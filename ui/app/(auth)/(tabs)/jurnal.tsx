@@ -477,7 +477,7 @@ const PregnancyTrackerApp = () => {
         };
 
         const response = await fetch(
-          `http://babyblooms-api-mhtx1y-ea3f25-91-108-110-101.traefik.me/api/user/pregnantInfo`,
+          `${process.env.EXPO_PUBLIC_API_URL}/api/user/pregnantInfo`,
           {
             method: "GET",
             headers: headers,
@@ -548,7 +548,7 @@ const PregnancyTrackerApp = () => {
         const cookies = authClient.getCookie();
         const headers = { Cookie: cookies };
         const response = await fetch(
-          `http://babyblooms-api-mhtx1y-ea3f25-91-108-110-101.traefik.me/api/book?recentOnly=true`,
+          `${process.env.EXPO_PUBLIC_API_URL}/api/book?recentOnly=true`,
           {
             method: "GET",
             headers: headers,

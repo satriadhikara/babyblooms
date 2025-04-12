@@ -38,7 +38,7 @@ export default function Kamera() {
 
   const router = useRouter();
 
-  const apiKey = "AIzaSyBJkpM9ECF2-F2rc_xY9GsqB9657TnCtaM";
+  const apiKey = process.env.EXPO_PUBLIC_API_KEY;
 
   useEffect(() => {
     if (!apiKey) {

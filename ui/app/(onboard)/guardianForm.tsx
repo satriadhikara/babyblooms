@@ -21,8 +21,7 @@ const TOTAL_LENGTH = 6;
 const PREFIX = "BB";
 const INPUT_LENGTH = TOTAL_LENGTH - PREFIX.length;
 // --- IMPORTANT: Replace with your actual API base URL ---
-const API_BASE_URL =
-  "http://babyblooms-api-mhtx1y-ea3f25-91-108-110-101.traefik.me/api"; // Example: Replace!
+const API_BASE_URL = `${process.env.EXPO_PUBLIC_API_URL}/api`; // Example: Replace!
 // --- End Configuration ---
 
 const GuardianForm = () => {

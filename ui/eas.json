@@ -16,10 +16,6 @@
     "production": {
       "android": {
         "buildType": "apk"
-      },
-      "env": {
-        "EXPO_PUBLIC_API_URL": "http://babyblooms-api-mhtx1y-ea3f25-91-108-110-101.traefik.me",
-        "EXPO_PUBLIC_API_KEY": "AIzaSyBJkpM9ECF2-F2rc_xY9GsqB9657TnCtaM"
       }
     }
   }

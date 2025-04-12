@@ -52,7 +52,7 @@ export default function JournalScreen() {
       const cookies = authClient.getCookie();
       const headers = { Cookie: cookies };
       const response = await fetch(
-        `http://babyblooms-api-mhtx1y-ea3f25-91-108-110-101.traefik.me/api/book`,
+        `${process.env.EXPO_PUBLIC_API_URL}/api/book`,
         {
           method: "GET",
           headers: headers,
@@ -138,7 +138,7 @@ export default function JournalScreen() {
         Cookie: cookies,
       };
       const response = await fetch(
-        `http://babyblooms-api-mhtx1y-ea3f25-91-108-110-101.traefik.me/api/book`,
+        `${process.env.EXPO_PUBLIC_API_URL}/api/book`,
         {
           method: "POST",
           headers: headers,

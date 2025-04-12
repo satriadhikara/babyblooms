@@ -31,7 +31,7 @@ const ChatMakanan = () => {
     router.back();
   };
 
-  const API_KEY = "AIzaSyBJkpM9ECF2-F2rc_xY9GsqB9657TnCtaM";
+  const API_KEY = process.env.EXPO_PUBLIC_API_KEY;
 
   const handleSend = async () => {
     if (inputText.trim()) {
@@ -145,10 +145,10 @@ const ChatMakanan = () => {
   };
 
   return (
-    <KeyboardAvoidingView 
-                      style={{ flex: 1 }}
-                      behavior={Platform.OS === "ios" ? "padding" : "height"}
-                      keyboardVerticalOffset={Platform.OS === "ios" ? -32 : 0}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? -32 : 0}
     >
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
