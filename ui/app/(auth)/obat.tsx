@@ -421,8 +421,9 @@ const Obat = () => {
             style={{
               flexDirection: "row",
               flexWrap: "wrap",
-              margin: 20,
-              gap: 10,
+              marginTop: 20,
+              gap: 15,
+              paddingHorizontal: 17,
               justifyContent: "space-between",
             }}
           >
@@ -460,8 +461,8 @@ const Obat = () => {
                   backgroundColor: "#E5E5E5",
                   borderRadius: 100,
                   padding: 10,
-                  width: 112,
-                  height: 112,
+                  width: 100,
+                  height: 100,
                   justifyContent: "center",
                   alignItems: "center",
                   ...(letter === "Y" || letter === "Z"

@@ -5,6 +5,7 @@ import { ThemedText } from '@/components/ui/ThemedText';
 import { useRouter } from 'expo-router';
 import { Plus, Bell } from 'lucide-react-native';
 import * as Location from 'expo-location';
+import { useAuth } from "../_layout";
 
 interface NearbyFacility {
   place_id: number;
@@ -31,6 +32,7 @@ const MedicalAppScreen = () => {
   const [nearbyFacilities, setNearbyFacilities] = useState<NearbyFacility[]>([]);
   const [isLoadingFacilities, setIsLoadingFacilities] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const { session, isPending } = useAuth();
 
   interface ChecklistItem {
     id: number;
@@ -250,22 +252,33 @@ const MedicalAppScreen = () => {
       flex: 1,
       backgroundColor: '#f5f5f5',
     }}>
-      <View>
-        {/* Header */}
-        <View style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          paddingHorizontal: 20,
-          paddingVertical: 15,
-        }}>
-          <ThemedText type="headlineSmall" >Medis</ThemedText>
-          <TouchableOpacity style={{ padding: 5 }}>
-            <Bell size={24} color="black" />
+      {/* Header */}
+      <View style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        paddingVertical: 15,
+      }}>
+        <ThemedText type="headlineSmall" >Medis</ThemedText>
+          <TouchableOpacity onPress={() => router.push("/(auth)/menu")}>
+            <Image
+              source={
+                session?.user.image
+                  ? { uri: session.user.image }
+                  : require("@/assets/images/ProfPic.png")
+              }
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 20,
+                marginLeft: 15,
+                backgroundColor: "#e0e0e0",
+              }}
+            />
           </TouchableOpacity>
-        </View>
       </View>
-      <ScrollView style={{marginBottom: 20}}>
+      <ScrollView>
         {/* Appointments Section */}
         <View style={{
           flexDirection: 'row',
@@ -296,7 +309,7 @@ const MedicalAppScreen = () => {
       >
         {appointments.map((appointment, index) => {
           const inputRange = [
-            (index - 1) * 240, // card width (220) + marginRight (20)
+            (index - 1) * 240, 
             index * 240,
             (index + 1) * 240,
           ];
@@ -572,6 +585,7 @@ const MedicalAppScreen = () => {
           style={{
           marginTop: 14,
           marginHorizontal: 20,
+          marginBottom: 40,
           backgroundColor: "#D33995",
           paddingVertical: 20,
           borderRadius: 30,

@@ -543,6 +543,7 @@ const PanduanPage = () => {
                             </ThemedText>
                         </TouchableOpacity>
                     </ScrollView>
+
                     {articles.map((article) => (
                         <TouchableOpacity
                             key={article.id}
@@ -550,9 +551,8 @@ const PanduanPage = () => {
                                 height: 108,
                                 borderRadius: 12,
                                 alignItems: "flex-start",
-                                marginTop: 20,
+                                marginTop: 25,
                                 marginLeft: 25,
-                                marginRight: 25,
                                 flexDirection: "row",
                                 justifyContent: "space-between",
                                 alignContent: "center",
@@ -566,15 +566,15 @@ const PanduanPage = () => {
                                 alignItems: "center",
                             }}
                             >
-                            <Image
-                                source={article.image}
-                                style={{
-                                    width: 146,
-                                    height: 115,
-                                    borderRadius: 12,
-                                    position: 'absolute',
-                                }}
-                            />
+                                <Image
+                                    source={article.image}
+                                    style={{
+                                        width: 146,
+                                        height: 115,
+                                        borderRadius: 12,
+                                        position: 'absolute',
+                                    }}
+                                />
                             </View>
                             <View
                                 style={{
