@@ -1,3 +1,4 @@
+import React, { useState, useEffect, useRef } from "react";
 import { View, Text, Image, ScrollView } from "react-native";
 import { ThemedText } from "@/components/ui/ThemedText";
 import { Settings, ChevronRight, Plus, ChevronLeft } from "lucide-react-native";
@@ -6,15 +7,165 @@ import { TouchableOpacity } from "react-native";
 import { useAuth } from "./_layout";
 import LoadingComponent from "@/components/ui/Loading";
 import { useRouter } from "expo-router";
+import { authClient } from "@/utils/auth-client";
+
+interface Child {
+  id: string;
+  mother_id: string;
+  name: string;
+  estimated_date_of_birth: string;
+  connection_code: string;
+  created_at: string;
+  updated_at: string;
+  gender: string;
+
+}
+
+interface PregnancyData {
+  week: number;
+  day: number;
+  hpl: string;
+  hpht: string;
+  daysLeft: number;
+  trimester: number;
+  formattedHpl?: string;
+  isLoading: boolean;
+  isMom: boolean;
+  error: string | null;
+}
+
 
 export default function Menu() {
   const { session, isPending } = useAuth();
+  const API_URL = `${process.env.EXPO_PUBLIC_API_URL}/api`;
+
+  const [children, setChildren] = useState<Child>({
+    id: "",
+    mother_id: "",
+    name: "",
+    estimated_date_of_birth: "",
+    connection_code: "",
+    created_at: "",
+    updated_at: "",
+    gender: "",
+  });
+
+  const [pregnancyData, setPregnancyData] = useState<PregnancyData>({
+      week: 0,
+      day: 0,
+      hpl: "",
+      hpht: "",
+      daysLeft: 0,
+      trimester: 1,
+      isLoading: true,
+      isMom: true,
+      error: null,
+    });
 
   if (isPending) {
     return <LoadingComponent />;
   }
 
   const router = useRouter();
+
+  // Fetch children data
+  useEffect(() => {
+    const fetchChildren = async () => {
+      if (!session) return;
+
+      try {
+        const cookies = authClient.getCookie();
+        const headers = {
+          Cookie: cookies,
+        };
+
+        const response = await fetch(`${API_URL}/user/child`, {
+          method: "GET",
+          headers: headers,
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setChildren(data);
+      } catch (error) {
+        console.error("Error fetching children data:", error);
+      }
+    };
+
+    fetchChildren();
+  }, [session]);
+
+  useEffect(() => {
+      const fetchPregnancyInfo = async () => {
+        if (!session) return;
+  
+        try {
+          const cookies = authClient.getCookie();
+          const headers = {
+            Cookie: cookies,
+          };
+  
+          const response = await fetch(
+            `${process.env.EXPO_PUBLIC_API_URL}/api/user/pregnantInfo`,
+            {
+              method: "GET",
+              headers: headers,
+            }
+          );
+  
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+  
+          const data = await response.json();
+  
+          console.log("Pregnancy data:", data);
+  
+          // Calculate days left and trimester
+          const hplDate = new Date(data.hpl);
+          const today = new Date();
+          const daysLeft = Math.floor(
+            (hplDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
+          );
+  
+          let trimester = data.trimester || 1;
+  
+          // Format HPL (due date)
+          const options: Intl.DateTimeFormatOptions = {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          };
+          const formattedHpl = hplDate.toLocaleDateString("id-ID", options);
+  
+          setPregnancyData({
+            week: data.week,
+            day: data.day,
+            hpl: data.hpl,
+            hpht: data.hpht,
+            daysLeft: daysLeft,
+            trimester: trimester,
+            formattedHpl: formattedHpl,
+            isMom: data.isMom,
+            isLoading: false,
+            error: null,
+          });
+        } catch (error) {
+          console.error("Error fetching pregnancy info:", error);
+          setPregnancyData((prev) => ({
+            ...prev,
+            isLoading: false,
+            error: "Failed to load pregnancy data",
+          }));
+        }
+      };
+  
+      fetchPregnancyInfo();
+    }, [session]);
+
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
@@ -126,13 +277,13 @@ export default function Menu() {
                 type="titleLarge"
                 style={{ paddingHorizontal: 20, color: "#000" }}
               >
-                Seth
+                {children.name || "Bayi"}
               </ThemedText>
               <ThemedText
                 type="bodySmall"
                 style={{ paddingHorizontal: 20, color: "#000" }}
               >
-                4 Minggu 5 Hari
+                {pregnancyData.week} minggu {pregnancyData.day} hari
               </ThemedText>
             </View>
             <TouchableOpacity onPress={() => router.push("/anggotaKeluarga")}>

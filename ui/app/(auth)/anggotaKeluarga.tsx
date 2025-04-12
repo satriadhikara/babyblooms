@@ -103,14 +103,19 @@ const Profil = () => {
             >
                 <View style={{flexDirection:"row",alignItems:"center",gap:20,backgroundColor:"#F8F7F4",paddingVertical:20}}>
                     <Image
-                        source={require("@/assets/images/ProfPic.png")}
+                        source={
+                          session?.user.image
+                            ? { uri: session.user.image }
+                            : require("@/assets/images/ProfPic.png")
+                        }
                         style={{
                             width: 60,
                             height: 60,
+                            borderRadius: 30,
                         }}
                     />
                     <View style={{gap:6, justifyContent:"center"}}>
-                        <ThemedText type="titleMedium" >Fiona Siregar</ThemedText>
+                        <ThemedText type="titleMedium" >{session?.user.name}</ThemedText>
                         <ThemedText type="bodySmall" style={{ color: "#777777" }}>Pemilik</ThemedText>
                     </View>
                 </View>
