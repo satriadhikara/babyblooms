@@ -230,10 +230,10 @@ export default function JournalScreen() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#faf9f6" }}>
-      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white", }}>
+      <StatusBar barStyle="dark-content" backgroundColor="white" />
       {/* Header */}
-      <View style={{ backgroundColor: "#fff" }}>
+      <View style={{ backgroundColor: "white" }}>
         <View
           style={{
             flexDirection: "row",

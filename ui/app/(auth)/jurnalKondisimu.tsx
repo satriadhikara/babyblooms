@@ -138,15 +138,30 @@ const MoodTrackerApp = () => {
                       source={require('@/assets/images/BeratBadan.png')}
                       style={{ width: 60, height: 60, resizeMode: 'contain' }}
                   />
-                  <ThemedText style={{fontSize: 24,fontWeight: 'medium', fontFamily:'switzer'}}>64 Kg</ThemedText>
+                  <ThemedText style={{fontSize: 24,fontWeight: 'medium', fontFamily:'Switzer-Medium'}}>64 Kg</ThemedText>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
                   <ArrowUpRight size={20} color="black" />
                   <ThemedText type='labelLarge' style={{fontSize: 20}}>2 Kg</ThemedText>
               </View>
           </View>
-          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, marginTop: 10 }}>
+          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, marginTop: 10, marginBottom: 40 }}>
               <ThemedText style={{fontSize: 14, fontFamily:'switzer', color:'#8C8C8C', fontStyle:'italic'}}>* Berat badan terakhir menunjukkan bahwa Bunda berada di atas kisaran sehat untuk minggu 4</ThemedText>
+          </View>
+          <View style={{ flexDirection: 'row', paddingHorizontal: 20 }}>
+              <ThemedText type='titleMedium' style={{ fontSize: 18}}>Tekanan Darah</ThemedText>
+          </View>
+          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, marginTop: 10 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>    
+                  <Image 
+                      source={require('@/assets/images/BeratBadan.png')}
+                      style={{ width: 60, height: 60, resizeMode: 'contain' }}
+                  />
+                  <ThemedText style={{fontSize: 24,fontWeight: 'medium', fontFamily:'Switzer-Medium'}}>110/79 mmHg</ThemedText>
+              </View>
+          </View>
+          <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, marginTop: 10 }}>
+              <ThemedText style={{fontSize: 14, fontFamily:'switzer', color:'#8C8C8C', fontStyle:'italic'}}>*Tekanan darah hari ini menunjukkan kondisi normal</ThemedText>
           </View>
         </View>
         <View style={{ marginTop: 40, flexDirection: 'column' }}>
