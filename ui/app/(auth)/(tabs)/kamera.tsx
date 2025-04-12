@@ -49,6 +49,18 @@ export default function Kamera() {
     }
   }, []);
 
+  // Auto-show modal when analysis results are ready
+  useEffect(() => {
+    if (foodName && safeForPregnancy && uri && !isLoading) {
+      // Small delay to ensure UI has rendered
+      const timer = setTimeout(() => {
+        setHelpModalVisible(true);
+      }, 500);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [foodName, safeForPregnancy, uri, isLoading]);
+
   if (!permission) return null;
   if (!permission.granted) {
     return (
@@ -212,7 +224,7 @@ export default function Kamera() {
               <CircleX size={24} color="white" fill="red" style={{ marginLeft: 10 }} />
             ) : safeForPregnancy === "Porsi Kecil" ? (
               <CircleMinus size={24} color="white" fill="orange" style={{ marginLeft: 10 }} />
-            ) : safeForPregnancy == "Hati-Hati" ? (
+            ) : safeForPregnancy === "Hati-Hati" ? (
               <CircleAlert size={24} color="white" fill="yellow" style={{ marginLeft: 10}} />
             ) : (
               <CircleHelp size={24} color="white" fill="gray" style={{ marginLeft: 10 }} />
