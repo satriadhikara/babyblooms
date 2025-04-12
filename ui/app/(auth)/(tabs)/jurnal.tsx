@@ -623,7 +623,7 @@ const PregnancyTrackerApp = () => {
               </ThemedText>
             </View>
 
-            <TouchableOpacity onPress={() => router.push("/(auth)/akunSaya")}>
+            <TouchableOpacity onPress={() => router.push("/(auth)/menu")}>
               <Image
                 source={
                   session?.user.image

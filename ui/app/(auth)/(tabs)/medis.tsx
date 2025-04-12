@@ -6,7 +6,6 @@ import { useRouter } from 'expo-router';
 import { Plus, Bell } from 'lucide-react-native';
 import * as Location from 'expo-location';
 
-// Define the interface for medical facilities
 interface NearbyFacility {
   place_id: number;
   name: string;
@@ -580,7 +579,7 @@ const MedicalAppScreen = () => {
           alignItems: "center",
           justifyContent: "center",
           }}
-          onPress={() => router.push('/(auth)/infoPraHamil')}
+          onPress={() => router.push('/(auth)/catatanBaru')}
         >
           <Plus size={20} color="#FFF"/>
           <ThemedText type='labelLarge' style={{ color: "#FFF", marginLeft: 8 }}>

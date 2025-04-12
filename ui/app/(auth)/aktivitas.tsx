@@ -8,14 +8,14 @@ import {
     TouchableOpacity,
     Image,
     Animated,
-    ActivityIndicator
+    ActivityIndicator,
+    Modal,
+    Text
 } from 'react-native';
-import { Feather, AntDesign } from '@expo/vector-icons';
 import { useRouter } from "expo-router";
-import { CircleAlert, HelpCircle, ArrowLeft, CircleCheck, CircleX, CircleHelp } from "lucide-react-native";
+import { HelpCircle, ArrowLeft, CircleCheck, CircleX, CircleHelp, CircleAlert } from "lucide-react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-// Define the Activity interface based on your schema
 interface Activity {
     id: string;
     title: string;
@@ -36,6 +36,7 @@ const Aktivitas = () => {
     const [error, setError] = useState<string | null>(null);
     
     const textInputRef = useRef(null);
+    const [HelpModalVisible, setHelpModalVisible] = useState(false);
     const router = useRouter();
     const handleBack = () => router.back();
 
@@ -145,11 +146,11 @@ const Aktivitas = () => {
 
     const getIcon = (isSafe: boolean) => {
         if (isSafe === true) {
-            return <CircleCheck size={24} color="#F8F7F4" fill="green" />;
+            return <CircleCheck size={24} color="#ECFDF3" fill="#039855" />;
         } else if (isSafe === false) {
-            return <CircleX size={24} color="#F8F7F4" fill="red" />;
+            return <CircleX size={24} color="#F8F7F4" fill="#D91F11" />;
         } else {
-            return <CircleHelp size={24} color="#F8F7F4" fill="gray" />;
+            return <CircleAlert size={24} color="#F8F7F4" fill="#FFDD00" />;
         }
     }
 
@@ -178,7 +179,7 @@ const Aktivitas = () => {
                         <ArrowLeft size={24} color="black" />
                     </Pressable>
                     <ThemedText type='titleMedium'>Aktivitas</ThemedText>
-                    <Pressable>
+                    <Pressable onPress={() => setHelpModalVisible(true)}>
                         <HelpCircle size={24} color="black" />
                     </Pressable>
                 </View>
@@ -293,6 +294,96 @@ const Aktivitas = () => {
                     ))
                 )}
             </Animated.ScrollView>
+
+            <Modal
+                visible={HelpModalVisible}
+                animationType="slide"
+                transparent={true}
+                onRequestClose={() => setHelpModalVisible(false)}
+            >
+                <TouchableOpacity
+                    style={{
+                        flex: 1,
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        justifyContent: 'flex-end',
+                    }}
+                    activeOpacity={1}
+                    onPress={() => setHelpModalVisible(false)}
+                >
+                    <TouchableOpacity 
+                        activeOpacity={1} 
+                        onPress={(e) => e.stopPropagation()}
+                        style={{
+                            backgroundColor: 'white',
+                            padding: 20,
+                            borderTopLeftRadius: 30,
+                            borderTopRightRadius: 30,
+                        }}
+                    >
+                        <View style={{ 
+                            width: 80, 
+                            height: 5, 
+                            backgroundColor: '#E0E0E0', 
+                            borderRadius: 3, 
+                            alignSelf: 'center', 
+                            marginBottom: 15 
+                        }} />
+                        <View style={{ paddingHorizontal: 20 }}>
+                            <Text style={{ 
+                                fontSize: 20, 
+                                fontWeight: 'bold', 
+                                marginBottom: 20,
+                                textAlign: 'center',
+                                fontFamily: 'PlusJakarta-Sans-Bold',
+                            }}>
+                                Ketahui aktivitas yang bisa dan tidak aman untuk dilakukan!
+                            </Text>
+                        </View>
+                        
+                        <View style={{ alignItems:'center' ,marginBottom: 20 }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12, backgroundColor: '#D1FADF', padding: 13, borderRadius: 25 }}>
+                                <CircleCheck size={24} color="#ECFDF3" fill="#039855" />
+                                <Text style={{ marginLeft: 12, fontFamily: 'Switzer-Regular' }}>
+                                    Aman!
+                                </Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12, backgroundColor: '#FFF8C9', padding: 13, borderRadius: 25  }}>
+                                <CircleAlert size={24} color="#F8F7F4" fill="#FFDD00" />
+                                <Text style={{ marginLeft: 12, fontFamily: 'Switzer-Regular' }}>
+                                    Hati-hati
+                                </Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12, backgroundColor: '#FADCD9', padding: 13, borderRadius: 25  }}>
+                                <CircleX size={24} color="#F8F7F4" fill="#D91F11" />
+                                <Text style={{ marginLeft: 12, fontFamily: 'Switzer-Regular' }}>
+                                    Tidak aman
+                                </Text>
+                            </View>
+                        </View>
+
+                        <TouchableOpacity
+                            style={{
+                                backgroundColor: '#D33995',
+                                borderRadius: 30,
+                                paddingVertical: 20,
+                                alignItems: 'center',
+                                marginTop: 15,
+                                marginBottom: 10,
+                            }}
+                            onPress={() => setHelpModalVisible(false)}
+                        >
+                            <Text style={{ 
+                                color: 'white', 
+                                fontWeight: 'bold', 
+                                fontSize: 16,
+                                fontFamily: 'Switzer-Medium',
+                            }}>
+                                Mengerti
+                            </Text>
+                        </TouchableOpacity>
+                    </TouchableOpacity>
+                </TouchableOpacity>
+            </Modal>
         </SafeAreaView>
     );
 }

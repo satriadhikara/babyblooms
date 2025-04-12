@@ -110,8 +110,7 @@ const ChecklistScreen = () => {
             shadowRadius: 3.84,
             zIndex: 100,
         }}
-        // onPress={() => router.push('/(auth)/catatanBaru')}
-        onPress={() => router.push('/(auth)/catatanBaruDetail')}
+        onPress={() => router.push('/(auth)/catatanBaru')}
         >
             <Plus size={32} color="#fff" />
         </TouchableOpacity>
