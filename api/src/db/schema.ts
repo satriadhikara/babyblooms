@@ -15,8 +15,45 @@ import {
 
 export const genderEnum = pgEnum("gender", ["male", "female", "unknown"]);
 // export const safeStatusEnum = pgEnum('safe_status', ['safe', 'caution', 'small_portion', 'unsafe']);
-export const activityCategoryEnum = pgEnum("activity_category", ["Terkait Bepergian", "Olahraga", "Kesehatan", "Hiburan", "Fashion", "Rumah Tangga", "Gerakan Tubuh", "Kecantikan & Kosmetik", "Perawatan Rambut"]);
-export const medicineCategoryEnum = pgEnum("medicine_category", ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]);
+export const activityCategoryEnum = pgEnum("activity_category", [
+  "Terkait Bepergian",
+  "Olahraga",
+  "Kesehatan",
+  "Hiburan",
+  "Fashion",
+  "Rumah Tangga",
+  "Gerakan Tubuh",
+  "Kecantikan & Kosmetik",
+  "Perawatan Rambut",
+]);
+export const medicineCategoryEnum = pgEnum("medicine_category", [
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z",
+]);
 export const postCategoryEnum = pgEnum("post_category", [
   "pregnancyQNA",
   "tipsAndRecommendations",
@@ -208,3 +245,15 @@ export const commentLike = pgTable(
     // Create a composite primary key to ensure a user can only like a comment once
     [primaryKey({ columns: [table.userId, table.commentId] })]
 );
+
+export const dailyBook = pgTable("daily_book", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  motherId: text("mother_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  content: text("content").notNull(),
+  createdAt: timestamp("created_at").notNull(),
+});

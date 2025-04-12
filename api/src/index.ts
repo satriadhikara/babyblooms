@@ -6,6 +6,7 @@ import { auth } from "./utils/auth";
 import { userRoute } from "./routes/user";
 import { postRoute } from "./routes/post";
 import { app as activityRoute } from "./routes/activity";
+import { bookRoute } from "./routes/book";
 
 const app = new Hono<{
   Variables: {
@@ -44,6 +45,7 @@ app.get("/health", (c) => c.json({ status: "ok" }));
 app.route("/auth", authRoute);
 app.route("/user", userRoute);
 app.route("/post", postRoute);
-app.route("/", activityRoute); 
+app.route("/", activityRoute);
+app.route("/book", bookRoute);
 
 export default app;
