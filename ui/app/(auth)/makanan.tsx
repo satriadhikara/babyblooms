@@ -146,7 +146,7 @@ const Makanan = () => {
                     alignItems: 'center',
                     justifyContent: 'center',
                 }}
-                onPress={() => router.push("/(auth)/kamera")}
+                onPress={() => router.push('/(auth)/(tabs)/kamera')}
             >
                 <ScanLine size={24} color="#FFFFFF"/>
                 <ThemedText type='titleMedium' style={{ color: "#FFFFFF" }}>

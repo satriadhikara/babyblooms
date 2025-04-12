@@ -207,12 +207,11 @@ const PanduanPage = () => {
                             marginTop: 5,
                             paddingLeft: 25,
                         }}
-                        scrollIndicatorInsets={{ // Add this to customize the indicator position
+                        scrollIndicatorInsets={{ 
                             right: 5,
                             bottom: 0
                         }}
                     >
-                        {/* BloomsAI */}
                         <TouchableOpacity
                             style={{
                                 width: 148,
@@ -252,39 +251,6 @@ const PanduanPage = () => {
                             />
                             <ThemedText type='titleMedium' style={{ color: "#F8F7F4", top: 80, left: 16 }}>
                                 BloomsAI
-                            </ThemedText>
-                        </TouchableOpacity>
-        
-                        {/* Makanan & Minuman */}
-                        <TouchableOpacity
-                            style={{
-                                width: 148,
-                                height: 120,
-                                backgroundColor: "#0C0C0C",
-                                borderRadius: 12,
-                                alignItems: "flex-start",
-                                shadowColor: "#000",
-                                shadowOffset: { width: 0, height: 2 },
-                                shadowOpacity: 0.1,
-                                shadowRadius: 4,
-                                elevation: 3,
-                                marginRight: 12,
-                            }}
-
-                            onPress={() => router.push("/(auth)/makanan")}
-                        >
-                            <Image
-                                source={require("../../../assets/images/BgMakanan.png")}
-                                style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    borderRadius: 12,
-                                    position: 'absolute',
-                                    opacity: 0.5,
-                                }}
-                            />
-                            <ThemedText type='titleMedium' style={{ color: "#F8F7F4", top: 64, left: 16 }}>
-                                Makanan & Minuman
                             </ThemedText>
                         </TouchableOpacity>
         

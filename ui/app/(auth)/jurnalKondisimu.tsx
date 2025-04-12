@@ -225,7 +225,6 @@ const MoodTrackerApp = () => {
           zIndex: 1000
         }}
         onPress={() => Router.push('/(auth)/jurnalKondisiDetail')}
-        // onPress={() => Router.push('/(auth)/infoPraHamil')}
       >
         <Plus size={24} color="#fff" />
       </TouchableOpacity>

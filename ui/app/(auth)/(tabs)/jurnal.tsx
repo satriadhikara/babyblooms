@@ -929,7 +929,7 @@ const PregnancyTrackerApp = () => {
           </TouchableOpacity>
 
           {/* Tips Card */}
-          <TouchableOpacity onPress={() => router.push("/(auth)/infoMingguan")}>
+          <TouchableOpacity>
             <View
               style={{
                 width: 342,
