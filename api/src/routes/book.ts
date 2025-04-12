@@ -60,10 +60,6 @@ bookRoute.get(
         .where(eq(dailyBook.motherId, motherId))
         .orderBy(desc(dailyBook.createdAt));
 
-      if (books.length === 0) {
-        return c.json({ message: "No books found" }, 404);
-      }
-
       if (recentOnly) {
         return c.json(books[0], 200);
       }
