@@ -73,9 +73,9 @@ const PregnancySymptomTracker = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#f8f8f8' }}>
-      <StatusBar barStyle="dark-content" />
-      <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingTop: 60,paddingBottom: 20, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#f0f0f0' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+      <StatusBar barStyle="dark-content" backgroundColor="white"  />
+      <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16,paddingVertical:20,backgroundColor: 'white', borderBottomWidth: 1, borderBottomColor: '#f0f0f0' }}>
         <TouchableOpacity style={{ padding: 4 }} onPress={() => Router.back()}>
           <X size={30} color="black" />
         </TouchableOpacity>
@@ -86,7 +86,7 @@ const PregnancySymptomTracker = () => {
         <View style={{ width: 24 }} />
       </View>
 
-      <ScrollView contentContainerStyle={{ padding: 16 }}>
+      <ScrollView contentContainerStyle={{ padding: 16, backgroundColor: '#F8F7F4' }} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
         <ThemedText type='titleMedium' style={{marginBottom: 10 }}>Bagaimana perasaanmu hari ini?</ThemedText>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20 }}>
           {moodEmojis.map((emoji, index) => (
@@ -101,6 +101,25 @@ const PregnancySymptomTracker = () => {
           <TextInput style={{ flex: 1, height: 50, paddingHorizontal: 16, fontSize: 16 }} value={weight} onChangeText={setWeight} keyboardType="numeric" />
           <ThemedText type='labelLarge' style={{ paddingRight: 16,color: '#666' }}>kg</ThemedText>
         </View>
+
+        <ThemedText  type='titleMedium' style={{ marginBottom: 10 }}>Tekanan Darah hari ini</ThemedText>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10, gap: 8 }}>
+          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', backgroundColor: '#FFF', borderRadius: 8, borderWidth: 1, borderColor: '#E0E0E0' }}>
+            <TextInput 
+              style={{ flex: 1, height: 50, paddingHorizontal: 16, fontSize: 16 }} 
+              keyboardType="numeric"
+            />
+            <ThemedText type='labelLarge' style={{ paddingRight: 16, color: '#666' }}>mmHg</ThemedText>
+          </View>
+          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', backgroundColor: '#FFF', borderRadius: 8, borderWidth: 1, borderColor: '#E0E0E0' }}>
+            <TextInput 
+              style={{ flex: 1, height: 50, paddingHorizontal: 16, fontSize: 16 }} 
+              keyboardType="numeric"
+            />
+            <ThemedText type='labelLarge' style={{ paddingRight: 16, color: '#666' }}>mmHg</ThemedText>
+          </View>
+        </View>
+        <ThemedText style={{ marginBottom: 20, fontSize: 12,fontWeight: "400",fontFamily: "Switzer-Italic"}}>*Pengisian tekanan darah dapat dilewati jika tidak memiliki alat pengukuran</ThemedText>
 
         <ThemedText type='titleMedium' style={{ marginBottom: 10 }}>Gejala apa saja yang dirasakan hari ini?</ThemedText>
         {symptomCategories.map(category => (
