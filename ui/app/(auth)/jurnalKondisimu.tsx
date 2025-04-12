@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-import { ArrowLeft, Flame, Plus, ArrowUpRight } from 'lucide-react-native';
+import { ChevronLeft, Flame, Plus, ArrowUpRight } from 'lucide-react-native';
 import {useRouter} from 'expo-router';
 import { ThemedText } from '@/components/ui/ThemedText';
 
@@ -44,9 +44,9 @@ const MoodTrackerApp = () => {
         <View style={{ width:'100%' ,flexDirection: 'row', justifyContent: 'space-between', alignItems:'center', padding: 16, backgroundColor: '#fff' }}>
           <TouchableOpacity 
             style={{ padding: 8 }}
-            onPress={() => Router.back()}
+            onPress={() => Router.push('/(auth)/(tabs)/jurnal')}
           >
-            <ArrowLeft size={24} color="black" />
+            <ChevronLeft size={24} color="black" />
           </TouchableOpacity>
           <View style={{flexDirection: 'column', alignItems: 'center'}}>
             <ThemedText type='titleMedium'>Jurnal Kondisimu</ThemedText>
@@ -214,13 +214,17 @@ const MoodTrackerApp = () => {
         <View style={{ marginTop: 40, flexDirection: 'column', paddingHorizontal: 20 }}>
           <ThemedText type='titleMedium' style={{ fontSize: 18}}>Catatan Tambahan</ThemedText>
           <View style={{ marginTop: 10, flexDirection: 'column' }}>
-            <View style={{flexDirection: 'row', alignItems: 'center',gap: 40, paddingHorizontal:10, marginTop: 10 }}>
-              <ThemedText type='labelMedium' style={{color: '#7E7E7E'}}>Sen</ThemedText>
-              <ThemedText type='labelMedium' style={{fontSize: 16, fontWeight:'bold'}}>-</ThemedText>
+            <View style={{flexDirection: 'row', paddingHorizontal:10, marginTop: 10 }}>
+              <ThemedText type='labelMedium' style={{color: '#7E7E7E', width: 40}}>Sen</ThemedText>
+              <ThemedText type='labelMedium' style={{fontSize: 16, fontWeight:'bold', marginLeft: 40}}>-</ThemedText>
             </View>
-            <View style={{flexDirection: 'row', alignItems: 'center',gap: 40, paddingHorizontal: 10, marginTop: 20 }}>
-              <ThemedText type='labelMedium' style={{color: '#7E7E7E'}}>Sel</ThemedText>
-              <ThemedText type='labelMedium' style={{fontWeight:'regular'}}>Hari ini mood swing banget dan sedikit ngerasain morning sickness</ThemedText>
+            <View style={{flexDirection: 'row', paddingHorizontal: 10, marginTop: 20 }}>
+              <ThemedText type='labelMedium' style={{color: '#7E7E7E', width: 40}}>Sel</ThemedText>
+              <ThemedText type='labelMedium' style={{
+                flex: 1, 
+                marginLeft: 40,
+                fontWeight: 'regular'
+              }}>Hari ini mood swing banget dan sedikit ngerasain morning sickness</ThemedText>
             </View>
           </View>
         </View>

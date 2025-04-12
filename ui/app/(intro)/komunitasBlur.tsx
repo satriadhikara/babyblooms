@@ -13,7 +13,7 @@ import { X } from "lucide-react-native";
 import { router } from "expo-router";
 
 const { width, height } = Dimensions.get("window");
-const DRAWER_HEIGHT = height * 0.65; // Keep drawer height consistent
+const DRAWER_HEIGHT = height * 0.69; // Keep drawer height consistent
 
 const KomunitasBlur = () => {
   // --- Drawer State and Animation ---

@@ -359,7 +359,7 @@ export default function Menu() {
           style={{
             flexDirection: "row",
             flexWrap: "wrap",
-            margin: 20,
+            margin: 10,
             gap: 10,
             justifyContent: "space-between",
           }}

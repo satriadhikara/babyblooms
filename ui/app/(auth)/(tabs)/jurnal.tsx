@@ -910,7 +910,7 @@ const PregnancyTrackerApp = () => {
             <View
               style={{
                 width: 165,
-                height: 204,
+                height: '100%',
                 backgroundColor: "#FFF",
                 borderRadius: 12,
                 padding: 16,

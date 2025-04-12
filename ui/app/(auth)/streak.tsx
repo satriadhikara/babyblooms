@@ -34,7 +34,7 @@ const StreakCelebration = ({
       {/* Close button */}
       <TouchableOpacity
         style={{ position: "absolute", top: 80, left: 16, padding: 4 }}
-        onPress={() => Router.replace("/(auth)/(tabs)/jurnal")}
+        onPress={() => Router.back()}
       >
         <X size={24} color="black" />
       </TouchableOpacity>

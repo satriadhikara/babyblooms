@@ -14,7 +14,7 @@ import { router } from "expo-router";
 
 const { width, height } = Dimensions.get("window");
 // Define drawer constants (using the same height)
-const DRAWER_HEIGHT = height * 0.65;
+const DRAWER_HEIGHT = height * 0.69;
 
 const MedisBlur = () => {
   // --- Drawer State and Animation ---
