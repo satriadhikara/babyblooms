@@ -320,6 +320,16 @@ const babyDetails = {
   },
 };
 
+// Define the Entry interface based on API response for Buku Harian
+interface BookEntry {
+  id: string;
+  name: string;
+  createdAt: string; // API returns createdAt as string
+  content: string;
+  imageUrl?: string; // Add imageUrl from API
+  userId: string; // Add userId from API
+}
+
 const PregnancyTrackerApp = () => {
   const { session, isPending } = useAuth();
   const router = useRouter();
@@ -337,6 +347,33 @@ const PregnancyTrackerApp = () => {
   const [greeting, setGreeting] = useState(getGreeting());
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [recentBookEntry, setRecentBookEntry] = useState<BookEntry | null>(
+    null
+  );
+  const [isBookLoading, setIsBookLoading] = useState(true);
+  const [bookError, setBookError] = useState<string | null>(null);
+
+  // Function to format time difference for Buku Harian
+  const formatTimeAgo = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+    if (diffInSeconds < 60) return "Baru saja";
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    if (diffInMinutes < 60) return `${diffInMinutes}m lalu`;
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    if (diffInHours < 24) return `${diffInHours}j lalu`;
+    const diffInDays = Math.floor(diffInHours / 24);
+    if (diffInDays === 1) return "Kemarin";
+    if (diffInDays < 7) return `${diffInDays}h lalu`;
+    // For older entries, show the date
+    return date.toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  };
 
   async function playSound() {
     console.log("Loading Sound");
@@ -495,6 +532,48 @@ const PregnancyTrackerApp = () => {
     };
 
     fetchPregnancyInfo();
+  }, [session]);
+
+  // Fetch recent book entry
+  useEffect(() => {
+    const fetchRecentBookEntry = async () => {
+      if (!session) {
+        setIsBookLoading(false);
+        return;
+      }
+
+      setIsBookLoading(true);
+      setBookError(null);
+      try {
+        const cookies = authClient.getCookie();
+        const headers = { Cookie: cookies };
+        const response = await fetch(
+          `http://babyblooms-api-mhtx1y-ea3f25-91-108-110-101.traefik.me/api/book?recentOnly=true`,
+          {
+            method: "GET",
+            headers: headers,
+          }
+        );
+
+        if (!response.ok) {
+          if (response.status === 404) {
+            setRecentBookEntry(null); // No entries found
+          } else {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+        } else {
+          const data: BookEntry = await response.json();
+          setRecentBookEntry(data);
+        }
+      } catch (err) {
+        console.error("Error fetching recent book entry:", err);
+        setBookError("Gagal memuat entri buku harian terbaru.");
+      } finally {
+        setIsBookLoading(false);
+      }
+    };
+
+    fetchRecentBookEntry();
   }, [session]);
 
   // Get baby details for current week with fallback to default
@@ -1132,6 +1211,7 @@ const PregnancyTrackerApp = () => {
           )}
         </View>
 
+        {/* Buku Harian Section */}
         <View style={{ marginTop: 20, flexDirection: "column" }}>
           <View
             style={{
@@ -1164,49 +1244,74 @@ const PregnancyTrackerApp = () => {
               marginTop: 10,
             }}
           >
-            <View
-              style={{
-                width: "100%",
-                gap: 10,
-                marginTop: 14,
-                backgroundColor: "#FFF",
-                borderRadius: 12,
-                padding: 16,
-                shadowColor: "#000",
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.1,
-                shadowRadius: 4,
-                elevation: 3,
-              }}
-            >
-              <ThemedText
+            {isBookLoading ? (
+              <ActivityIndicator style={{ marginTop: 20, width: "100%" }} />
+            ) : bookError ? (
+              <ThemedText style={{ color: "red", marginTop: 10 }}>
+                {bookError}
+              </ThemedText>
+            ) : recentBookEntry ? (
+              <View
                 style={{
-                  color: "#000000",
-                  fontWeight: 400,
-                  fontFamily: "switzer",
-                  fontSize: 14,
-                  lineHeight: 20,
+                  width: "100%",
+                  gap: 10,
+                  marginTop: 14,
+                  backgroundColor: "#FFF",
+                  borderRadius: 12,
+                  padding: 16,
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.1,
+                  shadowRadius: 4,
+                  elevation: 3,
                 }}
               >
-                Tiba tiba ngidam apel madura :((
-              </ThemedText>
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
-              >
-                <Image
-                  source={require("@/assets/images/ProfPic.png")}
-                  style={{ width: 40, height: 40, resizeMode: "contain" }}
-                />
-                <View style={{ gap: 5 }}>
-                  <ThemedText type="titleSmall" style={{ color: "#626262" }}>
-                    Fiona Siregar
-                  </ThemedText>
-                  <ThemedText type="labelSmall" style={{ color: "#7E7E7E" }}>
-                    4 menit lalu
-                  </ThemedText>
+                <ThemedText
+                  style={{
+                    color: "#000000",
+                    fontWeight: 400,
+                    fontFamily: "Switzer-Regular",
+                    fontSize: 14,
+                    lineHeight: 20,
+                  }}
+                >
+                  {recentBookEntry.content}
+                </ThemedText>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 10,
+                  }}
+                >
+                  <Image
+                    source={
+                      recentBookEntry.imageUrl
+                        ? { uri: recentBookEntry.imageUrl }
+                        : require("@/assets/images/ProfPic.png")
+                    }
+                    style={{
+                      width: 40,
+                      height: 40,
+                      resizeMode: "contain",
+                      borderRadius: 99,
+                    }}
+                  />
+                  <View style={{ gap: 5 }}>
+                    <ThemedText type="titleSmall" style={{ color: "#626262" }}>
+                      {recentBookEntry.name}
+                    </ThemedText>
+                    <ThemedText type="labelSmall" style={{ color: "#7E7E7E" }}>
+                      {formatTimeAgo(recentBookEntry.createdAt)}
+                    </ThemedText>
+                  </View>
                 </View>
               </View>
-            </View>
+            ) : (
+              <ThemedText style={{ marginTop: 10, color: "#7E7E7E" }}>
+                Belum ada entri buku harian.
+              </ThemedText>
+            )}
           </View>
         </View>
       </ScrollView>
