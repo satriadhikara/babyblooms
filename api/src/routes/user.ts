@@ -250,6 +250,25 @@ userRoute.get(
     }
 
     try {
+      // Check if the user is a mom or guardian
+      const [userData] = await db
+        .select()
+        .from(userTable)
+        .where(eq(userTable.id, user.id));
+
+      let motherId = user.id;
+
+      if (userData.role !== "mom") {
+        const [mother] = await db
+          .select({
+            motherId: guardian.motherId,
+          })
+          .from(guardian)
+          .where(eq(guardian.guardianUserId, user.id));
+
+        motherId = mother.motherId;
+      }
+      
       const [childData] = await db
         .select()
         .from(child)
