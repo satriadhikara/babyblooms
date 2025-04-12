@@ -156,6 +156,7 @@ const DatePickerButton: React.FC<DatePickerButtonProps> = ({
                     minimumDate={minimumDate}
                     maximumDate={maximumDate} // Pass maximumDate
                     style={styles.picker} // Apply original picker style
+                    textColor="black"
                   />
                 </View>
               </TouchableWithoutFeedback>
@@ -206,6 +207,7 @@ const styles = StyleSheet.create({
     height: 200, // Original height
     width: "100%", // Ensure picker takes width within its container
     // backgroundColor: 'white' // Can be set if needed, but often inherits
+    color: "black", // Original color
   },
 });
 
